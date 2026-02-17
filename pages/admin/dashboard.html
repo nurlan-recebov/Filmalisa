@@ -1,14 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Filmalisa: Admin Dashboard</title>
-    <link rel="shortcut icon" href="./../../assets/images/logo.svg" type="image/x-icon">
-    <link rel="stylesheet" href="./../../assets/styles/global/global.css">
-    <link rel="stylesheet" href="./../../assets/styles/admin/dashboard.css">
-</head>
-<body>
-    
-</body>
+    <link
+      rel="shortcut icon"
+      href="./../../assets/images/logo.svg"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="./../../assets/styles/global/global.css" />
+    <link rel="stylesheet" href="./../../assets/styles/admin/dashboard.css" />
+  </head>
+  <body>
+    <div class="admin-dashboard-wrapper">
+      <div class="admin-sidebar">
+        <div class="admin-sidebar-top">
+          <div class="admin-sidebar-logo">
+            <img
+              src="./../../assets/images/Admin Daashboard Images/dashboard-logo.svg"
+              alt="dashboard logo"
+            />
+          </div>
+          <div class="admin-sidebar-links">
+            <a href="./dashboard.html" class="is-active">
+              <img
+                src="./../../assets/images/Admin Daashboard Images/dashboard-icon.svg"
+                alt="dashboard icon"
+              />
+              Dashboard
+            </a>
+            <a href="./movies.html"
+              ><img
+                src="./../../assets/images/Admin Daashboard Images/movies-icon.svg"
+                alt="movies icon"
+              />
+              Movies</a
+            >
+            <a href="./categories.html"><img src="./../../assets/images/Admin Daashboard Images/categories-icon.svg" alt="categories icon">Categories</a>
+            <a href="./users.html"><img src="./../../assets/images/Admin Daashboard Images/users-icon.svg" alt="users icon">Users</a>
+            <a href="./comments.html"><img src="././../../assets/images/Admin Daashboard Images/comments-icon.svg" alt="comments icon">Comments</a>
+            <a href="./contactus.html"><img src="./../../assets/images/Admin Daashboard Images/contact-us-icon.svg" alt="contact us icon">Contact us</a>
+          </div>
+        </div>
+        <div class="admin-sidebar-bottom">
+            <img src="./../../assets/images/Admin Daashboard Images/logout-icon.svg" alt="log out icon"> Logout
+        </div>
+      </div>
+      <div class="admin-dashboard-content"></div>
+    </div>
+  </body>
 </html>
