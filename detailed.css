@@ -1,0 +1,35 @@
+.background-image {
+    width: 100%;
+    height: 650px;
+}
+
+.sidebar {
+    position: absolute;
+    top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+
+    width: 56px;
+    height: 100%;
+    /* sidebar eni */
+    /* padding: 10px; */
+    /* border-radius: 8px; */
+
+    /* background: rgba(255, 255, 255, 0.2); */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.icon {
+    position: relative;
+    bottom: -16px;
+}
+
+.icon-btn {
+    width: 32px;
+    height: 32px;
+    left: 12px;
+    right: 12px;
+}
