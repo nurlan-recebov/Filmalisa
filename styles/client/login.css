@@ -1,0 +1,126 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  font-family: 'Raleway', sans-serif;
+  background: #0f0f12;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.login-container {
+  width: 400px;
+  text-align: center;
+}
+
+/* Logo Area */
+.logo {
+  margin-bottom: 40px;
+}
+
+.logo h1 {
+  font-weight: 400;
+  font-size: 30px;
+  margin-top: 20px;
+  color: #cfcfcf;
+}
+
+.logo h2 {
+  font-weight: 500;
+  font-size: 40px;
+  margin-top: 10px;
+  color: #aaa;
+}
+
+/* Triangle Logo */
+.triangle {
+  width: 200px;
+  height: 214px;
+  margin: 0 auto;
+  
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap : 30px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 40px;
+  background: transparent;
+  border: 1px solid #2a2a2f;
+  border-radius: 8px;
+  color: #fff;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s;
+  
+}
+
+.input-group input:focus {
+  border-color: #8e2de2;
+}
+
+.icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #777;
+ 
+}
+.visibility-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Register */
+.register {
+  font-size: 12px;
+  color: #777;
+  text-align: left;
+  text-decoration: none;
+}
+
+.register:hover {
+  text-decoration: underline;
+}
+
+/* Button */
+button {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #8e2de2, #a44bff);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  opacity: 0.85;
+}
