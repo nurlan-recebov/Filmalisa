@@ -4,28 +4,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="././global/reset.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="detailed.css">
     <title>Sidebar Overlay Example</title>
 </head>
 
 <body>
     <div class="background-container">
-        <img src="photo.jpg" alt="Background" class="background-image">
+        <img src="./assets/images/photo.jpg" alt="Background" class="background-image">
 
         <aside class="sidebar">
-            <button class="icon"><img src="detaLogo1.svg" alt="Dashboard"></button>
-            <button class="icon-btn"><img src="detaLogo2.svg" alt="Analytics"></button>
-            <button class="icon-btn"><img src="detaLogo3.svg" alt="Projects"></button>
-            <button class="icon-btn"><img src="detaLogo4.svg" alt="Messages"></button>
-            <button class="icon-btn"><img src="detaLogo5.svg" alt="Settings"></button>
+            <button class="icon"><img src="./assets/images/detaLogo1.svg" alt="Dashboard"></button>
+            <button class="icon-btn"><img src="./assets/images/detaLogo2.svg" alt="Analytics"></button>
+            <button class="icon-btn"><img src="./assets/images/detaLogo3.svg" alt="Projects"></button>
+            <button class="icon-btn"><img src="./assets/images/detaLogo4.svg" alt="Messages"></button>
+            <button class="icon-btn"><img src="./assets/images/detaLogo5.svg" alt="Settings"></button>
         </aside>
 
         <div class="overlay-text">
-            <p class="subtitle">MaileHereko / TV Shows</p>
-            <h1 class="title">Lost In Space</h1>
+            <p class="subtitle">
+                <span class="name">MaileHereko</span>
+                <span class="slash">/</span>
+                <span class="category">TV Shows</span>
+            </p>
+            <h1 class="title">lost In Space</h1>
         </div>
-    </div>
+
+
+
+        <section class="details">
+            <div class="details__image">
+                <img src="./assets/images/detaPhoto.svg" alt="Movie Poster">
+            </div>
+
+            <div class="details__content">
+                <div class="details_i">
+                    <h2 class="details__title">have you seen our robot?</h2>
+
+                    <div class="details__actions">
+                        <button class="btn btn-primary">Watch Link</button>
+
+                        <button class="btn btn-icon">
+                            <img src="./assets/images/detaPlus.svg" alt="Add">
+                        </button>
+                    </div>
+                </div>
+
+                <p class="details__description">
+                    The mission to save Scarecrow takes an unexpected turn, throwing the Resolute into chaos.
+                    Judy hatches a plan to get a ship to Alpha Centauri.
+                </p>
+                <button class="btn btn-rating">
+                    <img src="./assets/images/ratingBtn.svg" alt="Rating">
+                    8.1
+                </button>
+
+                <div class="details__info">
+                    <div class="info-item">
+                        <p class="info-label">Type</p>
+                        <p class="info-value">TV Show</p>
+                    </div>
+
+                    <div class="info-item">
+                        <p class="info-label">Status</p>
+                        <p class="info-value">Returning Series</p>
+                    </div>
+
+                    <div class="info-item">
+                        <p class="info-label">No. of episodes</p>
+                        <p class="info-value">20</p>
+                    </div>
+
+                    <div class="info-item">
+                        <p class="info-label">First air date</p>
+                        <p class="info-value">2018-04-13</p>
+                    </div>
+
+                    <div class="info-item">
+                        <p class="info-label">Last air date</p>
+                        <p class="info-value">2019-04-24</p>
+                    </div>
+
+                    <div class="info-item">
+                        <p class="info-label">Episode run time</p>
+                        <p class="info-value">56 min</p>
+                    </div>
+
+                    <div class="info-item">
+                        <p class="info-label">Genres</p>
+                        <p class="info-value">Action & Adventure, Sci-Fi & Fantasy, Drama</p>
+                    </div>
+                </div>
+
+                <div class="details__cast">
+                    <h3 class="cast-title">Top Cast</h3>
+                    <img src="./assets/images/topcast.svg" alt="Top Cast">
+                </div>
+            </div>
+        </section>
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>
