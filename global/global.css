@@ -1,0 +1,96 @@
+@import url("./reset.css");
+@import url("./variable.css");
+@import url("./bootstrap.css");
+@import url("./font.css");
+
+/* Admin Sidebar Design */
+.admin-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background-color: var(--admin-sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.admin-sidebar-logo {
+  padding: 5px 0 0 34px;
+}
+.admin-sidebar-logo img {
+  width: 166px;
+  height: 57px;
+}
+.admin-sidebar-top {
+  width: 100%;
+}
+.admin-sidebar-links {
+  padding-top: 47px;
+}
+.admin-sidebar-links a {
+  width: 100%;
+  padding: 20px 47px;
+  display: flex;
+  gap: 13px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 13px;
+  color: var(--admin-nav-text);
+}
+.admin-sidebar-links a img {
+  width: 15px;
+  height: 15px;
+}
+a.is-active {
+  background-color: var(--admin-nav-active-bg);
+  color: #ffffff !important;
+}
+.is-active img {
+  filter: brightness(0) invert(1);
+}
+.admin-sidebar-bottom {
+  width: 100%;
+  display: flex;
+  gap: 13px;
+  padding-left: 47px;
+  padding-bottom: 41px;
+  color: #9b51e0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 13px;
+  cursor: pointer;
+}
+
+/* Client Sidebar Design */
+.client-sidebar {
+  width: 56px;
+  flex-shrink: 0;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+}
+.client-sidebar-logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+.client-sidebar-logo img {
+  width: 44px;
+  height: auto;
+  object-fit: contain;
+}
+.client-sidebar-links {
+  margin-top: 64px;
+  padding-inline: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+.client-sidebar-links a svg {
+  width: 32px;
+  height: 32px;
+}
+.client-sidebar-links a.active svg path {
+  stroke: var(--client-nav-active-bg);
+}

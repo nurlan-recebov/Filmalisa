@@ -1,0 +1,23 @@
+:root {
+    /* Admin Dashboard Font */
+    --admin-db-font: 'Raleway', sans-serif;
+
+    /* Admin Nav */
+    --admin-nav-active-bg: #58209D;
+    --admin-nav-text: #AEAEAE;
+    --admin-sidebar-bg:#1E1E1E;
+
+    /* Admin Dashboard Cards */
+    --admin-db-card-bg: #2D2D2D;
+    --admin-db-card-hover-bg: #652F8D;
+    --admin-db-card-title: #D7D7D7;
+
+    /* Client Nav */
+    --client-nav-active-bg:#0FEFFD;
+
+    /* Client Home Page Fonts */
+    --home-page-font:"Roboto", sans-serif;
+
+    /* Client Home Page */
+    --home-page-bg:#1D1D1D;
+}
