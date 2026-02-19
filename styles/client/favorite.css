@@ -56,44 +56,17 @@ ul {
 .body-right {
     width: 100%;
     height: 100vh;
-    padding: 138px 0 0 0;
-
+    padding: 158px 0 0 0;
 }
 
 .right-header {
     display: flex;
     align-items: center;
     align-content: center;
-    justify-content: space-between;
-    padding: 8px;
+    padding-left: 8px;
     gap: 10px;
     padding-bottom: 48px;
-}
 
-.search-main {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.search-input {
-    width: 280px;
-    padding: 10px;
-    border: 1px solid #808080;
-    background-color: #00000080;
-    border-radius: 4px;
-}
-
-.search-button {
-    width: 56px;
-    height: 56px;
-    cursor: pointer;
 }
 
 .right-h1 {
@@ -116,12 +89,11 @@ ul {
 .movie-list {
     height: 450px;
     width: 100%;
-    padding-left: 15px;
 }
 
 .movie-card {
-    width: 250px;
-    height: 400px;
+    width: 300px;
+    height: 450px;
     background-color: #2D2D2D;
     margin-right: 20px;
     position: relative;
