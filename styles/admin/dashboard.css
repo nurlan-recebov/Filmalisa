@@ -1,0 +1,81 @@
+.admin-dashboard-wrapper {
+  font-family: var(--admin-db-font);
+  display: flex;
+  height: 100vh;
+}
+.admin-dashboard-content {
+  flex: 1;
+  background-color: #171616;
+}
+.admin-dashboard-header {
+  display: flex;
+  padding: 36px 116px 0 24px;
+  justify-content: space-between;
+}
+.admin-dashboard-header-title h2 {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 100%;
+  color: #cccccc;
+  margin-bottom: 10px;
+}
+.admin-dashboard-header-title h1 {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 100%;
+  color: #fff;
+}
+.admin-dashboard-header-profile {
+  display: flex;
+  gap: 6px;
+}
+.admin-dashboard-header-profile img {
+  width: 31px;
+  height: 31px;
+}
+.admin-dashboard-header-profile h3 {
+  margin-top: 12px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 13px;
+  color: #fff;
+}
+.admin-dashboard-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding-inline: 24px 77px;
+  margin-top: 79px;
+}
+.admin-stat-card {
+  width: 233px;
+  height: 203px;
+  flex-shrink: 0;
+  background-color: var(--admin-db-card-bg);
+  border-radius: 30px;
+  padding: 24px;
+  transition:
+    background-color 0.4s ease-in-out,
+    box-shadow 0.4s ease;
+}
+.admin-stat-card:hover {
+  cursor: pointer;
+  background-color: var(--admin-db-card-hover-bg);
+}
+.admin-stat-card-long {
+  width: 288px;
+  flex-shrink: 0;
+}
+.admin-stat-card-label {
+  color: #d7d7d7;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 100%;
+}
+.admin-stat-card-value {
+  color: #fff;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 100%;
+  margin-top: 8px;
+}
