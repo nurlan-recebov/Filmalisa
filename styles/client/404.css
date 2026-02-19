@@ -1,0 +1,46 @@
+.page404-wrapper {
+  display: flex;
+  background-color: var(--home-page-bg);
+  min-height: 100vh;
+  font-family: var(--page404-font);
+}
+.page404-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 38px;
+}
+.page404-container img {
+  width: 400px;
+  height: 320px;
+}
+.page404-info {
+  color: #fff;
+  text-align: center;
+  width: 40%;
+}
+.page404-info h1 {
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: -2%;
+}
+.page404-info p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--page404-text-color);
+  margin-top: 16px;
+}
+.page404-btn{
+    background-color: var(--page404-button-bg);
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 16px 32px;
+    cursor: pointer;
+}

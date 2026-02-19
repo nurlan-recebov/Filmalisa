@@ -1,23 +1,30 @@
 :root {
-    /* Admin Dashboard Font */
-    --admin-db-font: 'Raleway', sans-serif;
+  /* Admin Dashboard Font */
+  --admin-db-font: "Raleway", sans-serif;
 
-    /* Admin Nav */
-    --admin-nav-active-bg: #58209D;
-    --admin-nav-text: #AEAEAE;
-    --admin-sidebar-bg:#1E1E1E;
+  /* Admin Nav */
+  --admin-nav-active-bg: #58209d;
+  --admin-nav-text: #aeaeae;
+  --admin-sidebar-bg: #1e1e1e;
 
-    /* Admin Dashboard Cards */
-    --admin-db-card-bg: #2D2D2D;
-    --admin-db-card-hover-bg: #652F8D;
-    --admin-db-card-title: #D7D7D7;
+  /* Admin Dashboard Cards */
+  --admin-db-card-bg: #2d2d2d;
+  --admin-db-card-hover-bg: #652f8d;
+  --admin-db-card-title: #d7d7d7;
 
-    /* Client Nav */
-    --client-nav-active-bg:#0FEFFD;
+  /* Client Nav */
+  --client-nav-active-bg: #0feffd;
 
-    /* Client Home Page Fonts */
-    --home-page-font:"Roboto", sans-serif;
+  /* Client Home Page Fonts */
+  --home-page-font: "Roboto", sans-serif;
 
-    /* Client Home Page */
-    --home-page-bg:#1D1D1D;
+  /* Client Home Page */
+  --home-page-bg: #1d1d1d;
+
+  /* 404 Page Font */
+  --page404-font: "Poppins-Regular", sans-serif;
+
+  /* 404 Page colors */
+  --page404-button-bg: #9b51e0;
+  --page404-text-color: #8e95a9;
 }
