@@ -27,4 +27,7 @@
   /* 404 Page colors */
   --page404-button-bg: #9b51e0;
   --page404-text-color: #8e95a9;
+
+  /* Account Page */
+  --input-placeholder-color:#475069;
 }
