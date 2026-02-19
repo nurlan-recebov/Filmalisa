@@ -1,42 +1,17 @@
-/* Basic Reset CSS */
-*,
-*::before,
-*::after {
+•⁠ ⁠ {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html,
 body {
-    height: 100%;
-    width: 100%;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
 }
 
-img,
-picture,
-video,
-canvas,
-svg {
-    display: block;
+img {
     max-width: 100%;
-    height: auto;
-}
-
-button,
-input,
-select,
-textarea {
-    font: inherit;
-    border: none;
-    background: none;
-    outline: none;
-}
-
-ul,
-ol {
-    list-style: none;
+    display: block;
 }
 
 a {
@@ -44,13 +19,16 @@ a {
     color: inherit;
 }
 
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
+ul,
+ol {
+    list-style: none;
 }
 
-body {
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+button,
+input,
+textarea,
+select {
+    font: inherit;
+    outline: none;
+    border: none;
 }
