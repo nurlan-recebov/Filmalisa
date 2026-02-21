@@ -88,6 +88,7 @@ ul {
     border: 1px solid #808080;
     background-color: #00000080;
     border-radius: 4px;
+    color: #FFFFFF;
 }
 
 .search-button {
@@ -117,6 +118,10 @@ ul {
     height: 450px;
     width: 100%;
     padding-left: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .movie-card {
@@ -126,6 +131,7 @@ ul {
     margin-right: 20px;
     position: relative;
     overflow: hidden;
+    max-width: 10px 10px;
 }
 
 .movie-card::before {
