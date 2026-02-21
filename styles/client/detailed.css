@@ -84,6 +84,31 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
+.logo {
+    padding-bottom: 64px;
+}
+
+.logo img {
+    width: 56px;
+    height: 56px;
+}
+ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar img {
+    width: 19.2px;
+    height: 19.2px;
+}
+
+.sidebar li img:hover {
+    cursor: pointer;
+    filter: brightness(0) saturate(100%) invert(70%) sepia(40%) saturate(600%) hue-rotate(165deg);
+}
+
 
 .sidebar button {
     background: none;
