@@ -204,3 +204,7 @@ td {
 tbody tr td:first-child {
     width: 80px;
 }
+.admin-sidebar-bottom{
+    display: flex;
+    gap: 10px;
+}

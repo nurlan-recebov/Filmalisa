@@ -243,3 +243,21 @@ body.modal-open {
     display: none;
   }
 }
+.edit-btn {
+   background: #7b3fe4;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.delete-btn {
+    background: #7b3fe4;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}

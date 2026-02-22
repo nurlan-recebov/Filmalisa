@@ -49,40 +49,48 @@
                     <h1>Actors</h1>
                 </div>
                 <div class="admin-dashboard-header-profile">
+                     <button id="openModal" class="create-btn" class="create-btn">Create</button>
                     <img src="./../../assets/images/Admin Dashboard Img/admin-profile.svg" alt="profile">
                     <h3>Admin</h3>
                 </div>
             </div>
+<div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Action</td>
+              <td>
+    <button class="edit-btn">Edit</button>
+    <button class="delete-btn">Delete</button>
+  </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Action</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
+      <div class="overlay">
 
-            <div class="overlay">
+        <div id="modal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
 
-                <div id="modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-
-                        <input type="text" placeholder="category name" class="input-field">
-                        <button class="submit-btn">Submit</button>
-                    </div>
-                </div>
-            </div>
+            <input type="text" placeholder="category name" class="input-field">
+            <button class="submit-btn">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+          
         </div>
         <script src="../../js/admin/actors.js"></script>
 </body>

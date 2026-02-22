@@ -58,6 +58,10 @@ a.is-active {
   line-height: 13px;
   cursor: pointer;
 }
+.admin-sidebar-bottom a{
+   display: flex;
+  gap: 13px;
+}
 
 /* Client Sidebar Design */
 .client-sidebar {
@@ -93,4 +97,22 @@ a.is-active {
 }
 .client-sidebar-links a.active svg path {
   stroke: var(--client-nav-active-bg);
+}
+.edit-btn {
+   background: #7b3fe4;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.delete-btn {
+   background: #7b3fe4;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
 }
