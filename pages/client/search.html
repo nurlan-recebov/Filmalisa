@@ -1,50 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../../styles/client/search.css">
-</head>
-<body class="body-main">
-    <div class="body-left">
-        <div class="logo">
-            <img src="../../assets/images/logo.png" alt="logo">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Filmalisa: Search Panel</title>
+    <link
+      rel="shortcut icon"
+      href="./../../assets/icons/logo.svg"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="./../../global/global.css" />
+    <link rel="stylesheet" href="../../styles/client/search.css" />
+  </head>
+  <body class="body-main">
+    <div class="client-sidebar">
+      <div class="client-sidebar-logo">
+        <img src="./../../assets/icons/client-logo.svg" alt="logo" />
+      </div>
+      <div class="client-sidebar-links">
+        <a href="./home.html">
+          <img src="./../../assets/icons/home-icon.svg" alt="home-icon" />
+        </a>
+        <a href="./search.html" class="active">
+          <img src="./../../assets/icons/search-icon.svg" alt="search-icon" />
+        </a>
+        <a href="./account.html">
+          <img src="./../../assets/icons/account-icon.svg" alt="account-icon" />
+        </a>
+        <a href="./favorite.html">
+          <img
+            src="./../../assets/icons/favorite-icon.svg"
+            alt="favorite-icon"
+          />
+        </a>
+      </div>
+    </div>
+    <div class="body-right">
+      <div class="right-header">
+        <div class="search-main">
+          <h1 class="right-h1">Search result</h1>
+          <img
+            src="../../assets/images/right-icon.png"
+            alt="righticon"
+            class="right-icon"
+          />
         </div>
-            <ul class="sidebar">
-                <li> <a href="../client/home.html"><img src="../../assets/images/sidebar-home.png" alt="home"></a></li>
-                <li> <a href="../client/search.html"><img src="../../assets/images/sidebar-search.png" alt="search"></a></li>
-                <li> <a href="../client/account.html"><img src="../../assets/images/sidebar-profile.png" alt="profile"></a></li>
-                <li> <a href="../client/favorite.html"><img src="../../assets/images/sidebar-favorite.png" alt="favorite"></a></li>
-            </ul>
-        </div>
-        <div class="body-right">
-            <div class="right-header">
-<div class="search-main">
-    <h1 class="right-h1">Search result</h1>
-    <img src="../../assets/images/right-icon.png" alt="righticon" class="right-icon">
-</div>
 
-<div class="search-bar">
-    <input id="search" type="text" class="search-input" placeholder="Search ...">
-    <img  id ='searchBtn'src="../../assets/images/search-button.png" alt="button" class="search-button"> 
-</div>
-            
-            </div>
-            <div>
-                <div id="movies" class="movie-list">
-                    <!-- <div class="movie-card">
+        <div class="search-bar">
+          <input
+            id="search"
+            type="text"
+            class="search-input"
+            placeholder="Search ..."
+          />
+          <img
+            id="searchBtn"
+            src="../../assets/images/search-button.png"
+            alt="button"
+            class="search-button"
+          />
+        </div>
+      </div>
+      <div>
+        <div id="movies" class="movie-list">
+          <!-- <div class="movie-card">
                         <img src="../../assets/images/search-image.png" alt="movie" class="movie-poster">
                         <div class="movie-info">
                             <p class="movie-genre">Fantasy</p>
-                            <p class="movie-rating">★★★★★</p>
+                            <p class="movie-rating"><img src="./../../assets/icons/Home Page/rating-icon.svg" alt=""></p>
                             <h2 class="movie-title">Wonder Woman 1984</h2>
                         </div>
                     </div> -->
-                </div>
-            </div>
+        </div>
+      </div>
     </div>
-    <script src="../../js/client/search.js">      
-    </script>
-</body>
+    <script src="../../js/client/search.js"></script>
+  </body>
 </html>

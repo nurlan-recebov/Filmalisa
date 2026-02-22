@@ -44,3 +44,37 @@
     padding: 16px 32px;
     cursor: pointer;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page404-wrapper {
+    flex-direction: column;
+  }
+
+  .client-sidebar {
+    width: 100%;
+    flex-direction: row;
+    height: auto;
+    padding: 10px;
+    justify-content: space-around;
+  }
+
+  .client-sidebar-links {
+    flex-direction: row;
+    margin-top: 0;
+    gap: 20px;
+  }
+
+  .page404-container img {
+    width: 80%;
+    height: auto;
+  }
+
+  .page404-info {
+    width: 90%;
+  }
+
+  .page404-info h1 {
+    font-size: 32px;
+  }
+}
