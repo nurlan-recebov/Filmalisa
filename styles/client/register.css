@@ -124,3 +124,110 @@ button {
 button:hover {
   opacity: 0.85;
 }
+
+/* Responsive Design */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+  .login-container {
+    width: 360px;
+  }
+
+  .triangle {
+    width: 170px;
+    height: 182px;
+  }
+
+  .logo h1 {
+    font-size: 26px;
+  }
+
+  .logo h2 {
+    font-size: 34px;
+  }
+}
+
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
+  body {
+    padding: 24px 20px;
+    height: auto;
+    min-height: 100vh;  /* ← register-də 3 input var, height: 100vh kəsə bilər */
+  }
+
+  .login-container {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .triangle {
+    width: 140px;
+    height: 150px;
+  }
+
+  .logo {
+    margin-bottom: 32px;
+  }
+
+  .logo h1 {
+    font-size: 22px;
+    margin-top: 14px;
+  }
+
+  .logo h2 {
+    font-size: 28px;
+    margin-top: 8px;
+  }
+
+  .login-form {
+    gap: 20px;
+  }
+
+  .input-group input {
+    padding: 11px 40px;
+    font-size: 13px;
+  }
+
+  button {
+    padding: 11px;
+    font-size: 13px;
+  }
+
+  .register {
+    font-size: 11px;
+  }
+}
+
+/* Kiçik mobile (max 480px) */
+@media (max-width: 480px) {
+  .triangle {
+    width: 110px;
+    height: 118px;
+  }
+
+  .logo h1 {
+    font-size: 18px;
+  }
+
+  .logo h2 {
+    font-size: 24px;
+  }
+
+  .login-form {
+    gap: 14px;
+  }
+
+  .input-group input {
+    padding: 10px 36px;
+    font-size: 12px;
+  }
+
+  .icon {
+    left: 8px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 13px;
+  }
+}

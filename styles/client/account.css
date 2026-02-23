@@ -73,6 +73,111 @@
     cursor: pointer;
 }
 
+/* Responsive Design */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+  .account-container img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .account-container form {
+    max-width: 420px;
+    margin-top: 48px;
+    gap: 14px;
+  }
+
+  .input-no-icon,
+  .input-disabled,
+  .input-with-icon {
+    padding: 17px 14px;
+    gap: 10px;
+  }
+
+  .input-no-icon input,
+  .input-disabled input,
+  .input-with-icon input {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .input-no-icon img,
+  .input-disabled img,
+  .input-with-icon img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .account-save-btn {
+    padding: 15px 0;
+    font-size: 14px;
+  }
+}
+
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
+  .account-wapper {
+    flex-direction: column;
+  }
+
+  .account-container {
+    padding: 28px 20px 40px;
+  }
+
+  .account-container img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .account-container form {
+    margin-top: 28px;
+    max-width: 100%;
+    gap: 12px;
+  }
+
+  .input-no-icon,
+  .input-disabled,
+  .input-with-icon {
+    padding: 14px 12px;
+    gap: 8px;
+    border-radius: 10px;
+  }
+
+  .input-no-icon input,
+  .input-disabled input,
+  .input-with-icon input {
+    font-size: 13px;
+    line-height: 15px;
+  }
+
+  .input-no-icon input::placeholder {
+    font-size: 13px;
+    line-height: 15px;
+  }
+
+  .input-no-icon img,
+  .input-disabled img,
+  .input-with-icon img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .input-disabled input {
+    font-size: 12px;
+    line-height: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .account-save-btn {
+    padding: 14px 0;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+}
+
 
 
 

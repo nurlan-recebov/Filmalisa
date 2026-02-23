@@ -1,150 +1,276 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 .body-main {
-    display: flex;
-    background-color: #1D1D1D;
+  display: flex;
+  background-color: #1d1d1d;
+  overflow-x: hidden;
 }
 
 .body-left {
-    width: 56px;
-    height: 100vh;
-    padding-top: 40px;
+  width: 56px;
+  height: 100vh;
+  padding-top: 40px;
 }
 
 .logo {
-    padding-bottom: 64px;
+  padding-bottom: 64px;
 }
 
 .logo img {
-    width: 56px;
-    height: 56px;
+  width: 56px;
+  height: 56px;
 }
 
-
-
 .sidebar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
 }
 
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 .sidebar img {
-    width: 19.2px;
-    height: 19.2px;
+  width: 19.2px;
+  height: 19.2px;
 }
 
 .sidebar li img:hover {
-    cursor: pointer;
-    filter: brightness(0) saturate(100%) invert(70%) sepia(40%) saturate(600%) hue-rotate(165deg);
+  cursor: pointer;
+  filter: brightness(0) saturate(100%) invert(70%) sepia(40%) saturate(600%)
+    hue-rotate(165deg);
 }
 
-
-
-
 .body-right {
-    width: 100%;
-    height: 100vh;
-    padding: 158px 0 0 0;
+  width: 100%;
+  height: 100vh;
+  padding: 158px 0 0 0;
 }
 
 .right-header {
-    display: flex;
-    align-items: center;
-    align-content: center;
-    padding-left: 8px;
-    gap: 10px;
-    padding-bottom: 48px;
-
+  display: flex;
+  align-items: center;
+  align-content: center;
+  padding-left: 8px;
+  gap: 10px;
+  padding-bottom: 48px;
 }
 
 .right-h1 {
-    font-family: Roboto;
-    font-weight: 500;
-    font-size: 35px;
-    leading-trim: NONE;
-    line-height: 24px;
-    letter-spacing: 0%;
-    color: #FFFFFF;
-    margin-left: 10px;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 35px;
+  leading-trim: NONE;
+  line-height: 24px;
+  letter-spacing: 0%;
+  color: #ffffff;
+  margin-left: 10px;
 }
 
 .right-icon {
-    width: 12px;
-    height: 16px;
-    margin-left: 10px;
+  width: 12px;
+  height: 16px;
+  margin-left: 10px;
 }
 
 .movie-list {
-    height: 450px;
-    width: 100%;
+  display: flex;
+  padding: 48px 0 188px 0;
+  overflow-x: auto; 
+  scroll-behavior: smooth;
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+
+.movie-list::-webkit-scrollbar {
+  display: none;
 }
 
 .movie-card {
-    width: 300px;
-    height: 450px;
-    background-color: #2D2D2D;
-    margin-right: 20px;
-    position: relative;
-    overflow: hidden;
+    width: 504px;
+  height: 736px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .movie-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.251);
-    z-index: 1;
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.4) 65%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  z-index: 1;
 }
 
 .movie-poster {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+   object-fit: cover;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .movie-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-    padding: 0 0 30px 20px;
-    color: #FFFFFF;
-    z-index: 2;
+   position: absolute;
+  bottom: 40px;
+  left: 24px;
+  z-index: 2;
+  color: white;
 }
 
 .movie-genre {
-    font-family: Roboto;
-    font-size: 12px;
-    color: #0FEFFD;
-    margin-bottom: 8px;
-    background-color: #1D1D1D80;
-    width: fit-content;
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    padding: 1px 5px;
+   padding: 4px 8px;
+  color: var(--client-nav-active-bg);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
 .movie-rating {
-    font-family: Roboto;
-    font-size: 14px;
-    color: #ffffff;
-    margin-bottom: 8px;
+   width: 80px;
+  height: 16px;
 }
 
 .movie-title {
-    font-family: Roboto;
-    font-weight: 500;
-    font-size: 16px;
-    color: #FFFFFF;
+   font-weight: 500;
+  font-size: 32px;
+  line-height: 40px;
+  margin-top: 16px;
+  font-family: "Roboto",sans-serif;
+}
+
+/* Responsive Design */
+
+/* Tablet (768px - 1024px) */
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+  .body-right {
+    padding: 80px 24px 40px;
+    height: auto;
+  }
+
+  .right-h1 {
+    font-size: 28px;
+  }
+
+  .right-header {
+    padding-bottom: 32px;
+  }
+
+  .movie-list {
+    flex-wrap: wrap;        /* ← mütləq lazımdır */
+    overflow-x: hidden;
+    gap: 16px;
+  }
+
+  .movie-card {
+    width: calc(50% - 8px);
+    height: 360px;
+    flex-shrink: 1;
+  }
+
+  .movie-info {
+    bottom: 24px;
+    left: 16px;
+  }
+
+  .movie-title {
+    font-size: 22px;
+    line-height: 28px;
+    margin-top: 10px;
+  }
+
+  .movie-genre {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
+  .body-main {
+    flex-direction: column;
+  }
+
+  .body-right {
+    padding: 24px 16px 40px;
+    height: auto;
+  }
+
+  .right-header {
+    padding-bottom: 20px;
+    padding-left: 0;
+  }
+
+  .right-h1 {
+    font-size: 20px;
+    line-height: 28px;
+    margin-left: 0;
+  }
+
+  .movie-list {
+    flex-wrap: wrap;        /* ← mütləq lazımdır */
+    overflow-x: hidden;
+    gap: 10px;
+  }
+
+  .movie-card {
+    width: calc(50% - 5px);
+    height: 220px;
+    flex-shrink: 1;
+  }
+
+  .movie-info {
+    bottom: 16px;           /* ← mərkəzləşməsin deyə absolute pozisiya düzəldildi */
+    left: 12px;
+  }
+
+  .movie-title {
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 6px;
+  }
+
+  .movie-genre {
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+
+  .movie-rating {
+    width: auto;
+    height: auto;
+    font-size: 11px;
+  }
+}
+
+/* Kiçik mobile (max 480px) */
+@media (max-width: 480px) {
+  .movie-card {
+    height: 180px;
+  }
+
+  .movie-info {
+    bottom: 12px;
+    left: 10px;
+  }
+
+  .movie-title {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .right-h1 {
+    font-size: 18px;
+  }
 }

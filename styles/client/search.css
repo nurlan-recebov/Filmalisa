@@ -196,3 +196,136 @@ ul {
 .movie-list h1 {
   color: #ffffff !important;
 }
+
+/* Responsive Design */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+  .body-right {
+    padding: 80px 24px 40px;
+    height: auto;
+  }
+
+  .right-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 32px;
+    gap: 16px;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+    flex: 1;
+  }
+
+  .right-h1 {
+    font-size: 28px;
+  }
+
+  .movie-list {
+    height: auto;
+    gap: 16px;
+  }
+
+  .movie-card {
+    width: calc(33.333% - 11px);
+    height: 360px;
+    margin-right: 0;
+  }
+}
+
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
+  .body-main {
+    flex-direction: column;
+  }
+
+  .body-right {
+    padding: 24px 16px 40px;
+    height: auto;
+  }
+
+  .right-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    gap: 14px;
+  }
+
+  .search-main {
+    gap: 6px;
+  }
+
+  .right-h1 {
+    font-size: 20px;
+    line-height: 28px;
+    margin-left: 0;
+  }
+
+  .right-icon {
+    width: 10px;
+    height: 14px;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .search-input {
+    flex: 1;
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .search-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .movie-list {
+    height: auto;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .movie-card {
+    width: calc(50% - 5px);
+    height: 260px;
+    margin-right: 0;
+  }
+
+  .movie-title {
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 8px;
+  }
+
+  .movie-genre {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+
+  .movie-info {
+    padding: 0 0 16px 12px;
+  }
+}
+
+/* Kiçik mobile (max 480px) */
+@media (max-width: 480px) {
+  .movie-card {
+    width: calc(50% - 5px);
+    height: 200px;
+  }
+
+  .right-h1 {
+    font-size: 18px;
+  }
+
+  .movie-title {
+    font-size: 13px;
+  }
+}
