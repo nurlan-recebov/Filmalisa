@@ -98,6 +98,9 @@ submitBtn.addEventListener("click", async () => {
 
 // DELETE
 async function deleteCategory(id) {
+  const confirmDelete = confirm("Bu kateqoriyanı silmək istədiyinizə əminsiniz?");
+  if (!confirmDelete) return;
+
   await fetch(`${ADMIN_API}/${id}`, {
     method: "DELETE",
     headers: {
@@ -105,6 +108,7 @@ async function deleteCategory(id) {
     }
   });
 
+  alert("Kateqoriya silindi");
   getCategories();
 }
 

@@ -135,12 +135,16 @@ form.addEventListener("submit", async (e) => {
 // DELETE
 async function deleteMovie(id) {
   try {
+     const confirmDelete = confirm("Bu kateqoriyanı silmək istədiyinizə əminsiniz?");
+  if (!confirmDelete) return;
+
     await fetch(`${ADMIN_API}/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
+    alert("Kateqoriya silindi");
 
     getMovies();
   } catch (error) {
