@@ -4,7 +4,6 @@
   min-height: 100vh;
   background-color: var(--home-page-bg);
   font-family: var(--home-page-font);
-
 }
 
 .home-content {
@@ -18,94 +17,84 @@
 
 .home-swiper {
   width: 100%;
-  height: 90vh; 
+  height: clamp(500px, 90vh, 900px);
   position: relative;
+  overflow: hidden;
 }
 
 /* Slides */
 .home-swiper-slide {
   position: relative;
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding-top: 164px;
+}
+.home-swiper-slide > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
 }
 
 .home-swiper-slide::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg, 
-    rgba(29, 29, 29, 1) 0%, 
-    rgba(29, 29, 29, 0.6) 50%, 
-    rgba(29, 29, 29, 0) 100%
-  );
-  z-index: 1; 
-}
-
-.home-swiper-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  filter: brightness(0.6); 
+  background: linear-gradient(90deg, #1d1d1d 0%, rgba(29, 29, 29, 0.6) 50%, transparent 100%);
+  z-index: 1;
 }
 
 .slide-info {
   position: absolute;
   top: 164px;
-  left: 180px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 90%;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
-  align-items: start;
-  gap: 10px;
-  z-index: 10;
-  width: 43%;
-  box-shadow: none; 
+  align-items: flex-start;
+  gap: 16px;
+  color: #fff;
 }
 
 .slide-info .slider-film-category {
-    display: inline-block;
-    width: fit-content;   
-    padding: 4px 8px;
-    color: #0FEFFD;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    margin-bottom: 16px;
-    background: rgba(0, 0, 0, 0.3);
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 8px;
+  padding: 4px 12px;
+  color: #0feffd;
+  font-size: 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
-.slide-info img{
-    width: 80px;
-    height: 16px;
+.slide-info img {
+  width: 80px;
+  height: auto;
 }
 
 .slide-info h2 {
-  font-weight: 500;
-  font-size: 56px;
-  line-height: 64px;
-  color: #fff;
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: 1.1;
+  margin: 10px 0;
 }
 
 .slide-info p {
-font-weight: 400;
+  max-width: 500px;
   font-size: 16px;
-  line-height: 32px;
-  color: #fff;
+  line-height: 1.6;
 }
-
 .slider-watch-btn {
   position: relative;
-  display: inline-block;
-  text-decoration: none;
-  padding: 12px 32px;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 24px;
+  padding: 12px 36px;
+  border-radius: 40px;
   color: #fff;
-  background: transparent;
+  text-decoration: none;
+  border: 1px solid #0feffd; 
+  transition: 0.3s;
 }
 
 .slider-watch-btn::before {
@@ -114,19 +103,21 @@ font-weight: 400;
   inset: 0;
   border-radius: 40px;
   padding: 0.3px;
-  background: linear-gradient(to right, #0FEFFD, #FF00F5, #0FEFFD);
-  -webkit-mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
+  background: linear-gradient(to right, #0feffd, #ff00f5, #0feffd);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
   border: 0.2px solid;
-
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slider-watch-btn:hover {
-  opacity: 0.8;
+  background: linear-gradient(to right, #0feffd, #ff00f5, #0feffd);
+  color: #000;
+  opacity: 0.85;
 }
 
 .swiper-pagination-bullet {
@@ -135,7 +126,7 @@ font-weight: 400;
 }
 
 .swiper-pagination-bullet-active {
-  background: #fff !important; 
+  background: #fff !important;
   opacity: 1;
 }
 
@@ -144,58 +135,59 @@ font-weight: 400;
 }
 
 /* Home Action Section Content */
-.home-action-section{
-    padding: 28px 0 60px;
+.home-action-section {
+  padding: 28px 0 60px;
 }
-.home-section-heading{
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.home-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.home-section-heading h3{
-    font-weight: 500;
-    font-size: 35px;
-    line-height: 24px;
-    color: #fff;
+.home-section-heading h3 {
+  font-weight: 500;
+  font-size: 35px;
+  line-height: 24px;
+  color: #fff;
 }
-.home-section-heading img{
-    width: 35px;
-    height: 35px;
+.home-section-heading img {
+  width: 35px;
+  height: 35px;
 }
-.action-section-content{
-    display: flex;
-    margin-top: 19px;
-    gap: 16px;
-    overflow-x: scroll;
+.action-section-content {
+  display: flex;
+  margin-top: 19px;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
 }
 .action-section-content::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
-.action-card{
-    width: 292px;
-    height: 440px;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
+.action-card {
+  width: 292px;
+  height: 440px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 .action-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0) 40%,     
-        rgba(0, 0, 0, 0.4) 65%,   
-        rgba(0, 0, 0, 0.9) 100%  
-    );
-    z-index: 1;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.4) 65%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  z-index: 1;
 }
 
-.action-card img{
-    object-fit: cover;
-    display: block;
-    width: 100%;
-    height: 100%;
+.action-card img {
+  object-fit: cover;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .action-card-content {
   position: absolute;
@@ -204,72 +196,82 @@ font-weight: 400;
   z-index: 2;
   color: white;
 }
-.action-film-category{
-    padding: 4px 8px;
-    color: var( --client-nav-active-bg);
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    margin-bottom: 16px;
-    background: rgba(0, 0, 0, 0.3);
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 8px;
+.action-film-category {
+  padding: 4px 8px;
+  color: var(--client-nav-active-bg);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
-.action-film-category, .comedy-film-category {
-    display: inline-block;
-    width: fit-content;
+.action-film-category,
+.comedy-film-category {
+  display: inline-block;
+  width: fit-content;
 }
-.action-film-title{
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 32px;
-    color: #fff;
+.action-film-title {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  color: #fff;
 }
+
+.action-section-content, .comedy-section-content {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 20px;
+  scrollbar-width: none;}
 
 /* Home Comedy Section */
-.home-comedy-section{
-    padding-bottom: 101px;
-}
-.home-section-heading h4{
-    font-weight: 500;
-    font-size: 35px;
-    line-height: 24px;
-    color: #fff;
+.home-comedy-section {
+  padding-bottom: 101px;
 }
 
-.comedy-section-content{
-    display: flex;
-    margin-top: 26px;
-    overflow-x: scroll;
+.home-section-heading h4 {
+  font-weight: 500;
+  font-size: 35px;
+  line-height: 24px;
+  color: #fff;
+}
+
+.comedy-section-content {
+  display: flex;
+  margin-top: 26px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
 }
 .comedy-section-content::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
-.comedy-card{
-    width: 504px;
-    height: 736px;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
+.comedy-card {
+  width: 504px;
+  height: 736px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 .comedy-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0) 40%,     
-        rgba(0, 0, 0, 0.4) 65%,   
-        rgba(0, 0, 0, 0.9) 100%  
-    );
-    z-index: 1;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.4) 65%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  z-index: 1;
 }
 
-.comedy-card img{
-    object-fit: cover;
-    display: block;
-    width: 100%;
-    height: 100%;
+.comedy-card img {
+  object-fit: cover;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .comedy-card-content {
   position: absolute;
@@ -278,25 +280,96 @@ font-weight: 400;
   z-index: 2;
   color: white;
 }
-.comedy-film-category{
-    padding: 4px 8px;
-    color: var( --client-nav-active-bg);
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    margin-bottom: 16px;
-    background: rgba(0, 0, 0, 0.3);
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 8px;
+.comedy-film-category {
+  padding: 4px 8px;
+  color: var(--client-nav-active-bg);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
-.comedy-card-content img{
-    width: 80px;
-    height: 16px;
+.comedy-card-content img {
+  width: 80px;
+  height: 16px;
 }
-.comedy-film-title{
-    font-weight: 500;
-    font-size: 32px;
-    line-height: 40px;
-    margin-top: 16px;
+.comedy-film-title {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 40px;
+  margin-top: 16px;
 }
 
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .slide-info {
+    width: 60%;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .home-swiper {
+    height: 60vh;
+  }
+
+  .slide-info {
+    top: 60px;
+    width: 90%;
+  }
+
+  .slide-info h2 {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .slide-info p {
+    font-size: 14px;
+    line-height: 22px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .action-card {
+    width: 180px;
+    height: 270px;
+  }
+
+  .action-film-title {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .comedy-card {
+    width: 260px;
+    height: 380px;
+  }
+
+  .comedy-film-title {
+    font-size: 20px;
+    line-height: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .slide-info {
+    top: 40px;
+  }
+
+  .slide-info h2 {
+    font-size: 22px;
+  }
+
+  .home-section-heading h3,
+  .home-section-heading h4 {
+    font-size: 22px;
+  }
+}

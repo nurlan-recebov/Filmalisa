@@ -1,0 +1,199 @@
+.admin-dashboard-wrapper {
+    font-family: var(--admin-db-font);
+    display: flex;
+}
+
+/* CONTENT */
+.admin-dashboard-content {
+    flex: 1;
+    background-color: #171616;
+    min-height: 100vh;
+}
+
+/* HEADER */
+.admin-dashboard-header {
+    display: flex;
+    padding: 36px 116px 0 24px;
+    justify-content: space-between;
+}
+
+.admin-dashboard-header-title h2 {
+    font-weight: 500;
+    font-size: 13px;
+    color: #cccccc;
+    margin-bottom: 10px;
+}
+
+.admin-dashboard-header-title h1 {
+    font-weight: 500;
+    font-size: 20px;
+    color: #fff;
+}
+
+.admin-dashboard-header-profile {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.admin-dashboard-header-profile img {
+    width: 31px;
+    height: 31px;
+}
+
+.admin-dashboard-header-profile h3 {
+    font-size: 12px;
+    color: #fff;
+}
+
+/* CREATE BUTTON */
+.create-btn {
+    background: #7b3fe4;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.create-btn:hover {
+    background: #9257f0;
+}
+
+/* TABLE */
+.table-container {
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 40px 30px;
+    background: #1a1a1a;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #262626;
+}
+
+th {
+    text-align: left;
+    padding: 15px;
+    color: #ccc;
+    font-weight: 500;
+}
+
+tbody tr {
+    background: #f1f1f1;
+    transition: 0.2s;
+}
+
+tbody tr:hover {
+    background: #ddd;
+}
+
+td {
+    padding: 15px;
+    color: #000;
+}
+
+tbody tr td:first-child {
+    width: 80px;
+}
+
+/* BUTTONS */
+.edit-btn {
+    background:  #7b3fe4;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.delete-btn {
+    background:  #7b3fe4;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background: #7b3fe4;
+}
+
+.delete-btn:hover {
+    background: #7b3fe4;
+}
+
+/* OVERLAY */
+.overlay {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+/* MODAL */
+.modal {
+    background: #111;
+    border-radius: 15px;
+    width: 400px;
+}
+
+/* MODAL CONTENT */
+.modal-content {
+    padding: 35px;
+    position: relative;
+}
+
+/* CLOSE */
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* INPUT */
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #1c1c1c;
+    color: white;
+}
+
+/* SUBMIT */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(to right, #7b3fe4, #9c5af7);
+    color: white;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    opacity: 0.9;
+}
+
+/* SIDEBAR BOTTOM */
+.admin-sidebar-bottom {
+    display: flex;
+    gap: 10px;
+}
