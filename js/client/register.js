@@ -1,6 +1,6 @@
 const registerForm = document.querySelector(".login-form");
 const eyeIcon = document.querySelector(".visibility-toggle");
-const passInpEl = document.querySelector(".pass-inp");
+const passInpEl = document.getElementById("password");
 
 eyeIcon.addEventListener("click", () => {
   if (passInpEl.getAttribute("type") == "text") {
