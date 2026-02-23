@@ -1,25 +1,183 @@
-const createBtn = document.querySelector(".add-btn");
+const GET_API = "https://api.sarkhanrahimli.dev/api/filmalisa/movies";
+const ADMIN_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/movie";
+const CATEGORY_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/categories";
+
+const tableBody = document.querySelector(".main-table tbody");
+const form = document.querySelector(".modal-form");
 const modal = document.getElementById("createModal");
+const addBtn = document.querySelector(".add-btn");
+const categorySelect = document.querySelector("select[name='category']");
 
-if (createBtn) {
-  createBtn.addEventListener("click", () => {
-    document.body.classList.add("modal-open");
-    modal.classList.add("open");
-  });
+let editId = null;
+const token = localStorage.getItem("token");
+
+// Modal aç
+addBtn.onclick = () => {
+  modal.style.display = "flex";
+};
+
+// Modal bağla
+modal.onclick = (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+};
+
+// CATEGORIES GET
+async function getCategories() {
+  try {
+    const res = await fetch(CATEGORY_API, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+
+    categorySelect.innerHTML = "";
+
+    data.data.forEach(cat => {
+      const option = document.createElement("option");
+      option.value = cat.id;
+      option.textContent = cat.name;
+      categorySelect.appendChild(option);
+    });
+
+  } catch (error) {
+    console.log("Category xətası:", error);
+  }
 }
 
-if (modal) {
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      document.body.classList.remove("modal-open");
-      modal.classList.remove("open");
+// MOVIES GET
+async function getMovies() {
+  try {
+    const res = await fetch(GET_API, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+    tableBody.innerHTML = "";
+
+    data.data.forEach(movie => {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${movie.id}</td>
+        <td><img src="${movie.cover_url}" width="60"/></td>
+        <td>${movie.title}</td>
+        <td>${movie.run_time_min}</td>
+        <td>${movie.imdb}</td>
+        <td>
+          <button onclick="editMovie(${movie.id})">Edit</button>
+          <button onclick="deleteMovie(${movie.id})">Delete</button>
+        </td>
+      `;
+
+      tableBody.appendChild(tr);
+    });
+
+  } catch (error) {
+    console.log("Movies xətası:", error);
+  }
+}
+
+// FORM SUBMIT (CREATE + UPDATE)
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const movie = {
+    title: form.title.value,
+    cover_url: form.cover_url.value,
+    fragman: form.fragman.value,
+    watch_url: form.watch_url.value,
+    adult: form.adult.checked,
+    run_time_min: Number(form.run_time_min.value),
+    imdb: form.imdb.value,
+    category: Number(form.category.value),
+    overview: form.overview.value
+  };
+
+  try {
+    if (editId) {
+      // UPDATE
+      await fetch(`${ADMIN_API}/${editId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(movie)
+      });
+    } else {
+      // CREATE
+      await fetch(ADMIN_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(movie)
+      });
     }
-  });
-}
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && modal.classList.contains("open")) {
-    document.body.classList.remove("modal-open");
-    modal.classList.remove("open");
+    modal.style.display = "none";
+    form.reset();
+    editId = null;
+    getMovies();
+
+  } catch (error) {
+    console.log("Submit xətası:", error);
   }
 });
+
+// DELETE
+async function deleteMovie(id) {
+  try {
+    await fetch(`${ADMIN_API}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    getMovies();
+  } catch (error) {
+    console.log("Delete xətası:", error);
+  }
+}
+
+// EDIT
+async function editMovie(id) {
+  try {
+    const res = await fetch(`${GET_API}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+    const movie = data.data;
+
+    form.title.value = movie.title;
+    form.cover_url.value = movie.cover_url;
+    form.fragman.value = movie.fragman;
+    form.watch_url.value = movie.watch_url;
+    form.adult.checked = movie.adult;
+    form.run_time_min.value = movie.run_time_min;
+    form.imdb.value = movie.imdb;
+    form.category.value = movie.category?.id || movie.category;
+    form.overview.value = movie.overview;
+
+    editId = id;
+    modal.style.display = "flex";
+
+  } catch (error) {
+    console.log("Edit xətası:", error);
+  }
+}
+
+// PAGE LOAD
+getMovies();
+getCategories();

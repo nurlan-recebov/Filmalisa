@@ -4,16 +4,20 @@
   box-sizing: border-box;
   font-family: var(--admin-db-font);
 }
+body{
+  /* background-color: #171616; */
+}
 .admin-dashboard-wrapper {
   font-family: var(--admin-db-font);
   display: flex;
-  height: 100vh;
+ 
 }
 .admin-dashboard-content {
   flex: 1;
   background-color: #171616;
   --content-left: 24px;
   --content-right: 116px;
+ 
 }
 .admin-dashboard-content > .main-table {
   width: auto;
@@ -44,25 +48,20 @@
   margin: 0;
 }
 .admin-dashboard-header-profile {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center
 }
 
 .add-btn {
-  height: 31px;
-  padding: 0 22px;
-  line-height: 31px;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: #9b51e0;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  text-rendering: geometricPrecision;
-  margin-right: 16px;
+ 
+    background: #7b3fe4;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 .admin-dashboard-header-profile img {
@@ -92,14 +91,14 @@ thead {
 
 th {
   text-align: left;
-  padding: 15px;
+  padding: 5px;
   font-size: 14px;
   color: #ffffff;
   background-color: #1e1e1e;
 }
 
 td {
-  padding: 15px;
+ 
   border-top: 1px solid #ffffff;
 }
 
@@ -123,12 +122,12 @@ tbody tr:last-child td:last-child {
 .title-cell {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .title-cell img {
-  width: 40px;
-  height: 60px;
+  width: 30px;
+  height: 30px;
   border-radius: 6px;
 }
 
@@ -136,27 +135,7 @@ body.modal-open {
   overflow: hidden;
 }
 
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.6);
-  visibility: hidden;
-  opacity: 0;
-  transition:
-    opacity 200ms ease,
-    visibility 200ms ease;
-  pointer-events: none;
-}
 
-.modal.open {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-}
 
 .modal-content {
   width: 660px;
@@ -222,16 +201,32 @@ body.modal-open {
   color: #475069;
   font-size: 13px;
 }
-.modal .submit-btn {
-  background-color: #9b51e0;
-  color: #ffffff;
-  height: 20px;
-  padding: 0 18px;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  font-size: 13px;
-  line-height: 20px;
+.submit-btn{
+   background: #7b3fe4;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+#createModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+/* Modal açıq vəziyyət */
+#createModal.open {
+  display: flex;
+}
+.modal-content {
+  background: #1a1a1a;
+  padding: 30px;
+  border-radius: 10px;
+  width: 500px;
 }
 
 @media (max-width: 720px) {
@@ -260,4 +255,56 @@ body.modal-open {
   color: white;
   border-radius: 6px;
   cursor: pointer;
+}
+table{
+width:100%;
+border-collapse:collapse;
+background:#1e1e1e;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #333;
+}
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.modal.open{
+display:flex;
+}
+
+.modal-content{
+background:#1a1a1a;
+padding:30px;
+border-radius:10px;
+width:400px;
+}
+
+.modal-form input,
+.modal-form textarea{
+width:100%;
+margin-bottom:12px;
+padding:10px;
+border:none;
+border-radius:6px;
+}
+
+.submit-btn{
+background:#7b3fe4;
+border:none;
+padding:10px;
+width:100%;
+color:white;
+cursor:pointer;
+border-radius:6px;
 }
