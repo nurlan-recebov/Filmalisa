@@ -1,14 +1,16 @@
 .admin-dashboard-wrapper {
     font-family: var(--admin-db-font);
     display: flex;
-    height: 100vh;
 }
 
+/* CONTENT */
 .admin-dashboard-content {
     flex: 1;
     background-color: #171616;
+    min-height: 100vh;
 }
 
+/* HEADER */
 .admin-dashboard-header {
     display: flex;
     padding: 36px 116px 0 24px;
@@ -18,7 +20,6 @@
 .admin-dashboard-header-title h2 {
     font-weight: 500;
     font-size: 13px;
-    line-height: 100%;
     color: #cccccc;
     margin-bottom: 10px;
 }
@@ -26,14 +27,12 @@
 .admin-dashboard-header-title h1 {
     font-weight: 500;
     font-size: 20px;
-    line-height: 100%;
     color: #fff;
 }
 
 .admin-dashboard-header-profile {
     display: flex;
     gap: 20px;
-    justify-content: center;
     align-items: center;
 }
 
@@ -43,59 +42,11 @@
 }
 
 .admin-dashboard-header-profile h3 {
-    margin-top: 12px;
-    font-weight: 500;
     font-size: 12px;
-    line-height: 13px;
     color: #fff;
 }
 
-.admin-dashboard-card-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    padding-inline: 24px 77px;
-    margin-top: 79px;
-}
-
-.admin-stat-card {
-    width: 233px;
-    height: 203px;
-    flex-shrink: 0;
-    background-color: var(--admin-db-card-bg);
-    border-radius: 30px;
-    padding: 24px;
-    transition:
-        background-color 0.4s ease-in-out,
-        box-shadow 0.4s ease;
-}
-
-.admin-stat-card:hover {
-    cursor: pointer;
-    background-color: var(--admin-db-card-hover-bg);
-}
-
-.admin-stat-card-long {
-    width: 288px;
-    flex-shrink: 0;
-}
-
-.admin-stat-card-label {
-    color: #d7d7d7;
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 100%;
-}
-
-.admin-stat-card-value {
-    color: #fff;
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 100%;
-    margin-top: 8px;
-}
-
-
+/* CREATE BUTTON */
 .create-btn {
     background: #7b3fe4;
     color: white;
@@ -103,85 +54,29 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
-
+    transition: 0.3s;
 }
 
-/* Modal background */
-.modal {
-    display: none;
-    /* default hidden */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
+.create-btn:hover {
+    background: #9257f0;
 }
 
-/* Modal box */
-.modal-content {
-    background: #111;
-    padding: 40px;
-    border-radius: 15px;
-    width: 400px;
-    text-align: center;
-    position: relative;
-}
-
-/* Close button */
-.close {
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    color: white;
-    font-size: 22px;
-    cursor: pointer;
-}
-
-/* Input */
-.input-field {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    border: 1px solid #444;
-    background: #1c1c1c;
-    color: white;
-}
-
-/* Submit button */
-.submit-btn {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    background: linear-gradient(to right, #7b3fe4, #9c5af7);
-    color: white;
-    cursor: pointer;
-}
-
-/* Table  */
+/* TABLE */
 .table-container {
-    max-width: 500px;
-
-
+    max-width: 600px;
     padding: 20px;
     border-radius: 20px;
     margin: 40px 30px;
-
+    background: #1a1a1a;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-
 }
 
 thead {
-    background: #1f1f1f;
+    background: #262626;
 }
 
 th {
@@ -192,8 +87,12 @@ th {
 }
 
 tbody tr {
-    background: #eaeaea;
-    border-radius: 8px;
+    background: #f1f1f1;
+    transition: 0.2s;
+}
+
+tbody tr:hover {
+    background: #ddd;
 }
 
 td {
@@ -204,7 +103,97 @@ td {
 tbody tr td:first-child {
     width: 80px;
 }
-.admin-sidebar-bottom{
+
+/* BUTTONS */
+.edit-btn {
+    background:  #7b3fe4;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.delete-btn {
+    background:  #7b3fe4;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background: #7b3fe4;
+}
+
+.delete-btn:hover {
+    background: #7b3fe4;
+}
+
+/* OVERLAY */
+.overlay {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+/* MODAL */
+.modal {
+    background: #111;
+    border-radius: 15px;
+    width: 400px;
+}
+
+/* MODAL CONTENT */
+.modal-content {
+    padding: 35px;
+    position: relative;
+}
+
+/* CLOSE */
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* INPUT */
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #1c1c1c;
+    color: white;
+}
+
+/* SUBMIT */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(to right, #7b3fe4, #9c5af7);
+    color: white;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    opacity: 0.9;
+}
+
+/* SIDEBAR BOTTOM */
+.admin-sidebar-bottom {
     display: flex;
     gap: 10px;
 }
