@@ -7,6 +7,9 @@
     <link rel="shortcut icon" href="./../../assets/icons/logo.svg" type="image/x-icon">
     <link rel="stylesheet" href="./../../global/global.css">
     <link rel="stylesheet" href="./../../styles/client/account.css">
+    <link rel="stylesheet" href="./../../global/toast.css">
+    <script defer src="./../../js/toast.js"></script>
+    <script defer src="./../../js/client/account.js"></script>
 </head>
 <body>
     <div class="account-wapper">
@@ -36,28 +39,29 @@
         </div>
       </div>
       <div class="account-container">
-        <img src="./../../assets/images/account-image.svg" alt="account-image">
-        <form>
+        <img id="profilePreview" src="#" alt="account-image">
+        <form id="accountForm">
             <div class="input-no-icon">
                 <img src="./../../assets/icons/Account Page/key-icon.svg" alt="key icon">
-                <input type="text" placeholder="profile image url">
+                <input type="text" id="imgInput" placeholder="profile image url">
             </div>
             <div class="input-no-icon">
                 <img src="./../../assets/icons/Account Page/key-icon.svg" alt="key icon">
-                <input type="text" placeholder="full name">
+                <input type="text" id="nameInput" placeholder="full name">
             </div>
             <div class="input-disabled">
                 <img src="./../../assets/icons/Account Page/mail-icon.svg" alt="mail icon">
-                <input type="text" disabled value="rahimlisarkhan@gmail.com">
+                <input type="text" id="emailInput" disabled>
             </div>
             <div class="input-with-icon">
                 <img src="./../../assets/icons/Account Page/key-icon.svg" alt="key icon">
-                <input type="password" placeholder="password">
-                <img src="./../../assets/icons/eye.svg" alt="eye icon">
+                <input type="password" placeholder="password" class="pass-input">
+                <img src="./../../assets/icons/eye.svg" alt="eye icon" class="eye-icon">
             </div>
             <button class="account-save-btn">save</button>
         </form>
       </div>
+      <div class="toast-container" id="toastContainer"></div>
     </div>
     
 </body>
