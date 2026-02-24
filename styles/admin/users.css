@@ -165,9 +165,11 @@
 
 /* Table  */
 .table-container {
-    max-width: 500px;
-
-
+   
+display: flex;
+justify-content: center;
+align-items: center;
+max-width: 80%;
     padding: 20px;
     border-radius: 20px;
     margin: 40px 30px;
@@ -209,7 +211,7 @@ tbody tr td:first-child {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    margin-top: 20px;
+   
 }
 
 .page-numbers {

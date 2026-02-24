@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="./../../assets/icons/logo.svg" type="image/x-icon" />
     <link rel="stylesheet" href="./../../global/global.css" />
     <link rel="stylesheet" href="./../../styles/admin/movies.css" />
-      <link rel="stylesheet" href="./../../global/global.css" />
+    <link rel="stylesheet" href="./../../global/global.css" />
 </head>
 
 <body>
@@ -77,71 +77,72 @@
                     <img src="./../../assets/images/Admin Dashboard Img/admin-profile.svg">
                     <h3>Admin</h3>
                 </div>
-           
-</div><div class="main-table">
-  <table class="main-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Cover</th>
-        <th>Title</th>
-        <th>Run time</th>
-        <th>IMDB</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
 
-    <tbody>
-      <!-- Data buraya gələcək -->
-    </tbody>
-  </table>
-</div>
+            </div>
+            <div class="main-table">
+                <table class="main-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cover</th>
+                            <th>Title</th>
+                            <th>Run time</th>
+                            <th>IMDB</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <!-- Data buraya gələcək -->
+                    </tbody>
+                </table>
+            </div>
         </div>
- 
-
-    <!-- MODAL -->
- <!-- MODAL -->
-<div class="modal" id="createModal">
-<div class="modal-content">
-
-<form class="modal-form">
-
-<input type="text" name="title" placeholder="Title">
-
-<input type="text" name="cover_url" placeholder="Cover URL">
-
-<input type="text" name="fragman" placeholder="Youtube embed url">
-
-<input type="text" name="watch_url" placeholder="Watch URL">
-
-<input type="text" name="run_time_min" placeholder="Run time">
-
-<input type="text" name="imdb" placeholder="IMDB">
-
-<select name="category" id="categorySelect">
-  <option value="">Select Category</option>
-</select>
-<select name="actors" id="actorSelect">
-  <option value="">Select Actor</option>
-</select>
 
 
+        <!-- MODAL -->
+        <!-- MODAL -->
+        <div class="modal" id="createModal">
+            <div class="modal-content">
+
+                <form class="modal-form">
+
+                    <input type="text" name="title" placeholder="Title">
+
+                    <input type="text" name="cover_url" placeholder="Cover URL">
+
+                    <input type="text" name="fragman" placeholder="Youtube embed url">
+
+                    <input type="text" name="watch_url" placeholder="Watch URL">
+
+                    <input type="text" name="run_time_min" placeholder="Run time">
+
+                    <input type="text" name="imdb" placeholder="IMDB">
+
+                    <select name="category" id="categorySelect">
+                        <option value="">Select Category</option>
+                    </select>
+                    <select name="actors" id="actorSelect">
+                        <option value="">Select Actor</option>
+                    </select>
 
 
-<textarea name="overview" placeholder="Overview"></textarea>
 
-<label>
-Adult
-<input type="checkbox" name="adult">
-</label>
 
-<button type="submit" class="submit-btn">Submit</button>
+                    <textarea name="overview" placeholder="Overview"></textarea>
 
-</form>
+                    <label>
+                        Adult
+                        <input type="checkbox" name="adult">
+                    </label>
 
-</div>
-</div>
-   </div>
+                    <button type="submit" class="submit-btn">Submit</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
     </div>
 
     <script src="../../js/admin/movies.js"></script>
