@@ -134,10 +134,11 @@
   bottom: 30px !important;
 }
 
-/* Home Action Section Content */
-.home-action-section {
-  padding: 28px 0 60px;
+.movies-container{
+  padding: 28px 0 101px 0;
 }
+
+/* Home Action Section Content */
 .home-section-heading {
   display: flex;
   align-items: center;
@@ -228,7 +229,7 @@
 
 /* Home Comedy Section */
 .home-comedy-section {
-  padding-bottom: 101px;
+  padding-top: 60px;
 }
 
 .home-section-heading h4 {
