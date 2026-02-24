@@ -23,7 +23,7 @@ async function getUsers() {
   });
 
   const result = await res.json();
-  users = result.data;
+  users = result.data || [];
 
   displayUsers();
   createPagination();
@@ -34,10 +34,9 @@ function displayUsers() {
 
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
+  const paginatedUsers = users.slice(start, end);
 
-  const paginated = users.slice(start, end);
-
-  paginated.forEach((user) => {
+  paginatedUsers.forEach((user) => {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
@@ -55,11 +54,12 @@ function createPagination() {
   const pageCount = Math.ceil(users.length / rowsPerPage);
 
   for (let i = 1; i <= pageCount; i++) {
-    const btn = document.createElement("div");
-    btn.classList.add("page-number");
+    const btn = document.createElement("button"); // div yox button
     btn.innerText = i;
 
-    if (i === currentPage) btn.classList.add("active");
+    if (i === currentPage) {
+      btn.classList.add("active");
+    }
 
     btn.addEventListener("click", () => {
       currentPage = i;
@@ -69,6 +69,10 @@ function createPagination() {
 
     pageNumbers.appendChild(btn);
   }
+
+  // Prev / Next disable
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === pageCount;
 }
 
 prevBtn.addEventListener("click", () => {
@@ -81,6 +85,7 @@ prevBtn.addEventListener("click", () => {
 
 nextBtn.addEventListener("click", () => {
   const pageCount = Math.ceil(users.length / rowsPerPage);
+
   if (currentPage < pageCount) {
     currentPage++;
     displayUsers();

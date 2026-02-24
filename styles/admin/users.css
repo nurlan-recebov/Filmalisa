@@ -1,7 +1,9 @@
+body{
+    background-color: #171616;
+}
 .admin-dashboard-wrapper {
     font-family: var(--admin-db-font);
     display: flex;
-  
 }
 
 .admin-dashboard-content {
@@ -9,6 +11,8 @@
     background-color: #171616;
 }
 
+
+/* Header */
 .admin-dashboard-header {
     display: flex;
     padding: 36px 116px 0 24px;
@@ -18,7 +22,6 @@
 .admin-dashboard-header-title h2 {
     font-weight: 500;
     font-size: 13px;
-    line-height: 100%;
     color: #cccccc;
     margin-bottom: 10px;
 }
@@ -26,14 +29,12 @@
 .admin-dashboard-header-title h1 {
     font-weight: 500;
     font-size: 20px;
-    line-height: 100%;
     color: #fff;
 }
 
 .admin-dashboard-header-profile {
     display: flex;
     gap: 20px;
-    justify-content: center;
     align-items: center;
 }
 
@@ -43,13 +44,12 @@
 }
 
 .admin-dashboard-header-profile h3 {
-    margin-top: 12px;
     font-weight: 500;
     font-size: 12px;
-    line-height: 13px;
     color: #fff;
 }
 
+/* Cards */
 .admin-dashboard-card-grid {
     display: flex;
     flex-wrap: wrap;
@@ -61,13 +61,10 @@
 .admin-stat-card {
     width: 233px;
     height: 203px;
-    flex-shrink: 0;
     background-color: var(--admin-db-card-bg);
     border-radius: 30px;
     padding: 24px;
-    transition:
-        background-color 0.4s ease-in-out,
-        box-shadow 0.4s ease;
+    transition: 0.3s;
 }
 
 .admin-stat-card:hover {
@@ -77,25 +74,22 @@
 
 .admin-stat-card-long {
     width: 288px;
-    flex-shrink: 0;
 }
 
 .admin-stat-card-label {
     color: #d7d7d7;
     font-weight: 500;
     font-size: 15px;
-    line-height: 100%;
 }
 
 .admin-stat-card-value {
     color: #fff;
     font-weight: 600;
     font-size: 30px;
-    line-height: 100%;
     margin-top: 8px;
 }
 
-
+/* Button */
 .create-btn {
     background: #7b3fe4;
     color: white;
@@ -103,15 +97,13 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
-
 }
 
-/* Modal background */
+/* Modal */
 .modal {
     display: none;
-    /* default hidden */
     position: fixed;
-    z-index: 1;
+    z-index: 10;
     left: 0;
     top: 0;
     width: 100%;
@@ -121,7 +113,6 @@
     align-items: center;
 }
 
-/* Modal box */
 .modal-content {
     background: #111;
     padding: 40px;
@@ -131,7 +122,6 @@
     position: relative;
 }
 
-/* Close button */
 .close {
     position: absolute;
     right: 15px;
@@ -141,7 +131,6 @@
     cursor: pointer;
 }
 
-/* Input */
 .input-field {
     width: 100%;
     padding: 12px;
@@ -152,7 +141,6 @@
     color: white;
 }
 
-/* Submit button */
 .submit-btn {
     width: 100%;
     padding: 12px;
@@ -163,23 +151,20 @@
     cursor: pointer;
 }
 
-/* Table  */
+/* Table */
 .table-container {
-   
-display: flex;
-justify-content: center;
-align-items: center;
-max-width: 80%;
+    max-width: 1000px;
     padding: 20px;
     border-radius: 20px;
     margin: 40px 30px;
-
+    
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-
+    overflow: hidden;
+    border-radius: 12px;
 }
 
 thead {
@@ -194,8 +179,8 @@ th {
 }
 
 tbody tr {
-    background: #eaeaea;
-    border-radius: 8px;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
 }
 
 td {
@@ -203,15 +188,18 @@ td {
     color: #000;
 }
 
-tbody tr td:first-child {
-    width: 80px;
+tbody tr:hover {
+    background: #f5f5f5;
 }
+
+/* Pagination */
 .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
-   
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .page-numbers {
@@ -219,14 +207,15 @@ tbody tr td:first-child {
     gap: 6px;
 }
 
-.page-number {
+.page-numbers button {
     padding: 6px 12px;
     border: 1px solid #ddd;
     cursor: pointer;
     border-radius: 6px;
+    background: white;
 }
 
-.page-number.active {
+.page-numbers button.active {
     background: #6c5ce7;
     color: white;
     border-color: #6c5ce7;
@@ -236,7 +225,8 @@ tbody tr td:first-child {
 .next-page {
     padding: 6px 12px;
     border: none;
-    background: #eee;
+    background: #6c5ce7;
+    color: white;
     cursor: pointer;
     border-radius: 6px;
 }
