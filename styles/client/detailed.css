@@ -1,6 +1,100 @@
-/* .background-container{
+.favorite-plus-icon,
+.favorite-check-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.overlay-text {
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.overlay-text:hover {
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+    transform: translateY(-6px) scale(1.02);
+}
+
+.movie-card:hover {
+    transform: scale(1.03) translateY(-8px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s cubic-bezier(.4, 2, .6, 1), box-shadow 0.2s;
+    z-index: 2;
+}
+
+.app-container {
     display: flex;
+    min-height: 100vh;
+    background-color: var(--home-page-bg);
+    font-family: var(--home-page-font);
+}
+
+.client-sidebar {
+    /* width: 110px; */
+    background: #1D1D1D80;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* padding: 32px 0 0 0; */
+    /* gap: 32px; */
+    min-height: 100vh;
+    box-shadow: 2px 0 16px 0 rgba(0, 0, 0, 0.08);
+    z-index: 10;
+}
+
+.client-sidebar-logo {
+    /* m
+    argin-bottom: 24px; */
+}
+
+.client-sidebar-logo img {
+    width: 56px;
+    height: 56px;
+}
+
+.client-sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    align-items: center;
+}
+
+.client-sidebar-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* width: 56px; */
+    /* height: 56px; */
+    /* border-radius: 16px; */
+    /* transition: background 0.2s; */
+}
+
+/* .client-sidebar-links a.active,
+.client-sidebar-links a:hover {
+    background: var(--client-nav-active-bg, #232323);
 } */
+
+.client-sidebar-links img {
+    width: 32px;
+    height: 32px;
+    filter: grayscale(100%) brightness(0.7);
+    transition: filter 0.2s;
+}
+
+.client-sidebar-links a:hover img,
+.client-sidebar-links a.active img {
+    filter: none;
+}
+
+.detailed-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.background-container {
+    /* display: flex; */
+}
+
 .background-image {
     width: 100%;
     height: 650px;
@@ -11,64 +105,7 @@
     position: relative;
 }
 
-.sidebar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 80px;
 
-    width: 50px;
-    height: 650px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-.logo {
-    padding-bottom: 64px;
-}
-
-.logo img {
-    width: 56px;
-    height: 56px;
-}
-ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.sidebar img {
-    width: 19.2px;
-    height: 19.2px;
-}
-
-.sidebar li img:hover {
-    cursor: pointer;
-    filter: brightness(0) saturate(100%) invert(70%) sepia(40%) saturate(600%) hue-rotate(165deg);
-}
-
-
-.sidebar button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
-
-.icon {
-    position: relative;
-    bottom: -16px;
-}
-
-.icon-btn {
-    width: 32px;
-    height: 32px;
-    left: 12px;
-    right: 12px;
-}
 
 .overlay-text {
     position: absolute;
@@ -261,6 +298,16 @@ ul {
 .btn-icon {
     padding-left: 132px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #FFAD49;
+    background: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    transition: color 0.2s;
 }
 
 .btn-rating {
@@ -275,6 +322,8 @@ ul {
     font-size: 16px;
     line-height: 24px;
     letter-spacing: 0;
+    filter: none !important;
+    margin-right: 4px;
 }
 
 .details__description {
@@ -634,11 +683,14 @@ ul {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
 }
 
 .video-modal iframe {
     width: 100%;
     height: 500px;
+    z-index: 1;
+    position: relative;
 }
 
 .video-info {
@@ -646,6 +698,10 @@ ul {
     left: 20px;
     bottom: 20px;
     color: white;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .video-info h3 {
@@ -670,4 +726,5 @@ ul {
     font-size: 30px;
     font-weight: bold;
     cursor: pointer;
+    z-index: 3;
 }
