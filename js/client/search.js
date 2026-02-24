@@ -3,7 +3,11 @@ const button = document.getElementById("searchBtn");
 const moviesContainer = document.getElementById("movies");
 
 let allMovies = [];
+const token = localStorage.getItem("userToken");
 
+if (!token) {
+  window.location.href = "login.html";
+}
 button.addEventListener("click", searchMovies);
 
 async function getMovies() {
@@ -11,8 +15,6 @@ async function getMovies() {
     // LOADING
     moviesContainer.innerHTML = "<h1>Loading...</h1>";
 
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInN1YiI6MjYxLCJpYXQiOjE3NzE2NzIwMDYsImV4cCI6MTgwMjc3NjAwNn0.YTduWyNO5MHl0mQJYxs7Nqier0Yas5RfWVtsvd2oUC4";
     const res = await fetch(
       "https://api.sarkhanrahimli.dev/api/filmalisa/movies",
       {

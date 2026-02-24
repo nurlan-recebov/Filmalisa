@@ -1,12 +1,15 @@
 const GET_API = "https://api.sarkhanrahimli.dev/api/filmalisa/movies";
 const ADMIN_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/movie";
 const CATEGORY_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/categories";
+const ACTOR_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/actors";
 
 const tableBody = document.querySelector(".main-table tbody");
 const form = document.querySelector(".modal-form");
 const modal = document.getElementById("createModal");
 const addBtn = document.querySelector(".add-btn");
+
 const categorySelect = document.querySelector("select[name='category']");
+const actorSelect = document.querySelector("select[name='actors']");
 
 let editId = null;
 const token = localStorage.getItem("token");
@@ -23,17 +26,15 @@ modal.onclick = (e) => {
   }
 };
 
+
 // CATEGORIES GET
 async function getCategories() {
   try {
     const res = await fetch(CATEGORY_API, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     });
 
     const data = await res.json();
-
     categorySelect.innerHTML = "";
 
     data.data.forEach(cat => {
@@ -48,13 +49,35 @@ async function getCategories() {
   }
 }
 
+
+// ACTORS GET
+async function getActors() {
+  try {
+    const res = await fetch(ACTOR_API, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+    actorSelect.innerHTML = "";
+
+    data.data.forEach(actor => {
+      const option = document.createElement("option");
+      option.value = actor.id;
+      option.textContent = actor.name + " " + actor.surname;
+      actorSelect.appendChild(option);
+    });
+
+  } catch (error) {
+    console.log("Actor xətası:", error);
+  }
+}
+
+
 // MOVIES GET
 async function getMovies() {
   try {
     const res = await fetch(GET_API, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     });
 
     const data = await res.json();
@@ -83,7 +106,8 @@ async function getMovies() {
   }
 }
 
-// FORM SUBMIT (CREATE + UPDATE)
+
+// FORM SUBMIT
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -96,12 +120,12 @@ form.addEventListener("submit", async (e) => {
     run_time_min: Number(form.run_time_min.value),
     imdb: form.imdb.value,
     category: Number(form.category.value),
+    actors: [Number(form.actors.value)], // actor əlavə olundu
     overview: form.overview.value
   };
 
   try {
     if (editId) {
-      // UPDATE
       await fetch(`${ADMIN_API}/${editId}`, {
         method: "PUT",
         headers: {
@@ -111,7 +135,6 @@ form.addEventListener("submit", async (e) => {
         body: JSON.stringify(movie)
       });
     } else {
-      // CREATE
       await fetch(ADMIN_API, {
         method: "POST",
         headers: {
@@ -132,33 +155,32 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
+
 // DELETE
 async function deleteMovie(id) {
   try {
-     const confirmDelete = confirm("Bu kateqoriyanı silmək istədiyinizə əminsiniz?");
-  if (!confirmDelete) return;
+    const confirmDelete = confirm("Filmi silmək istədiyinizə əminsiniz?");
+    if (!confirmDelete) return;
 
     await fetch(`${ADMIN_API}/${id}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     });
-    alert("Kateqoriya silindi");
 
+    alert("Film silindi");
     getMovies();
+
   } catch (error) {
     console.log("Delete xətası:", error);
   }
 }
 
+
 // EDIT
 async function editMovie(id) {
   try {
     const res = await fetch(`${GET_API}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     });
 
     const data = await res.json();
@@ -174,6 +196,10 @@ async function editMovie(id) {
     form.category.value = movie.category?.id || movie.category;
     form.overview.value = movie.overview;
 
+    if (movie.actors && movie.actors.length > 0) {
+      form.actors.value = movie.actors[0].id;
+    }
+
     editId = id;
     modal.style.display = "flex";
 
@@ -182,6 +208,8 @@ async function editMovie(id) {
   }
 }
 
+
 // PAGE LOAD
 getMovies();
 getCategories();
+getActors();

@@ -154,3 +154,11 @@ a.is-active {
     height: 24px;
   }
 }
+tr button{
+   background: #7b3fe4;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}

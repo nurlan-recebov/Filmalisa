@@ -1,7 +1,7 @@
 .admin-dashboard-wrapper {
     font-family: var(--admin-db-font);
     display: flex;
-    height: 100vh;
+  
 }
 
 .admin-dashboard-content {
@@ -203,4 +203,38 @@ td {
 
 tbody tr td:first-child {
     width: 80px;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 6px;
+}
+
+.page-number {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.page-number.active {
+    background: #6c5ce7;
+    color: white;
+    border-color: #6c5ce7;
+}
+
+.prev-page,
+.next-page {
+    padding: 6px 12px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+    border-radius: 6px;
 }
