@@ -39,10 +39,7 @@ async function loadUserData() {
       nameInput.value = data.full_name ?? "";
       emailInput.value = data.email ?? "";
       imgInput.value = data.img_url ?? "";
-      
-      if (data.img_url) {
-        profilePreview.src = data.img_url;
-      }
+      data.img_url ? profilePreview.src = data.img_url : profilePreview.src="./../../assets/images/account-image.svg"
     }
   } catch (error) {
     console.warn("Məlumatlar gətirilərkən xəta.");
@@ -78,7 +75,10 @@ accountForm.addEventListener("submit", async (e) => {
 
     if (response.ok) {
       showToast('success', 'Məlumatlar uğurla yeniləndi!'); 
-      profilePreview.src = imgInput.value;
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+      // profilePreview.src = imgInput.value;
     } else {
       showToast('error', result.message || 'Xəta baş verdi!'); 
     }
