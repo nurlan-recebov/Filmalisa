@@ -1,5 +1,20 @@
 const API = "https://api.sarkhanrahimli.dev/api/filmalisa";
+const eyeIcon=document.querySelector(".visibility-toggle")
+const passInpEl=document.getElementById("password")
 const form = document.getElementById("loginForm");
+
+
+eyeIcon.addEventListener("click", () => {
+  if (passInpEl.getAttribute("type") == "text") {
+    passInpEl.setAttribute("type", "password");
+    eyeIcon.setAttribute("src", "./../../assets/icons/eye.svg");
+    eyeIcon.setAttribute("alt", "Gizlət");
+  } else {
+    passInpEl.setAttribute("type", "text");
+    eyeIcon.setAttribute("src", "./../../assets/icons/eye-off.svg");
+    eyeIcon.setAttribute("alt", "Göstər");
+  }
+});
 
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
