@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Filmalisa</title>
+    <link rel="stylesheet" href="./global/global.css">
+    <link rel="stylesheet" href="./global/toast.css">
     <link rel="stylesheet" href="styles/client/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Numans&display=swap" rel="stylesheet">
+<link rel="shortcut icon" href="./assets/icons/logo.svg" type="image/x-icon">
 </head>
 <body>
+     <div class="toast-container" id="toastContainer"></div>
 
     <header class="navbar">
         <div class="logo">
         <img src="assets/images/image1.svg" alt="Filmalisa Logo"> 
-        <h1>Filmalisa</h1> 
+        <h1>filmalisa</h1> 
         </div>
 
         <div class="user">
@@ -31,10 +36,10 @@
                 Ready to watch? Enter your email to create or restart your membership.
             </p>
 
-            <div class="email-box">
-                <input type="email" placeholder="Email address">
-                <button>Get Started <img src="/assets/images/Polygon 3.svg" alt=""></button>
-            </div>
+            <form class="email-box">
+                <input type="email" placeholder="Email address" class="email-input">
+                <button type="submit" class="email-send-btn">Get Started <img src="/assets/images/Polygon 3.svg" alt="next icon"></button>
+            </form>
         </div>
     </section>
 <section class="tv-section">
@@ -192,7 +197,7 @@
 </footer>
 
 
-
+<script src="./js/toast.js"></script>
 <script src="js/client/index.js"></script>
 </body>
 </html>

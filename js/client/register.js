@@ -1,6 +1,17 @@
 const registerForm = document.querySelector(".login-form");
 const eyeIcon = document.querySelector(".visibility-toggle");
 const passInpEl = document.getElementById("password");
+const emailInpEl = document.getElementById("email");
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedEmail = localStorage.getItem("userEmail");
+  const fromHero = localStorage.getItem("fromHero");
+
+  if (fromHero === "true" && savedEmail && emailInpEl) {
+    emailInpEl.value = savedEmail;
+    localStorage.removeItem("fromHero"); 
+  }
+});
 
 eyeIcon.addEventListener("click", () => {
   if (passInpEl.getAttribute("type") == "text") {
@@ -40,11 +51,20 @@ registerForm.addEventListener("submit", async (e) => {
 
     if (response.ok) {
       showToast("success", "Qeydiyyat uğurludur!");
+      localStorage.removeItem("userEmail");
       setTimeout(() => {
         window.location.href = "login.html";
       }, 2000);
-    } else {
-      showToast("error", data.message || "Xəta baş verdi");
+    }
+    else {
+      if (data.message && (data.message.includes("exists") || data.message.includes("artıq"))) {
+        showToast("info", "Bu email artıq qeydiyyatdan keçib. Loginə yönləndirilirsiniz...");
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 2500);
+      } else {
+        showToast("error", data.message || "Xəta baş verdi");
+      }
     }
   } catch (error) {
     showToast("error", "Serverlə əlaqə kəsildi");
