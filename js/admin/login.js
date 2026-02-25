@@ -1,15 +1,19 @@
 const API = "https://api.sarkhanrahimli.dev/api/filmalisa";
-
 const form = document.getElementById("loginForm");
 
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!email || !password) {
+    alert("Email və şifrə boş ola bilməz");
+    return;
+  }
 
   try {
-    const res = await fetch(`${API}/auth/login`, {
+    const res = await fetch(`${API}/auth/admin/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -21,20 +25,39 @@ form.addEventListener("submit", async function (e) {
     });
 
     const data = await res.json();
-    console.log(data);
+    console.log("LOGIN RESPONSE:", data);
 
-    if (res.ok) {
-      const token = data.data.tokens.access_token;
-
-      localStorage.setItem("token", token);
-      console.log("TOKEN:", token);
-
-      window.location.href = "../../pages/admin/dashboard.html";
-    } else {
-      alert(data.message || "Login alınmadı");
+    if (!res.ok || !data.result) {
+      alert(data.message || "Login uğursuz oldu");
+      return;
     }
 
+    const token = data.data.tokens.access_token;
+
+    if (!token) {
+      alert("Token tapılmadı");
+      return;
+    }
+
+    // JWT payload oxumaq
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    console.log("JWT PAYLOAD:", payload);
+
+    // Əgər backend role göndərmirsə email yoxlayırıq
+    if (data.data.profile.email !== "admin@admin.com") {
+      alert("Bu hesab admin deyil!");
+      return;
+    }
+
+    // Token saxla
+    localStorage.setItem("adminToken", token);
+    localStorage.setItem("adminProfile", JSON.stringify(data.data.profile));
+
+    // Dashboard-a keç
+    window.location.href = "../../pages/admin/dashboard.html";
+
   } catch (error) {
-    console.error(error);
+    console.error("Login error:", error);
+    alert("Server xətası baş verdi");
   }
 });
