@@ -1,21 +1,17 @@
-// --- detailed.js ---
 
 const API_URL = "https://api.sarkhanrahimli.dev/api/filmalisa/movies";
 const ADMIN_COMMENT_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/comments";
-const TOKEN = localStorage.getItem("userToken"); // frontend user token
+const TOKEN = localStorage.getItem("userToken");
 
 if (!TOKEN) window.location.href = "login.html";
 
-// URL-dən movieId alırıq
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get("id");
 
-// --- COMMENTS LOGIC ---
 const commentsList = document.getElementById("commentsList");
 const commentBtn = document.querySelector(".comment-btn");
 const commentInput = document.querySelector(".comment-input");
 
-// Funksiya: tarixləri qısaltmaq
 function getRelativeDate(date) {
     const today = new Date();
     const yesterday = new Date();
@@ -26,7 +22,6 @@ function getRelativeDate(date) {
     return inputDate.toLocaleDateString();
 }
 
-// Funksiya: commentləri render et
 function renderComments(comments) {
     commentsList.innerHTML = "";
     if (!comments || comments.length === 0) {
@@ -50,13 +45,11 @@ function renderComments(comments) {
     });
 }
 
-// LocalStorage-dan commentləri yükle
 function loadLocalComments() {
     const storedComments = JSON.parse(localStorage.getItem(`comments_${movieId}`)) || [];
     renderComments(storedComments);
 }
 
-// Backend-dən commentləri çək
 async function fetchComments() {
     try {
         const res = await fetch(ADMIN_COMMENT_API, {
@@ -64,10 +57,8 @@ async function fetchComments() {
         });
         const data = await res.json();
 
-        // Movie id ilə filter et
         const movieComments = (data.data || []).filter(c => c.movie?.id == movieId);
 
-        // LocalStorage-a yaz və render et
         localStorage.setItem(`comments_${movieId}`, JSON.stringify(movieComments));
         renderComments(movieComments);
     } catch (err) {
@@ -75,7 +66,6 @@ async function fetchComments() {
     }
 }
 
-// Yeni comment POST et
 async function postComment(text) {
     if (!text) return;
 
@@ -85,15 +75,12 @@ async function postComment(text) {
         created_at: new Date().toISOString(),
     };
 
-    // 1️⃣ LocalStorage-a əlavə et
     let storedComments = JSON.parse(localStorage.getItem(`comments_${movieId}`)) || [];
     storedComments.unshift(newComment);
     localStorage.setItem(`comments_${movieId}`, JSON.stringify(storedComments));
 
-    // 2️⃣ Dərhal render et
     renderComments(storedComments);
 
-    // 3️⃣ Backend-ə POST et
     try {
         await fetch(`${API_URL}/${movieId}/comment`, {
             method: "POST",
@@ -101,14 +88,13 @@ async function postComment(text) {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${TOKEN}`,
             },
-            body: JSON.stringify({ comment: text }), // ← burda dəyişiklik
+            body: JSON.stringify({ comment: text }),
         });
     } catch (err) {
         console.log("Comment post error:", err);
     }
 }
 
-// Event listener: comment göndərmə
 if (commentBtn && commentInput) {
     commentBtn.addEventListener("click", () => {
         const text = commentInput.value.trim();
@@ -121,7 +107,6 @@ if (commentBtn && commentInput) {
     });
 }
 
-// --- MOVIE DETAILS LOGIC (orijinal kod) ---
 async function fetchAndRenderMovie() {
     try {
         const res = await fetch(API_URL, { headers: { Authorization: `Bearer ${TOKEN}` } });
@@ -131,14 +116,12 @@ async function fetchAndRenderMovie() {
         const movie = data.data.find(f => f.id === parseInt(movieId));
         if (!movie) throw new Error("Movie not found");
 
-        // Background
         const bgImg = document.querySelector(".background-image");
         if (bgImg) {
             bgImg.src = movie.background_url || movie.cover_url || '../../assets/images/photo.jpg';
             bgImg.onerror = () => { bgImg.src = '../../assets/images/photo.jpg'; };
         }
 
-        // Overlay text
         const nameEl = document.querySelector(".overlay-text .name");
         const titleEl = document.querySelector(".overlay-text .title");
         const categoryEl = document.querySelector(".overlay-text .category");
@@ -146,69 +129,76 @@ async function fetchAndRenderMovie() {
         if (titleEl) titleEl.textContent = movie.title || '-';
         if (categoryEl) categoryEl.textContent = movie.category?.name || '-';
 
-        // Poster
         const posterImg = document.querySelector("#moviePosterDiv img");
         if (posterImg) {
             posterImg.src = movie.cover_url || '../../assets/images/detaPhoto.svg';
             posterImg.onerror = () => { posterImg.src = '../../assets/images/detaPhoto.svg'; };
         }
 
-        // Description
         const descriptionEl = document.querySelector(".details__description");
         if (descriptionEl) descriptionEl.textContent = movie.overview || '-';
 
-        // Rating
         const ratingBtn = document.querySelector(".btn-rating");
         if (ratingBtn) ratingBtn.innerHTML = `<img src="../../assets/images/ratingBtn.svg" alt="Rating">${movie.imdb || '-'}`;
 
-        // Watch button
         const watchBtn = document.querySelector(".details__actions .btn-primary");
         if (watchBtn) watchBtn.onclick = () => {
             if (movie.watch_url) window.open(movie.watch_url, "_blank");
             else alert("No watch link available.");
         };
 
-        // Favorite (+) button
         const favBtn = document.querySelector(".details__actions .btn-icon");
+
         if (favBtn) {
             const favImg = favBtn.querySelector("img");
-            let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-            let isFavorite = favorites.some(f => f.id === movie.id);
 
-            if (favImg) {
-                if (isFavorite) {
-                    favImg.src = '../../assets/images/Home%20Page/green-check.svg';
-                    favImg.alt = 'Added';
-                } else {
-                    favImg.src = '../../assets/images/detaPlus.svg';
-                    favImg.alt = 'Add';
+            async function checkIfFavorite() {
+                try {
+                    const res = await fetch(
+                        "https://api.sarkhanrahimli.dev/api/filmalisa/movies/favorites",
+                        { headers: { Authorization: `Bearer ${TOKEN}` } }
+                    );
+
+                    const data = await res.json();
+                    const favorites = data.data || [];
+                    const isFavorite = favorites.some(f => f.id == movie.id);
+
+                    if (favImg) {
+                        if (isFavorite) {
+                            favImg.src = '../../assets/images/Home%20Page/green-check.svg';
+                            favImg.alt = 'Added';
+                        } else {
+                            favImg.src = '../../assets/images/detaPlus.svg';
+                            favImg.alt = 'Add';
+                        }
+                    }
+                } catch (err) {
+                    console.log("Favorite check error:", err);
                 }
             }
 
-            favBtn.onclick = () => {
-                let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-                let isFav = favorites.some(f => f.id === movie.id);
+            await checkIfFavorite();
 
-                if (!isFav) {
-                    favorites.push({
-                        id: movie.id,
-                        title: movie.title,
-                        cover_url: movie.cover_url,
-                        imdb: movie.imdb,
-                        category: movie.category?.name || '',
-                        overview: movie.overview || ''
-                    });
-                    localStorage.setItem("favorites", JSON.stringify(favorites));
-                    if (favImg) { favImg.src = '../../assets/images/Home%20Page/green-check.svg'; favImg.alt = 'Added'; }
-                } else {
-                    favorites = favorites.filter(f => f.id !== movie.id);
-                    localStorage.setItem("favorites", JSON.stringify(favorites));
-                    if (favImg) { favImg.src = '../../assets/images/detaPlus.svg'; favImg.alt = 'Add'; }
+            favBtn.onclick = async () => {
+                try {
+                    await fetch(
+                        `https://api.sarkhanrahimli.dev/api/filmalisa/movie/${movie.id}/favorite`,
+                        {
+                            method: "POST",
+                            headers: {
+                                Authorization: `Bearer ${TOKEN}`,
+                            },
+                        }
+                    );
+
+                    await checkIfFavorite();
+
+                } catch (err) {
+                    console.log("Favorite toggle error:", err);
                 }
             };
         }
 
-        // Video modal
         const videoModal = document.getElementById("videoModal");
         const videoFrame = document.getElementById("videoFrame");
         const videoTitle = document.getElementById("videoTitle");
@@ -267,7 +257,6 @@ async function fetchAndRenderMovie() {
         if (infoItems[4]) infoItems[4].parentElement.style.display = 'none';
         if (infoItems[6]) infoItems[6].parentElement.style.display = 'none';
 
-        // Cast
         const castContainer = document.querySelector('.details-actor');
         if (castContainer) castContainer.innerHTML = '<div style="color:#ccc;">No cast information available.</div>';
 
@@ -277,11 +266,10 @@ async function fetchAndRenderMovie() {
     }
 }
 
-// --- PAGE LOAD ---
 if (movieId) {
     fetchAndRenderMovie();
-    loadLocalComments(); // localStorage-dan əvvəlcə yüklə
-    fetchComments();     // backend-dən sync et
+    loadLocalComments();
+    fetchComments();
 } else {
     alert("No movie ID provided in URL.");
 }
