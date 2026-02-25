@@ -11,13 +11,21 @@ const nameInput = document.getElementById("actorName");
 const surnameInput = document.getElementById("actorSurname");
 const imageInput = document.getElementById("actorImage");
 
+const pageNumbers = document.querySelector(".page-numbers");
+const prevBtn = document.querySelector(".prev-page");
+const nextBtn = document.querySelector(".next-page");
+
 const token = localStorage.getItem("token");
 
 let actors = [];
 let editId = null;
 
+let currentPage = 1;
+const rowsPerPage = 5;
 
-// GET ACTORS
+
+
+// ================= GET ACTORS =================
 async function getActors() {
   const res = await fetch(GET_API, {
     headers: {
@@ -28,16 +36,31 @@ async function getActors() {
   const data = await res.json();
   actors = data.data;
 
+  displayActors();
+  setupPagination();
+}
+
+getActors();
+
+
+
+// ================= DISPLAY ACTORS =================
+function displayActors() {
   tableBody.innerHTML = "";
 
-  actors.forEach(actor => {
+  const start = (currentPage - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const paginatedActors = actors.slice(start, end);
+
+  paginatedActors.forEach(actor => {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
       <td>${actor.id}</td>
       <td>
         <div style="display:flex; align-items:center; gap:10px;">
-          <img src="${actor.img_url}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+          <img src="${actor.img_url}" 
+               style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
           ${actor.name} ${actor.surname}
         </div>
       </td>
@@ -54,10 +77,58 @@ async function getActors() {
   });
 }
 
-getActors();
 
 
-// OPEN MODAL
+// ================= PAGINATION =================
+function setupPagination() {
+  pageNumbers.innerHTML = "";
+
+  const pageCount = Math.ceil(actors.length / rowsPerPage);
+
+  for (let i = 1; i <= pageCount; i++) {
+    const btn = document.createElement("button");
+    btn.innerText = i;
+
+    if (i === currentPage) {
+      btn.style.background = "black";
+      btn.style.color = "white";
+    }
+
+    btn.addEventListener("click", () => {
+      currentPage = i;
+      displayActors();
+      setupPagination();
+    });
+
+    pageNumbers.appendChild(btn);
+  }
+
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === pageCount;
+}
+
+
+prevBtn.addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage--;
+    displayActors();
+    setupPagination();
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  const pageCount = Math.ceil(actors.length / rowsPerPage);
+
+  if (currentPage < pageCount) {
+    currentPage++;
+    displayActors();
+    setupPagination();
+  }
+});
+
+
+
+// ================= OPEN MODAL =================
 openBtn.onclick = () => {
   overlay.style.display = "flex";
 
@@ -69,13 +140,15 @@ openBtn.onclick = () => {
 };
 
 
-// CLOSE MODAL
+
+// ================= CLOSE MODAL =================
 closeBtn.onclick = () => {
   overlay.style.display = "none";
 };
 
 
-// SUBMIT
+
+// ================= SUBMIT =================
 submitBtn.onclick = async () => {
   const name = nameInput.value.trim();
   const surname = surnameInput.value.trim();
@@ -93,11 +166,7 @@ submitBtn.onclick = async () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({
-        name,
-        surname,
-        img_url
-      })
+      body: JSON.stringify({ name, surname, img_url })
     });
   } else {
     await fetch(API, {
@@ -106,11 +175,7 @@ submitBtn.onclick = async () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({
-        name,
-        surname,
-        img_url
-      })
+      body: JSON.stringify({ name, surname, img_url })
     });
   }
 
@@ -119,7 +184,8 @@ submitBtn.onclick = async () => {
 };
 
 
-// EDIT
+
+// ================= EDIT =================
 function editActor(id) {
   const actor = actors.find(a => a.id === id);
 
@@ -133,10 +199,10 @@ function editActor(id) {
 }
 
 
-// DELETE
+
+// ================= DELETE =================
 async function deleteActor(id) {
   const confirmDelete = confirm("Actor silinsin?");
-
   if (!confirmDelete) return;
 
   await fetch(`${API}/${id}`, {
