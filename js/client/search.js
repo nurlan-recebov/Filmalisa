@@ -12,7 +12,6 @@ button.addEventListener("click", searchMovies);
 
 async function getMovies() {
   try {
-    // LOADING
     moviesContainer.innerHTML = "<h1>Loading...</h1>";
 
     const res = await fetch(
@@ -48,14 +47,17 @@ function showMovies(movies) {
     div.className = "movie-card";
 
     div.innerHTML = `
-            <img src="${movie.cover_url}" alt="movie" class="movie-poster">
-            <div class="movie-info">
-                <p class="movie-genre">${movie.genre || "Movie"}</p>
-                                            <p class="movie-rating"><img src="./../../assets/icons/Home Page/rating-icon.svg" alt=""></p>
+      <img src="${movie.cover_url}" alt="movie" class="movie-poster">
+      <div class="movie-info">
+          <p class="movie-genre">${movie.genre || "Movie"}</p>
+          <p class="movie-rating"><img src="./../../assets/icons/Home Page/rating-icon.svg" alt=""></p>
+          <h2 class="movie-title">${movie.title}</h2>
+      </div>
+    `;
 
-                <h2 class="movie-title">${movie.title}</h2>
-            </div>
-        `;
+    div.addEventListener("click", () => {
+      window.location.href = `detailed.html?id=${movie.id}`;
+    });
 
     moviesContainer.appendChild(div);
   });
