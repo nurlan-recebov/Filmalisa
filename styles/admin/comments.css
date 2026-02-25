@@ -1,7 +1,7 @@
 .admin-dashboard-wrapper {
     font-family: var(--admin-db-font);
     display: flex;
-    height: 100vh;
+    
 }
 
 .admin-dashboard-content {
