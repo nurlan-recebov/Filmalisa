@@ -35,14 +35,13 @@ async function loadUserData() {
     const userData = await response.json();
     const data = userData?.data;
 
+    const defaultPhoto = "./../../assets/images/user-photo.png";
+
     if (response.ok && data) {
       nameInput.value = data.full_name ?? "";
       emailInput.value = data.email ?? "";
-      imgInput.value = data.img_url ?? "";
-      
-      if (data.img_url) {
-        profilePreview.src = data.img_url;
-      }
+      imgInput.value = data.img_url || "";
+      profilePreview.src = data.img_url || defaultPhoto;
     }
   } catch (error) {
     console.warn("Məlumatlar gətirilərkən xəta.");
@@ -53,23 +52,23 @@ accountForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   if (!passInput.value) {
-    showToast('error', 'Zəhmət olmasa şifrəni daxil edin!'); 
+    showToast("error", "Zəhmət olmasa şifrəni daxil edin!");
     return;
   }
 
   const updatedData = {
     full_name: nameInput.value,
-    email: emailInput.value, 
+    email: emailInput.value,
     img_url: imgInput.value,
-    password: passInput.value 
+    password: passInput.value,
   };
 
   try {
     const response = await fetch(API_URL, {
       method: "PUT",
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(updatedData),
     });
@@ -77,13 +76,16 @@ accountForm.addEventListener("submit", async (e) => {
     const result = await response.json();
 
     if (response.ok) {
-      showToast('success', 'Məlumatlar uğurla yeniləndi!'); 
-      profilePreview.src = imgInput.value;
+      showToast("success", "Məlumatlar uğurla yeniləndi!");
+      profilePreview.src = imgInput.value || "./../../assets/images/user-photo.png";
+      setTimeout(() => {
+        location.reload();
+      }, 4000);
     } else {
-      showToast('error', result.message || 'Xəta baş verdi!'); 
+      showToast("error", result.message || "Xəta baş verdi!");
     }
   } catch (error) {
-    showToast('error', 'Serverlə əlaqə kəsildi!');
+    showToast("error", "Serverlə əlaqə kəsildi!");
   }
 });
 
