@@ -3,7 +3,9 @@
     display: flex;
     
 }
-
+body{
+   background-color: #171616;  
+}
 .admin-dashboard-content {
     flex: 1;
     background-color: #171616;
