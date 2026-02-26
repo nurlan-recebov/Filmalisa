@@ -1,36 +1,40 @@
 const token = localStorage.getItem("userToken");
 
+// Token yoxdursa loginə atır
 if (!token) {
   window.location.href = "login.html";
 }
 
+const API = "https://api.sarkhanrahimli.dev/api/filmalisa/movies";
+
 const getMovies = async () => {
   try {
-    const response = await fetch(
-      "https://api.sarkhanrahimli.dev/api/filmalisa/movies",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await fetch(API, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
+
     const resData = await response.json();
     const movies = resData.data;
 
-    const actionMovies = movies.filter((m) => m.category.name === "Action");
-    const comedyMovies = movies.filter((m) => m.category.name === "Thriller");
-
-    renderActionMovies(actionMovies, ".action-section-content");
-    renderComedyMovies(comedyMovies, ".comedy-section-content");
+    // Slider render
     renderSliderMovies(movies, ".home-swiper-wrapper");
     initSwiper();
+
+    // Category üzrə filmləri göstər
+    renderMoviesByCategory(movies, ".movies-container");
+
   } catch (error) {
     console.error("Xəta:", error);
   }
 };
 
+// ======================
+// SWIPER INIT
+// ======================
 const initSwiper = () => {
-  const swiper = new Swiper(".swiper", {
+  new Swiper(".swiper", {
     loop: true,
     autoplay: { delay: 2000, disableOnInteraction: false },
     pagination: {
@@ -42,71 +46,63 @@ const initSwiper = () => {
   });
 };
 
-const renderComedyMovies = (movies, categoryCards) => {
-  const container = document.querySelector(categoryCards);
-  container.innerHTML = movies.map(movie => `
-    <a href="./detailed.html?id=${movie.id}" class="comedy-card-link">
-      <div class="comedy-card">
-        <img
-          src="${movie.cover_url}"
-          alt="${movie.title}"
-        />
-        <div class="comedy-card-content">
-          <p class="comedy-film-category">${movie.category.name}</p>
-          <img
-            src="./../../assets/icons/Home Page/rating-icon.svg"
-            alt="rating"
-          />
-          <p class="comedy-film-title">${movie.title}</p>
-        </div>
-      </div>
-    </a>
-  `).join("");
-};
+// ======================
+// SLIDER RENDER
+// ======================
+const renderSliderMovies = (movies, selector) => {
+  const container = document.querySelector(selector);
 
-const renderActionMovies = (movies, categoryCards) => {
-  const container = document.querySelector(categoryCards);
-  container.innerHTML = movies.map(movie => `
-    <a href="./detailed.html?id=${movie.id}" class="action-card-link">
-      <div class="action-card">
-        <img
-          src="${movie.cover_url}"
-          alt="${movie.title}"
-        />
-        <div class="action-card-content">
-          <p class="action-film-category">${movie.category.name}</p>
-          <p class="action-film-title">${movie.title}</p>
-        </div>
-      </div>
-    </a>
-  `).join("");
-};
-
-const renderSliderMovies = (movies, categoryCards) => {
-  const container = document.querySelector(categoryCards);
   container.innerHTML = movies.map(movie => `
     <div class="home-swiper-slide swiper-slide">
-      <img
-        src="${movie.cover_url}"
-        alt="${movie.title}"
-      />
+      <img src="${movie.cover_url}" alt="${movie.title}" />
       <div class="slide-info">
         <p class="slider-film-category">${movie.category.name}</p>
-        <img
-          src="./../../assets/icons/Home Page/rating-icon.svg"
-          alt="rating icon"
-        />
         <h2>${movie.title}</h2>
         <p>
-          In a time when monsters walk the Earth, humanity’s fight for
-          its future sets Godzilla and Kong on a collision course that
-          will see the two most powerful forces of nature on the
-          planet collide in a spectacular battle for the ages.
+          ${movie.description || "No description available."}
         </p>
-        <a href="./detailed.html?id=${movie.id}" class="slider-watch-btn">Watch now</a>
+        <a href="./detailed.html?id=${movie.id}" class="slider-watch-btn">
+          Watch now
+        </a>
       </div>
     </div>
   `).join("");
+};
+
+// ======================
+// CATEGORY GROUP RENDER
+// ======================
+const renderMoviesByCategory = (movies, containerSelector) => {
+  const container = document.querySelector(containerSelector);
+
+  // Filmləri category-yə görə qruplaşdırırıq
+  const grouped = movies.reduce((acc, movie) => {
+    const categoryName = movie.category.name;
+
+    if (!acc[categoryName]) {
+      acc[categoryName] = [];
+    }
+
+    acc[categoryName].push(movie);
+    return acc;
+  }, {});
+
+  // HTML qururuq
+  container.innerHTML = Object.keys(grouped)
+    .map(category => `
+      <div class="category-section">
+        <h2 class="category-title">${category}</h2>
+        <div class="category-movies">
+          ${grouped[category].map(movie => `
+            <a href="./detailed.html?id=${movie.id}" class="movie-card">
+              <img src="${movie.cover_url}" alt="${movie.title}" />
+              <p class="movie-title">${movie.title}</p>
+            </a>
+          `).join("")}
+        </div>
+      </div>
+    `)
+    .join("");
 };
 
 getMovies();
