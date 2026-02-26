@@ -5,6 +5,7 @@ const emailInput = document.getElementById("emailInput");
 const passInput = document.querySelector(".pass-input");
 const eyeIcon = document.querySelector(".eye-icon");
 const profilePreview = document.getElementById("profilePreview");
+const loader = document.getElementById("loader");
 
 const API_URL = "https://api.sarkhanrahimli.dev/api/filmalisa/profile";
 
@@ -27,6 +28,7 @@ eyeIcon.addEventListener("click", () => {
 });
 
 async function loadUserData() {
+  loader.classList.remove("loader-hidden");
   try {
     const response = await fetch(API_URL, {
       headers: { Authorization: `Bearer ${token}` },
@@ -46,6 +48,11 @@ async function loadUserData() {
   } catch (error) {
     console.warn("Məlumatlar gətirilərkən xəta.");
   }
+  finally {
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500); 
+    }
 }
 
 accountForm.addEventListener("submit", async (e) => {
