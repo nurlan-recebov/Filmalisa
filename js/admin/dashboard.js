@@ -1,6 +1,8 @@
 const API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/dashboard";
 const token = localStorage.getItem("token");
 
+
+
 const cards = document.querySelectorAll(".admin-stat-card-value");
 
 async function getDashboard() {

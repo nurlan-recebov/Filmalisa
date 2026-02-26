@@ -12,9 +12,8 @@ let contacts = [];
 let currentPage = 1;
 const rowsPerPage = 5; // bir səhifədə neçə contact görünsün
 
-if (!token) {
-  window.location.href = "login.html";
-}
+
+
 
 async function getContacts() {
   const res = await fetch(GET_API, {

@@ -14,6 +14,8 @@ const actorSelect = document.querySelector("select[name='actors']");
 let editId = null;
 const token = localStorage.getItem("token");
 
+
+
 // Modal aç
 addBtn.onclick = () => {
   modal.style.display = "flex";

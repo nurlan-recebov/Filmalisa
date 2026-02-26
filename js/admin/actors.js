@@ -17,6 +17,7 @@ const nextBtn = document.querySelector(".next-page");
 
 const token = localStorage.getItem("token");
 
+
 let actors = [];
 let editId = null;
 

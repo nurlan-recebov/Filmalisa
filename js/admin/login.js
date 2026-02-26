@@ -1,18 +1,19 @@
 const API = "https://api.sarkhanrahimli.dev/api/filmalisa";
-const eyeIcon=document.querySelector(".visibility-toggle")
-const passInpEl=document.getElementById("password")
+
+const eyeIcon = document.querySelector(".visibility-toggle");
+const passInpEl = document.getElementById("password");
 const form = document.getElementById("loginForm");
 
-
+// Password show / hide
 eyeIcon.addEventListener("click", () => {
-  if (passInpEl.getAttribute("type") == "text") {
-    passInpEl.setAttribute("type", "password");
-    eyeIcon.setAttribute("src", "./../../assets/icons/eye.svg");
-    eyeIcon.setAttribute("alt", "Gizlət");
+  if (passInpEl.type === "text") {
+    passInpEl.type = "password";
+    eyeIcon.src = "./../../assets/icons/eye.svg";
+    eyeIcon.alt = "Gizlət";
   } else {
-    passInpEl.setAttribute("type", "text");
-    eyeIcon.setAttribute("src", "./../../assets/icons/eye-off.svg");
-    eyeIcon.setAttribute("alt", "Göstər");
+    passInpEl.type = "text";
+    eyeIcon.src = "./../../assets/icons/eye-off.svg";
+    eyeIcon.alt = "Göstər";
   }
 });
 
@@ -20,7 +21,7 @@ form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+  const password = passInpEl.value.trim();
 
   if (!email || !password) {
     alert("Email və şifrə boş ola bilməz");
@@ -33,10 +34,7 @@ form.addEventListener("submit", async function (e) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        email,
-        password
-      })
+      body: JSON.stringify({ email, password })
     });
 
     const data = await res.json();
@@ -47,29 +45,29 @@ form.addEventListener("submit", async function (e) {
       return;
     }
 
-    const token = data.data.tokens.access_token;
+    const token = data.data?.tokens?.access_token;
 
     if (!token) {
       alert("Token tapılmadı");
       return;
     }
 
-    // JWT payload oxumaq
+    // JWT payload oxu
     const payload = JSON.parse(atob(token.split(".")[1]));
     console.log("JWT PAYLOAD:", payload);
 
-    // Əgər backend role göndərmirsə email yoxlayırıq
+    // Admin yoxlaması (əgər role gəlmirsə email ilə)
     if (data.data.profile.email !== "admin@admin.com") {
       alert("Bu hesab admin deyil!");
       return;
     }
 
-    // Token saxla
-localStorage.setItem("token", token);
+    // Token və profil saxla
+    localStorage.setItem("token", token);
     localStorage.setItem("adminProfile", JSON.stringify(data.data.profile));
 
-    // Dashboard-a keç
-    window.location.href = "../../pages/admin/dashboard.html";
+    // ✅ Dashboard-a yönləndir
+    window.location.replace("../../pages/admin/dashboard.html");
 
   } catch (error) {
     console.error("Login error:", error);

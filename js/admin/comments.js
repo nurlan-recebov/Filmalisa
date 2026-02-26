@@ -3,9 +3,7 @@ const GET_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/comments";
 const tableBody = document.querySelector("tbody");
 const token = localStorage.getItem("token");
 
-if (!token) {
-  window.location.href = "login.html";
-}
+
 
 // ================= GET COMMENTS =================
 async function getComments() {

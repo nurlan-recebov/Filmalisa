@@ -13,6 +13,7 @@ let editId = null;
 const token = localStorage.getItem("token");
 
 
+
 // Modal open
 openBtn.addEventListener("click", () => {
   modal.style.display = "flex";
