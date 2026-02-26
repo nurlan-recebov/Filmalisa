@@ -65,7 +65,7 @@ form.addEventListener("submit", async function (e) {
     }
 
     // Token saxla
-    localStorage.setItem("adminToken", token);
+localStorage.setItem("token", token);
     localStorage.setItem("adminProfile", JSON.stringify(data.data.profile));
 
     // Dashboard-a keç
