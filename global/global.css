@@ -179,7 +179,7 @@ tr button {
     background-color: #1d1d1d;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 999;
   }
 
   .client-sidebar-logo {
@@ -206,8 +206,14 @@ tr button {
 
 
 /* Loading animasiyasi */
+.content-wrapper-relative {
+    position: relative;
+    flex: 1;
+    min-height: 100vh;
+}
+
 .loader-wrapper {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -217,7 +223,7 @@ tr button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 100;
     transition: opacity 0.5s ease;
 }
 
@@ -256,4 +262,14 @@ input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 1000px #0e121d inset !important; 
     -webkit-text-fill-color: white !important;
     transition: background-color 5000s ease-in-out 0s;
+}
+
+@media (max-width: 768px) {
+    .content-wrapper-relative {
+        position: static; 
+    }
+    .loader-wrapper {
+        position: fixed;
+        z-index: 9999;
+    }
 }
