@@ -1,13 +1,16 @@
-
+const loader = document.getElementById("loader");
 const API_FAVORITES =
     "https://api.sarkhanrahimli.dev/api/filmalisa/movies/favorites";
 
 const TOKEN = localStorage.getItem("userToken");
+
 if (!TOKEN) window.location.href = "login.html";
 
 const movieList = document.querySelector(".movie-list");
 
 async function fetchFavorites() {
+  if (loader) loader.classList.remove("loader-hidden");
+
     try {
         const res = await fetch(API_FAVORITES, {
             headers: {
@@ -22,12 +25,19 @@ async function fetchFavorites() {
     } catch (err) {
         console.error("Fetch favorites error:", err);
     }
+    finally {
+if (loader) {
+            setTimeout(() => {
+                loader.classList.add("loader-hidden");
+            }, 500);
+        }
+  }
 }
 
 function renderFavorites(movies) {
     movieList.innerHTML = "";
 
-    if (!movies.length) {
+    if (!movies || movies.length === 0) {
         movieList.innerHTML = `
       <p style="color:#aaa; font-size:18px;">
         No favorite movies yet.
