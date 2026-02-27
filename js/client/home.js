@@ -1,4 +1,6 @@
 const token = localStorage.getItem("userToken");
+const loader = document.getElementById("loader");
+
 
 // Token yoxdursa loginə atır
 if (!token) {
