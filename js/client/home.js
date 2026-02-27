@@ -8,6 +8,7 @@ if (!token) {
 const API = "https://api.sarkhanrahimli.dev/api/filmalisa/movies";
 
 const getMovies = async () => {
+  loader.classList.remove("loader-hidden");
   try {
     const response = await fetch(API, {
       headers: {
@@ -27,6 +28,11 @@ const getMovies = async () => {
 
   } catch (error) {
     console.error("Xəta:", error);
+  }
+  finally {
+    setTimeout(() => {
+      loader.classList.add("loader-hidden");
+    }, 500);
   }
 };
 
