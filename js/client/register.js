@@ -3,7 +3,6 @@ const eyeIcon = document.querySelector(".visibility-toggle");
 const passInpEl = document.getElementById("password");
 const loader = document.getElementById("loader");
 
-
 eyeIcon.addEventListener("click", () => {
   if (passInpEl.getAttribute("type") == "text") {
     passInpEl.setAttribute("type", "password");
@@ -16,9 +15,9 @@ eyeIcon.addEventListener("click", () => {
   }
 });
 
-
 registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+  const submitBtn = e.target.querySelector('button[type="submit"]');
 
   const userData = {
     full_name: document.getElementById("username").value,
@@ -26,6 +25,7 @@ registerForm.addEventListener("submit", async (e) => {
     password: document.getElementById("password").value,
   };
   loader.classList.remove("loader-hidden");
+  submitBtn.disabled = true;
 
   try {
     const response = await fetch(
@@ -51,10 +51,11 @@ registerForm.addEventListener("submit", async (e) => {
     }
   } catch (error) {
     showToast("error", "Serverlə əlaqə kəsildi");
-  }
-    finally {
+    submitBtn.disabled = false;
+  } finally {
     setTimeout(() => {
       loader.classList.add("loader-hidden");
+      if (!submitBtn.disabled) submitBtn.disabled = false;
     }, 500);
   }
 });
