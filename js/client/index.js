@@ -26,9 +26,15 @@ const contactForm = document.querySelector(".contact-form");
 contactForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  const submitBtn = contactForm.querySelector('button[type="submit"]');
   const full_name = contactForm.querySelector('input[type="text"]').value;
   const email = contactForm.querySelector('input[type="email"]').value;
   const reason = contactForm.querySelector('textarea').value;
+
+  const originalText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Sending...";
+  submitBtn.style.opacity = "0.7";
 
   try {
     const response = await fetch("https://api.sarkhanrahimli.dev/api/filmalisa/contact", {
@@ -50,5 +56,10 @@ contactForm.addEventListener("submit", async (e) => {
   } catch (error) {
     console.error(error);
     alert("An error occurred. Try again later.");
+  }
+  finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalText;
+    submitBtn.style.opacity = "1";
   }
 });
