@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-   
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Filmalisa: Admin Movie</title>
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./../../global/global.css" />
     <link rel="stylesheet" href="./../../styles/admin/movies.css" />
     <link rel="stylesheet" href="./../../global/global.css" />
-    
+
 </head>
 
 <body>
@@ -60,7 +60,7 @@
             </div>
 
             <div class="admin-sidebar-bottom">
-                <a  id="logoutBtn" href="login.html">
+                <a id="logoutBtn" href="login.html">
                     <img src="./../../assets/icons/Admin Dashboard/logout-icon.svg">
                     Logout
                 </a>
@@ -124,8 +124,9 @@
                     <select name="category" id="categorySelect">
                         <option value="">Select Category</option>
                     </select>
-                <select name="actors" id="actorSelect" multiple size="5">
-</select>
+                    <select name="actors" id="actorSelect" multiple size="5">
+                    </select>
+                    <input type="text" name="actor_img_url" placeholder="Actor image url" readonly>
 
 
 
@@ -145,9 +146,9 @@
         </div>
     </div>
     </div>
- <script src="../../js/admin/adminGuard.js"></script>
+    <script src="../../js/admin/adminGuard.js"></script>
     <script src="../../js/admin/movies.js"></script>
-    
+
 </body>
 
 </html>

@@ -11,6 +11,9 @@ const addBtn = document.querySelector(".add-btn");
 const categorySelect = document.querySelector("select[name='category']");
 const actorSelect = document.querySelector("select[name='actors']");
 
+const actorImgInput = document.querySelector("input[name='actor_img_url']");
+const actorPreview = document.getElementById("actorPreview");
+
 let editId = null;
 const token = localStorage.getItem("token");
 
@@ -32,10 +35,10 @@ async function getCategories() {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    const data = await res.json();
+    const result = await res.json();
     categorySelect.innerHTML = "";
 
-    data.data.forEach(cat => {
+    result.data.forEach(cat => {
       const option = document.createElement("option");
       option.value = cat.id;
       option.textContent = cat.name;
@@ -56,20 +59,46 @@ async function getActors() {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    const data = await res.json();
+    const result = await res.json();
     actorSelect.innerHTML = "";
 
-    data.data.forEach(actor => {
+    result.data.forEach(actor => {
       const option = document.createElement("option");
       option.value = actor.id;
       option.textContent = actor.name + " " + actor.surname;
+
+      // img_url saxlayırıq
+      option.dataset.img = actor.img_url;
+
       actorSelect.appendChild(option);
     });
+
+    updateActorImage();
 
   } catch (err) {
     console.log("Actor error:", err);
   }
 }
+
+
+// ================= ACTOR IMAGE UPDATE =================
+
+function updateActorImage() {
+  const selectedOption = actorSelect.selectedOptions[0];
+
+  if (!selectedOption) {
+    if (actorImgInput) actorImgInput.value = "";
+    if (actorPreview) actorPreview.src = "";
+    return;
+  }
+
+  const imgUrl = selectedOption.dataset.img;
+
+  if (actorImgInput) actorImgInput.value = imgUrl;
+  if (actorPreview) actorPreview.src = imgUrl;
+}
+
+actorSelect.addEventListener("change", updateActorImage);
 
 
 // ================= MOVIES =================
@@ -80,10 +109,10 @@ async function getMovies() {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    const data = await res.json();
+    const result = await res.json();
     tableBody.innerHTML = "";
 
-    data.data.forEach(movie => {
+    result.data.forEach(movie => {
 
       const tr = document.createElement("tr");
 
@@ -129,8 +158,6 @@ form.addEventListener("submit", async (e) => {
     overview: form.overview.value
   };
 
-  console.log("Göndərilən data:", movie);
-
   const url = editId ? `${ADMIN_API}/${editId}` : ADMIN_API;
   const method = editId ? "PUT" : "POST";
 
@@ -144,9 +171,6 @@ form.addEventListener("submit", async (e) => {
       body: JSON.stringify(movie)
     });
 
-    const data = await res.json();
-    console.log("Server cavabı:", data);
-
     if (!res.ok) {
       console.log("Xəta baş verdi!");
       return;
@@ -155,6 +179,7 @@ form.addEventListener("submit", async (e) => {
     modal.style.display = "none";
     form.reset();
     editId = null;
+    updateActorImage();
     getMovies();
 
   } catch (err) {
@@ -190,8 +215,8 @@ async function editMovie(id) {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    const data = await res.json();
-    const movie = data.data;
+    const result = await res.json();
+    const movie = result.data;
 
     form.title.value = movie.title;
     form.cover_url.value = movie.cover_url;
@@ -204,7 +229,6 @@ async function editMovie(id) {
 
     form.category.value = movie.category?.id || movie.category;
 
-    // Multi actor seçimini doldururuq
     const actorIds = movie.actors
       ? movie.actors.map(a => a.id || a)
       : [];
@@ -212,6 +236,8 @@ async function editMovie(id) {
     Array.from(actorSelect.options).forEach(option => {
       option.selected = actorIds.includes(Number(option.value));
     });
+
+    updateActorImage();
 
     editId = id;
     modal.style.display = "flex";

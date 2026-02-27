@@ -5,7 +5,7 @@
   font-family: var(--admin-db-font);
 }
 body{
-  /* background-color: #171616; */
+  background-color: #171616;
 }
 .admin-dashboard-wrapper {
   font-family: var(--admin-db-font);
@@ -61,7 +61,7 @@ body{
     padding: 10px 25px;
     border: none;
     border-radius: 6px;
-    cursor: pointer;
+    cursor: pointer;/
 }
 
 .admin-dashboard-header-profile img {
@@ -139,8 +139,8 @@ body.modal-open {
 
 
 .modal-content {
-  width: 660px;
-  max-width: 96%;
+ width: 600px;
+  max-height: 90vh; 
   background: #171616;
   border-radius: 18px;
   padding: 24px 22px 70px;
@@ -149,6 +149,8 @@ body.modal-open {
   color: #bfbfbf;
   box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
   position: relative;
+    overflow-y: auto;  
+      padding: 24px 22px 70px;
 }
 
 .modal-left {
@@ -223,12 +225,7 @@ body.modal-open {
 #createModal.open {
   display: flex;
 }
-.modal-content {
-  background: #1a1a1a;
-  padding: 30px;
-  border-radius: 10px;
-  width: 500px;
-}
+
 
 @media (max-width: 720px) {
   .modal-content {
@@ -284,12 +281,7 @@ align-items:center;
 display:flex;
 }
 
-.modal-content{
-background:#1a1a1a;
-padding:30px;
-border-radius:10px;
-width:400px;
-}
+
 
 .modal-form input,
 .modal-form textarea{
