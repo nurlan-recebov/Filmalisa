@@ -441,7 +441,7 @@
     outline: none;
     background-color: #0000001A;
     color: #475069;
-    background-image: url('../../assets/images/profilePhote.svg');
+    background-image: none;
     background-size: 35px 35px;
     background-repeat: no-repeat;
     background-position: 10px center;
