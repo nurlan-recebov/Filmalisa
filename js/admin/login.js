@@ -66,7 +66,7 @@ form.addEventListener("submit", async function (e) {
     localStorage.setItem("token", token);
     localStorage.setItem("adminProfile", JSON.stringify(data.data.profile));
 
-    // ✅ Dashboard-a yönləndir
+    // Dashboard-a yönləndir
     window.location.replace("../../pages/admin/dashboard.html");
 
   } catch (error) {
