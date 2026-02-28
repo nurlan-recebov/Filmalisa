@@ -1,4 +1,3 @@
-
 const API_URL = "https://api.sarkhanrahimli.dev/api/filmalisa/movies";
 const ADMIN_COMMENT_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/comments";
 const TOKEN = localStorage.getItem("userToken");
@@ -24,16 +23,20 @@ function getRelativeDate(date) {
 
 function renderComments(comments) {
     commentsList.innerHTML = "";
+    const defaultPhotoUrl = '../../assets/images/profilePhote.svg';
+    const userPhotoUrl = localStorage.getItem('userPhotoUrl');
     if (!comments || comments.length === 0) {
         commentsList.innerHTML = "<p>No comments yet.</p>";
         return;
     }
     comments.forEach((comment) => {
+        // Əsas profil şəkli: comment.userPhotoUrl varsa onu, yoxdursa userPhotoUrl, o da yoxdursa default
+        const photoSrc = comment.userPhotoUrl || userPhotoUrl || defaultPhotoUrl;
         const div = document.createElement("div");
         div.classList.add("comment-item");
         div.innerHTML = `
             <div class="comment-left">
-                <img src="../../assets/images/profilePhote.svg" alt="Profile">
+                <img src="${photoSrc}" alt="Profile">
                 <div class="user-info">
                     <div class="user-name">${comment.user_name || comment.user?.full_name || "User"}</div>
                     <div class="comment-text">${comment.text || comment.comment}</div>
@@ -109,42 +112,41 @@ if (commentBtn && commentInput) {
 
 async function fetchAndRenderMovie() {
     try {
-        const res = await fetch(API_URL, { headers: { Authorization: `Bearer ${TOKEN}` } });
+        const res = await fetch(`${API_URL}/${movieId}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
         const data = await res.json();
         if (!data.result) throw new Error("API Error");
 
-        const movie = data.data.find(f => f.id === parseInt(movieId));
+        const movie = data.data;
         if (!movie) throw new Error("Movie not found");
 
         const bgImg = document.querySelector(".background-image");
-        if (bgImg) {
-            bgImg.src = movie.background_url || movie.cover_url || '../../assets/images/photo.jpg';
+        if (bgImg && (movie.background_url || movie.cover_url)) {
+            bgImg.src = movie.background_url || movie.cover_url;
             bgImg.onerror = () => { bgImg.src = '../../assets/images/photo.jpg'; };
         }
 
         const nameEl = document.querySelector(".overlay-text .name");
+        if (nameEl && movie.title) nameEl.textContent = movie.title;
         const titleEl = document.querySelector(".overlay-text .title");
+        if (titleEl && movie.title) titleEl.textContent = movie.title;
         const categoryEl = document.querySelector(".overlay-text .category");
-        if (nameEl) nameEl.textContent = movie.title || '-';
-        if (titleEl) titleEl.textContent = movie.title || '-';
-        if (categoryEl) categoryEl.textContent = movie.category?.name || '-';
+        if (categoryEl && movie.category?.name) categoryEl.textContent = movie.category.name;
 
         const posterImg = document.querySelector("#moviePosterDiv img");
-        if (posterImg) {
-            posterImg.src = movie.cover_url || '../../assets/images/detaPhoto.svg';
+        if (posterImg && movie.cover_url) {
+            posterImg.src = movie.cover_url;
             posterImg.onerror = () => { posterImg.src = '../../assets/images/detaPhoto.svg'; };
         }
 
         const descriptionEl = document.querySelector(".details__description");
-        if (descriptionEl) descriptionEl.textContent = movie.overview || '-';
+        if (descriptionEl && movie.overview) descriptionEl.textContent = movie.overview;
 
         const ratingBtn = document.querySelector(".btn-rating");
-        if (ratingBtn) ratingBtn.innerHTML = `<img src="../../assets/images/ratingBtn.svg" alt="Rating">${movie.imdb || '-'}`;
+        if (ratingBtn && movie.imdb) ratingBtn.innerHTML = `<img src="../../assets/images/ratingBtn.svg" alt="Rating">${movie.imdb}`;
 
         const watchBtn = document.querySelector(".details__actions .btn-primary");
-        if (watchBtn) watchBtn.onclick = () => {
-            if (movie.watch_url) window.open(movie.watch_url, "_blank");
-            else alert("No watch link available.");
+        if (watchBtn && movie.watch_url) watchBtn.onclick = () => {
+            window.open(movie.watch_url, "_blank");
         };
 
         const favBtn = document.querySelector(".details__actions .btn-icon");
@@ -249,17 +251,82 @@ async function fetchAndRenderMovie() {
 
         // Info fields
         const infoItems = document.querySelectorAll('.details__info .info-item .info-value');
-        if (infoItems[5]) infoItems[5].textContent = movie.run_time_min ? `${movie.run_time_min} min` : '-';
-        if (infoItems[0]) infoItems[0].parentElement.style.display = 'none';
-        if (infoItems[1]) infoItems[1].parentElement.style.display = 'none';
-        if (infoItems[2]) infoItems[2].parentElement.style.display = 'none';
-        if (infoItems[3]) infoItems[3].parentElement.style.display = 'none';
-        if (infoItems[4]) infoItems[4].parentElement.style.display = 'none';
-        if (infoItems[6]) infoItems[6].parentElement.style.display = 'none';
+        if (infoItems[5] && movie.run_time_min) infoItems[5].textContent = `${movie.run_time_min} min`;
+        // infoItems[0] - Type
+        if (infoItems[0] && movie.type) infoItems[0].textContent = movie.type;
+        // infoItems[1] - Status
+        if (infoItems[1] && movie.status) infoItems[1].textContent = movie.status;
+        // infoItems[2] - No. of episodes
+        if (infoItems[2] && movie.episode_count) infoItems[2].textContent = movie.episode_count;
+        // infoItems[3] - Date added (created_at)
+        if (infoItems[3] && movie.created_at) {
+            const date = new Date(movie.created_at);
+            infoItems[3].textContent = date.toLocaleDateString('az-AZ');
+        }
+        // infoItems[4] - Added time (created_at time)
+        if (infoItems[4] && movie.created_at) {
+            const date = new Date(movie.created_at);
+            infoItems[4].textContent = date.toLocaleTimeString('az-AZ');
+        }
+        // infoItems[6] - Genres
+        if (infoItems[6]) {
+            let genresText = '';
+            if (movie.genres) {
+                genresText = Array.isArray(movie.genres) ? movie.genres.join(', ') : movie.genres;
+            }
+            if (movie.category && movie.category.name) {
+                genresText = genresText ? genresText + ', ' + movie.category.name : movie.category.name;
+            }
+            if (genresText) infoItems[6].textContent = genresText;
+        }
 
         const castContainer = document.querySelector('.details-actor');
-        if (castContainer) castContainer.innerHTML = '<div style="color:#ccc;">No cast information available.</div>';
+        if (castContainer) {
+            if (movie.actors && Array.isArray(movie.actors) && movie.actors.length > 0) {
+                castContainer.innerHTML = movie.actors.map(actor => `
+                        <div class="actor-item">
+                            <img src="${actor.img_url || '../../assets/images/profilePhote.svg'}" alt="${actor.name}" style="width:128px;height:161px;object-fit:cover;">
+                            <div class="actor-name">${actor.name} ${actor.surname ? actor.surname : ''}</div>
+                        </div>
+                    `).join('');
+            }
+        }
 
+        // Similar movies section: set title and render by category
+        if (movie.category && movie.category.id) {
+            try {
+                const simRes = await fetch(`${API_URL}?category=${movie.category.id}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+                const simData = await simRes.json();
+                if (simData.result && Array.isArray(simData.data)) {
+                    const similarMovies = simData.data.filter(m => m.id !== movie.id && m.category && m.category.id === movie.category.id);
+                    const simContainer = document.querySelector('.movie-cards-container');
+                    const simTitle = document.querySelector('.h4-card');
+                    if (simTitle && movie.category.name) {
+                        simTitle.textContent = movie.category.name;
+                    }
+                    if (simContainer) {
+                        simContainer.innerHTML = similarMovies.length > 0 ? similarMovies.map(sim => `
+                            <div class="movie-card" data-id="${sim.id}">
+                                <img src="${sim.cover_url || '../../assets/images/photo.jpg'}" alt="${sim.title}" class="movie-image" />
+                                <div class="movie-overlay">
+                                    <div class="movie-category">${sim.category?.name || ''}</div>
+                                    <div class="movie-rating">★ ${sim.imdb || ''}</div>
+                                    <div class="movie-title">${sim.title}</div>
+                                </div>
+                            </div>
+                        `).join('') : '<div style="color:#fff;padding:16px;">Bu kateqoriyada başqa film yoxdur.</div>';
+                        simContainer.querySelectorAll('.movie-card').forEach(card => {
+                            card.addEventListener('click', function () {
+                                const id = this.getAttribute('data-id');
+                                if (id) window.location.href = `detailed.html?id=${id}`;
+                            });
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error('Similar movies fetch error:', err);
+            }
+        }
     } catch (err) {
         console.error(err);
         alert("Movie data could not be loaded.");
