@@ -179,7 +179,7 @@ tr button {
     background-color: #1d1d1d;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 999;
   }
 
   .client-sidebar-logo {
@@ -202,4 +202,95 @@ tr button {
     width: 24px;
     height: 24px;
   }
+}
+
+
+/* Loading animasiyasi */
+.content-wrapper-relative {
+    position: relative !important;
+    flex: 1;
+    overflow: hidden;
+}
+
+.loader-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0e121d;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: opacity 0.5s ease;
+}
+
+.auth-loader {
+    position: absolute !important; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(29, 29, 29, 0.8) !important; 
+    backdrop-filter: blur(2px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    border-radius: 8px;
+}
+
+.loader-hidden {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(142, 45, 226, 0.1); 
+    border-top: 5px solid #8e2de2;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loader-wrapper p {
+    color: #fff;
+    margin-top: 15px;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loader-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Bütün sayt boyu brauzer autofill rənglərini düzəltmək üçün */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #0e121d inset !important; 
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+@media (max-width: 768px) {
+    .content-wrapper-relative {
+        position: static; 
+    }
+    .loader-wrapper {
+        position: fixed;
+        z-index: 9999;
+    }
 }

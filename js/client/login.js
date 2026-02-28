@@ -1,6 +1,8 @@
 const loginForm = document.querySelector(".login-form");
 const eyeIcon = document.querySelector(".visibility-toggle");
 const passInpEl = document.getElementById("password");
+const loader = document.getElementById("loader");
+
 
 eyeIcon.addEventListener("click", () => {
   if (passInpEl.getAttribute("type") == "text") {
@@ -16,13 +18,17 @@ eyeIcon.addEventListener("click", () => {
 
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+  const submitBtn = e.target.querySelector('button[type="submit"]');
 
   const loginData = {
     email: document.getElementById("email").value,
     password: document.getElementById("password").value,
   };
+  loader.classList.remove("loader-hidden");
+  submitBtn.disabled = true;
 
-  const response = await fetch(
+try {
+    const response = await fetch(
     "https://api.sarkhanrahimli.dev/api/filmalisa/auth/login",
     {
       method: "POST",
@@ -48,4 +54,15 @@ loginForm.addEventListener("submit", async (e) => {
   } else {
     showToast("error", data.message || "Email və ya şifrə səhvdir");
   }
+} catch (error) {
+    showToast("error", "Serverlə əlaqə kəsildi");
+    submitBtn.disabled = false;
+}
+    finally {
+    setTimeout(() => {
+      loader.classList.add("loader-hidden");
+      submitBtn.disabled = false;
+    }, 500);
+  }
+
 });

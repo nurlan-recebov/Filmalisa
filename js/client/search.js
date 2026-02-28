@@ -1,6 +1,8 @@
 const input = document.getElementById("search");
 const button = document.getElementById("searchBtn");
 const moviesContainer = document.getElementById("movies");
+const loader = document.getElementById("loader");
+
 
 let allMovies = [];
 const token = localStorage.getItem("userToken");
@@ -8,11 +10,16 @@ const token = localStorage.getItem("userToken");
 if (!token) {
   window.location.href = "login.html";
 }
+
+input.addEventListener("keyup", (e) => {
+  if (e.key === "Enter") searchMovies();
+});
+
 button.addEventListener("click", searchMovies);
 
 async function getMovies() {
+  loader.classList.remove("loader-hidden");
   try {
-    moviesContainer.innerHTML = "<h1>Loading...</h1>";
 
     const res = await fetch(
       "https://api.sarkhanrahimli.dev/api/filmalisa/movies",
@@ -31,6 +38,11 @@ async function getMovies() {
   } catch (error) {
     moviesContainer.innerHTML = "<h1>Error loading movies</h1>";
     console.log(error);
+  }
+  finally {
+    setTimeout(() => {
+      loader.classList.add("loader-hidden");
+    }, 500);
   }
 }
 

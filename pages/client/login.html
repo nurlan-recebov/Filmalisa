@@ -1,51 +1,78 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="az">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="shortcut icon" href="./../../assets/icons/logo.svg" type="image/x-icon">
-  <title>Filmalisa: Login</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="./../../assets/icons/logo.svg"
+      type="image/x-icon"
+    />
+    <title>Filmalisa: Login</title>
 
-  <!-- Google Font (Raleway) -->
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Google Font (Raleway) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="../../styles/client/login.css" />
-  <link rel="stylesheet" href="./../../global/toast.css">
-  <script defer src="./../../js/toast.js"></script>
-  <script defer src="./../../js/client/login.js"></script>
-</head>
-<body>
+    <link rel="stylesheet" href="../../styles/client/login.css" />
+    <link rel="stylesheet" href="./../../global/toast.css" />
+    <script defer src="./../../js/toast.js"></script>
+    <script defer src="./../../js/client/login.js"></script>
+  </head>
+  <body>
+    <div class="login-container">
+      <!-- Logo -->
+      <div class="logo">
+        <img
+          class="triangle"
+          src="../../assets/icons/image1.svg"
+          alt="Triangle Logo"
+        />
+        <h1>Filmalisa</h1>
+        <h2>login</h2>
+      </div>
 
-  <div class="login-container">
-    
-    <!-- Logo -->
-    <div class="logo">
-      <img class="triangle" src="../../assets/icons/image1.svg" alt="Triangle Logo">
-      <h1>Filmalisa</h1>
-      <h2>login</h2>
+      <!-- Form -->
+      <form class="login-form content-wrapper-relative">
+        <div id="loader" class="loader-wrapper loader-hidden auth-loader">
+          <div class="spinner"></div>
+          <p>Yüklənir...</p>
+        </div>
+        <div class="input-group">
+          <img
+            class="icon"
+            src="../../assets/icons/Left Icon (1).svg"
+            alt="Email Icon"
+          />
+          <input type="email" id="email" placeholder="email" required />
+        </div>
+
+        <div class="input-group">
+          <img
+            class="icon"
+            src="../../assets/icons/Left Icon.svg"
+            alt="Password Icon"
+          />
+          <input
+            type="password"
+            id="password"
+            placeholder="password"
+            required
+          />
+          <img
+            src="../../assets/icons/eye.svg"
+            alt="Visibility Toggle"
+            class="visibility-toggle"
+          />
+        </div>
+
+        <a href="./register.html" class="register">Register here</a>
+
+        <button type="submit">login</button>
+      </form>
+      <div class="toast-container" id="toastContainer"></div>
     </div>
-
-    <!-- Form -->
-    <form class="login-form">
-      
-      <div class="input-group">
-        <img class="icon" src="../../assets/icons/Left Icon (1).svg" alt="Email Icon">
-        <input type="email" id="email" placeholder="email" required>
-      </div>
-
-      <div class="input-group">
-        <img class="icon" src="../../assets/icons/Left Icon.svg" alt="Password Icon">
-        <input type="password" id="password" placeholder="password" required>
-        <img src="../../assets/icons/eye.svg" alt="Visibility Toggle" class="visibility-toggle">
-      </div>
-
-      <a href="./register.html" class="register">Register here</a>
-
-      <button type="submit">login</button>
-
-    </form>
-     <div class="toast-container" id="toastContainer"></div>
-  </div>
-
-</body>
+  </body>
 </html>
