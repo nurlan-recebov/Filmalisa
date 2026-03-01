@@ -14,6 +14,8 @@ const imageInput = document.getElementById("actorImage");
 const pageNumbers = document.querySelector(".page-numbers");
 const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
+const loader = document.getElementById("loader");
+
 
 const token = localStorage.getItem("token");
 
@@ -24,11 +26,23 @@ let editId = null;
 let currentPage = 1;
 const rowsPerPage = 5;
 
-
+// ================= LOADER TOGGLE =================
+const toggleLoader = (show) => {
+  if (!loader) return;
+  if (show) {
+    loader.classList.remove("loader-hidden");
+  } else {
+    setTimeout(() => {
+      loader.classList.add("loader-hidden");
+    }, 500);
+  }
+};
 
 // ================= GET ACTORS =================
 async function getActors() {
-  const res = await fetch(GET_API, {
+  toggleLoader(true);
+  try {
+      const res = await fetch(GET_API, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -39,6 +53,12 @@ async function getActors() {
 
   displayActors();
   setupPagination();
+  }catch (error) {
+    console.error("GET Error:", error);
+  } finally {
+    toggleLoader(false);
+  }
+
 }
 
 getActors();
@@ -105,7 +125,7 @@ function setupPagination() {
   }
 
   prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = currentPage === pageCount;
+  nextBtn.disabled = currentPage === pageCount || pageCount === 0;
 }
 
 
@@ -160,6 +180,9 @@ submitBtn.onclick = async () => {
     return;
   }
 
+  toggleLoader(true);
+
+  try {
   if (editId) {
     await fetch(`${API}/${editId}`, {
       method: "PUT",
@@ -182,6 +205,12 @@ submitBtn.onclick = async () => {
 
   overlay.style.display = "none";
   getActors();
+  } catch (error) {
+    console.error("Submit Error:", error);
+  } finally {
+    toggleLoader(false);
+  }
+
 };
 
 
@@ -206,7 +235,10 @@ async function deleteActor(id) {
   const confirmDelete = confirm("Actor silinsin?");
   if (!confirmDelete) return;
 
-  await fetch(`${API}/${id}`, {
+  toggleLoader(true);
+
+  try {
+      await fetch(`${API}/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`
@@ -214,4 +246,10 @@ async function deleteActor(id) {
   });
 
   getActors();
+  } catch (error) {
+    console.error("Delete Error:", error);
+  } finally {
+    toggleLoader(false);
+  }
+
 }
