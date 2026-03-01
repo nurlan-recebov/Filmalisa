@@ -8,6 +8,13 @@
     <title>Filmalisa: Admin Movie</title>
     <link rel="shortcut icon" href="./../../assets/icons/logo.svg" type="image/x-icon" />
     <link rel="stylesheet" href="./../../global/global.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./../../styles/admin/movies.css" />
     <link rel="stylesheet" href="./../../global/global.css" />
 
@@ -110,42 +117,77 @@
         <!-- MODAL -->
         <div class="modal" id="createModal">
             <div class="modal-content">
+                <div class="modal-left">
+                    <form class="modal-form">
 
-                <form class="modal-form">
+                        <div class="form-group">
+                            <label for="movieTitle">Title</label>
+                            <input type="text" id="movieTitle" name="title" placeholder="Enter movie title">
+                        </div>
 
-                    <input type="text" name="title" placeholder="Title">
+                        <div class="form-group">
+                            <label for="overview">Overview</label>
+                            <textarea id="overview" name="overview" placeholder="Movie description..."></textarea>
+                        </div>
 
-                    <input type="text" name="cover_url" placeholder="Cover URL">
+                        <div class="form-group">
+                            <label for="coverUrl">Cover URL</label>
+                            <input type="text" id="coverUrl" name="cover_url"
+                                placeholder="https://example.com/image.jpg">
+                        </div>
 
-                    <input type="text" name="fragman" placeholder="Youtube embed url">
+                        <div class="form-group">
+                            <label for="fragmanUrl">Trailer URL (Youtube embed)</label>
+                            <input type="text" id="fragmanUrl" name="fragman"
+                                placeholder="https://www.youtube.com/embed/...">
+                        </div>
 
-                    <input type="text" name="watch_url" placeholder="Watch URL">
+                        <div class="form-group">
+                            <label for="watchUrl">Watch URL</label>
+                            <input type="text" id="watchUrl" name="watch_url" placeholder="Movie source link">
+                        </div>
 
-                    <input type="text" name="run_time_min" placeholder="Run time">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="runTime">Run Time (min)</label>
+                                <input type="text" id="runTime" name="run_time_min" placeholder="120">
+                            </div>
+                            <div class="form-group">
+                                <label for="imdbScore">IMDB</label>
+                                <input type="text" id="imdbScore" name="imdb" placeholder="8.5">
+                            </div>
+                        </div>
 
-                    <input type="text" name="imdb" placeholder="IMDB">
+                        <div class="form-group">
+                            <label for="categorySelect">Category</label>
+                            <select name="category" id="categorySelect">
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
 
-                    <select name="category" id="categorySelect">
-                        <option value="">Select Category</option>
-                    </select>
-                    <select name="actors" id="actorSelect">
-                        <option value="">Select Actor</option>
-                    </select>
+                        <div class="form-group">
+                            <label for="actorSelect">Actor</label>
+                            <select name="actors" id="actorSelect">
+                                <option value="">Select Actor</option>
+                            </select>
+                        </div>
 
 
+                        <div class="form-group-button">
+                           <div class="form-group checkbox-group">
+                            <label for="adult">Adult</label>
+                            <input type="checkbox" id="adult" name="adult">
+                        </div>
 
+                        <button type="submit" class="submit-btn">Submit</button> 
+                        </div>
+                        
 
-                    <textarea name="overview" placeholder="Overview"></textarea>
-
-                    <label>
-                        Adult
-                        <input type="checkbox" name="adult">
-                    </label>
-
-                    <button type="submit" class="submit-btn">Submit</button>
-
-                </form>
-
+                    </form>
+                </div>
+                <div class="modal-right">
+                    <img src="./../../assets/images/godzilla poster.jpg" alt="modal poster" class="modal-poster">
+                </div>
             </div>
         </div>
     </div>

@@ -10,6 +10,10 @@ const modal = document.getElementById("createModal");
 const addBtn = document.querySelector(".add-btn");
 const loader = document.getElementById("loader");
 
+const modalPosterImg = document.querySelector(".modal-poster");
+const coverUrlInput = document.getElementById("coverUrl");
+const DEFAULT_POSTER = './../../assets/images/film poster.avif';
+
 const categorySelect = document.querySelector("select[name='category']");
 const actorSelect = document.querySelector("select[name='actors']");
 
@@ -18,7 +22,10 @@ const token = localStorage.getItem("token");
 
 // Modal aç
 addBtn.onclick = () => {
+  editId = null; 
+  form.reset();
   modal.style.display = "flex";
+  modalPosterImg.src=DEFAULT_POSTER
 };
 
 // Modal bağla
@@ -91,8 +98,8 @@ async function getMovies() {
         <td>${movie.run_time_min}</td>
         <td>${movie.imdb}</td>
         <td>
-          <button onclick="editMovie(${movie.id})">Edit</button>
-          <button onclick="deleteMovie(${movie.id})">Delete</button>
+          <button onclick="editMovie(${movie.id})"><i class="fa-solid fa-pencil"></i></button>
+          <button onclick="deleteMovie(${movie.id})"><i class="fa-solid fa-trash"></i></button>
         </td>
       `;
 
@@ -125,7 +132,7 @@ form.addEventListener("submit", async (e) => {
     run_time_min: Number(form.run_time_min.value),
     imdb: form.imdb.value,
     category: Number(form.category.value),
-    actors: [Number(form.actors.value)], // actor əlavə olundu
+    actors: [Number(form.actors.value)], 
     overview: form.overview.value,
   };
 
@@ -198,6 +205,7 @@ async function editMovie(id) {
     form.imdb.value = movie.imdb;
     form.category.value = movie.category?.id || movie.category;
     form.overview.value = movie.overview;
+    modalPosterImg.src = movie.cover_url;
 
     if (movie.actors && movie.actors.length > 0) {
       form.actors.value = movie.actors[0].id;
@@ -212,6 +220,14 @@ async function editMovie(id) {
     if (loader) loader.classList.add("loader-hidden");
   }
 }
+
+coverUrlInput.addEventListener("input", (e) => {
+    const url = e.target.value;
+    modalPosterImg.src = url.trim() !== "" ? url : DEFAULT_POSTER;
+});
+modalPosterImg.onerror = () => {
+    modalPosterImg.src = DEFAULT_POSTER;
+};
 
 // PAGE LOAD
 getMovies();
