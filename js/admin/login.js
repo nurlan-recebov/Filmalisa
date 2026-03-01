@@ -1,5 +1,5 @@
 const API = "https://api.sarkhanrahimli.dev/api/filmalisa";
-
+const loader = document.getElementById("loader");
 const eyeIcon = document.querySelector(".visibility-toggle");
 const passInpEl = document.getElementById("password");
 const form = document.getElementById("loginForm");
@@ -19,6 +19,7 @@ eyeIcon.addEventListener("click", () => {
 
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
+  const submitBtn = e.target.querySelector('button[type="submit"]');
 
   const email = document.getElementById("email").value.trim();
   const password = passInpEl.value.trim();
@@ -28,13 +29,16 @@ form.addEventListener("submit", async function (e) {
     return;
   }
 
+  if (loader) loader.classList.remove("loader-hidden");
+  submitBtn.disabled = true;
+
   try {
     const res = await fetch(`${API}/auth/admin/login`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password }),
     });
 
     const data = await res.json();
@@ -68,9 +72,16 @@ form.addEventListener("submit", async function (e) {
 
     // ✅ Dashboard-a yönləndir
     window.location.replace("../../pages/admin/dashboard.html");
-
+    return;
   } catch (error) {
     console.error("Login error:", error);
     alert("Server xətası baş verdi");
+  } finally {
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add("loader-hidden");
+        submitBtn.disabled = false;
+      }, 500);
+    }
   }
 });

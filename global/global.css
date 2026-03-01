@@ -287,10 +287,9 @@ input:-webkit-autofill:active {
 
 @media (max-width: 768px) {
     .content-wrapper-relative {
-        position: static; 
+        position: relative !important;
     }
     .loader-wrapper {
-        position: fixed;
-        z-index: 9999;
+        position: absolute;
     }
 }
