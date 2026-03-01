@@ -204,92 +204,126 @@ tr button {
   }
 }
 
-
 /* Loading animasiyasi */
 .content-wrapper-relative {
-    position: relative !important;
-    flex: 1;
-    overflow: hidden;
+  position: relative !important;
+  flex: 1;
+  overflow: hidden;
 }
 
 .loader-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0e121d;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    transition: opacity 0.5s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0e121d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  transition: opacity 0.5s ease;
 }
 
 .auth-loader {
-    position: absolute !important; 
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(29, 29, 29, 0.8) !important; 
-    backdrop-filter: blur(2px); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    border-radius: 8px;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 18, 22, 0.8) !important;
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  border-radius: 8px;
 }
 
 .loader-hidden {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
+  display: none !important;
 }
 
 .spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid rgba(142, 45, 226, 0.1); 
-    border-top: 5px solid #8e2de2;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(142, 45, 226, 0.1);
+  border-top: 5px solid #8e2de2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 .loader-wrapper p {
-    color: #fff;
-    margin-top: 15px;
-    font-family: sans-serif;
-    letter-spacing: 1px;
-    font-size: 14px;
+  color: #fff;
+  margin-top: 15px;
+  font-family: sans-serif;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+
+.admin-content-wrapper {
+  margin-left: 250px !important;
+  width: calc(100% - 250px) !important;
+  min-height: 100vh !important;
+  position: relative !important;
+  display: block !important;
+  box-sizing: border-box !important;
+}
+
+.admin-content-wrapper .loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 250px;        /* sidebar genişliyi */
+  width: calc(100% - 250px);
+  height: 100vh;
+  background-color: #171616;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  margin-left: 0 !important;  /* ← bunu əlavə et */
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.loader-hidden {
-    opacity: 0;
-    pointer-events: none;
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Bütün sayt boyu brauzer autofill rənglərini düzəltmək üçün */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px #0e121d inset !important; 
-    -webkit-text-fill-color: white !important;
-    transition: background-color 5000s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0 1000px #0e121d inset !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 @media (max-width: 768px) {
-    .content-wrapper-relative {
-        position: relative !important;
+  .content-wrapper-relative {
+    position: relative !important;
+  }
+  .loader-wrapper {
+    position: absolute;
+  }
+}
+
+@media (max-width: 768px) {
+    .admin-dashboard-wrapper .admin-content-wrapper,
+    .admin-content-wrapper .loader-wrapper {
+        margin-left: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
     }
-    .loader-wrapper {
-        position: absolute;
-    }
+}
+
+/* Gizlətmə Helperi */
+.loader-hidden {
+  display: none !important;
 }

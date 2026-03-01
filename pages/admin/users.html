@@ -1,129 +1,167 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-    
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="./../../assets/icons/logo.svg" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="./../../assets/icons/logo.svg"
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="./../../global/global.css" />
     <link rel="stylesheet" href="./../../styles/admin/users.css" />
-  
     <title>Filmalisa: Users</title>
-</head>
+    <link
+      rel="shortcut icon"
+      href="./../../assets/icons/logo.svg"
+      type="image/x-icon"
+    />
+  </head>
 
-<body>
-
-<div class="admin-dashboard-wrapper">
-
-    <!-- Sidebar -->
-    <div class="admin-sidebar">
+  <body>
+    <div class="admin-dashboard-wrapper">
+      <!-- Sidebar -->
+      <div class="admin-sidebar">
         <div class="admin-sidebar-top">
-            <div class="admin-sidebar-logo">
-                <img src="./../../assets/images/Admin Dashboard Img/sidebar-logo.svg" alt="dashboard logo" />
-            </div>
+          <div class="admin-sidebar-logo">
+            <img
+              src="./../../assets/images/Admin Dashboard Img/sidebar-logo.svg"
+              alt="dashboard logo"
+            />
+          </div>
 
-            <div class="admin-sidebar-links">
-                <a href="./dashboard.html">
-                    <img src="./../../assets/icons/Admin Dashboard/dashboard-icon.svg" alt="">
-                    Dashboard
-                </a>
+          <div class="admin-sidebar-links">
+            <a href="./dashboard.html">
+              <img
+                src="./../../assets/icons/Admin Dashboard/dashboard-icon.svg"
+                alt=""
+              />
+              Dashboard
+            </a>
 
-                <a href="./movies.html">
-                    <img src="./../../assets/icons/Admin Dashboard/movies-icon.svg" alt="">
-                    Movies
-                </a>
+            <a href="./movies.html">
+              <img
+                src="./../../assets/icons/Admin Dashboard/movies-icon.svg"
+                alt=""
+              />
+              Movies
+            </a>
 
-                <a href="./categories.html">
-                    <img src="./../../assets/icons/Admin Dashboard/categories-icon.svg" alt="">
-                    Categories
-                </a>
+            <a href="./categories.html">
+              <img
+                src="./../../assets/icons/Admin Dashboard/categories-icon.svg"
+                alt=""
+              />
+              Categories
+            </a>
 
-                <a class="is-active" href="./users.html">
-                    <img src="./../../assets/icons/Admin Dashboard/users-icon.svg" alt="">
-                    Users
-                </a>
+            <a class="is-active" href="./users.html">
+              <img
+                src="./../../assets/icons/Admin Dashboard/users-icon.svg"
+                alt=""
+              />
+              Users
+            </a>
 
-                <a href="./comments.html">
-                    <img src="./../../assets/icons/Admin Dashboard/comments-icon.svg" alt="">
-                    Comments
-                </a>
+            <a href="./comments.html">
+              <img
+                src="./../../assets/icons/Admin Dashboard/comments-icon.svg"
+                alt=""
+              />
+              Comments
+            </a>
 
-                <a href="./contactus.html">
-                    <img src="./../../assets/icons/Admin Dashboard/contact-us.svg" alt="">
-                    Contact us
-                </a>
+            <a href="./contactus.html">
+              <img
+                src="./../../assets/icons/Admin Dashboard/contact-us.svg"
+                alt=""
+              />
+              Contact us
+            </a>
 
-                <a href="./actors.html">
-                    <img src="./../../assets/icons/Admin Dashboard/actors.svg" alt="">
-                    Actors
-                </a>
-            </div>
+            <a href="./actors.html">
+              <img
+                src="./../../assets/icons/Admin Dashboard/actors.svg"
+                alt=""
+              />
+              Actors
+            </a>
+          </div>
         </div>
 
         <div class="admin-sidebar-bottom">
-            <a  id="logoutBtn" href="login.html">
-                <img src="./../../assets/icons/Admin Dashboard/logout-icon.svg" alt="">
-                Logout
-            </a>
+          <a id="logoutBtn" href="login.html">
+            <img
+              src="./../../assets/icons/Admin Dashboard/logout-icon.svg"
+              alt=""
+            />
+            Logout
+          </a>
         </div>
-    </div>
+      </div>
 
-    <!-- Content -->
-    <div class="admin-dashboard-content">
+      <!-- Content -->
+      <div class="admin-dashboard-content admin-content-wrapper">
+        <div id="loader" class="loader-wrapper">
+          <div class="spinner"></div>
+          <p>Yüklənir...</p>
+        </div>
 
         <!-- Header -->
         <div class="admin-dashboard-header">
-            <div class="admin-dashboard-header-title">
-                <h2>Hi Admin</h2>
-                <h1>Users</h1>
-            </div>
+          <div class="admin-dashboard-header-title">
+            <h2>Hi Admin</h2>
+            <h1>Users</h1>
+          </div>
 
-            <div class="admin-dashboard-header-profile">
-                <img src="./../../assets/images/Admin Dashboard Img/admin-profile.svg" alt="">
-                <h3>Admin</h3>
-            </div>
+          <div class="admin-dashboard-header-profile">
+            <img
+              src="./../../assets/images/Admin Dashboard Img/admin-profile.svg"
+              alt=""
+            />
+            <h3>Admin</h3>
+          </div>
         </div>
 
         <!-- Table -->
         <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- JS burada data əlavə edəcək -->
-                </tbody>
-            </table>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- JS burada data əlavə edəcək -->
+            </tbody>
+          </table>
         </div>
 
         <!-- Pagination -->
         <div class="pagination">
-            <button class="prev-page">Prev</button>
-            <div class="page-numbers"></div>
-            <button class="next-page">Next</button>
+          <button class="prev-page">Prev</button>
+          <div class="page-numbers"></div>
+          <button class="next-page">Next</button>
         </div>
 
         <!-- Modal -->
         <div id="modal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
+          <div class="modal-content">
+            <span class="close">&times;</span>
 
-                <input type="text" placeholder="Category name" class="input-field">
-                <button class="submit-btn">Submit</button>
-            </div>
+            <input
+              type="text"
+              placeholder="Category name"
+              class="input-field"
+            />
+            <button class="submit-btn">Submit</button>
+          </div>
         </div>
-
+      </div>
     </div>
-
-</div>
- <script src="../../js/admin/adminGuard.js"></script>
-<script src="../../js/admin/users.js"></script>
-
-
-</body>
+    <script src="../../js/admin/adminGuard.js"></script>
+    <script src="../../js/admin/users.js"></script>
+  </body>
 </html>

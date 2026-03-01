@@ -68,7 +68,7 @@ async function getCategories() {
     if (loader) {
       setTimeout(() => {
         loader.classList.add("loader-hidden");
-      }, 500);
+      }, 800);
     }
   }
 }

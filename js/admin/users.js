@@ -4,10 +4,9 @@ const tableBody = document.querySelector("tbody");
 const pageNumbers = document.querySelector(".page-numbers");
 const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
+const loader = document.getElementById("loader");
 
 const token = localStorage.getItem("token");
-
-
 
 let users = [];
 let currentPage = 1;
@@ -18,17 +17,29 @@ if (!token) {
 }
 
 async function getUsers() {
-  const res = await fetch(GET_API, {
-    headers: {
-      Authorization: `Bearer ${token}`
+  const loader = document.getElementById("loader");
+  if (loader) loader.classList.remove("loader-hidden");
+  try {
+    const res = await fetch(GET_API, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await res.json();
+    users = result.data || [];
+
+    displayUsers();
+    createPagination();
+  } catch (error) {
+    console.log("Xəta baş verdi:", error);
+  } finally {
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add("loader-hidden");
+      }, 500);
     }
-  });
-
-  const result = await res.json();
-  users = result.data || [];
-
-  displayUsers();
-  createPagination();
+  }
 }
 
 function displayUsers() {
