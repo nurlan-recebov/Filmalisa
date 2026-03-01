@@ -4,6 +4,7 @@ const ADMIN_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/category";
 const tableBody = document.querySelector("tbody");
 const input = document.querySelector(".input-field");
 const submitBtn = document.querySelector(".submit-btn");
+const loader = document.getElementById("loader");
 
 const modal = document.getElementById("modal");
 const openBtn = document.getElementById("openModal");
@@ -34,19 +35,22 @@ window.addEventListener("click", (e) => {
 
 // GET categories
 async function getCategories() {
-  const res = await fetch(GET_API, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  if (loader) loader.classList.remove("loader-hidden");
 
-  const data = await res.json();
-  tableBody.innerHTML = "";
+  try {
+    const res = await fetch(GET_API, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
-  data.data.forEach(category => {
-    const tr = document.createElement("tr");
+    const data = await res.json();
+    tableBody.innerHTML = "";
 
-    tr.innerHTML = `
+    data.data.forEach(category => {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
       <td>${category.id}</td>
       <td>${category.name}</td>
       <td>
@@ -55,8 +59,18 @@ async function getCategories() {
       </td>
     `;
 
-    tableBody.appendChild(tr);
-  });
+      tableBody.appendChild(tr);
+    })
+  } catch (error) {
+    console.log("Get categories error:", error);
+  }
+  finally {
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add("loader-hidden");
+      }, 500);
+    }
+  }
 }
 
 getCategories();
@@ -64,10 +78,15 @@ getCategories();
 
 // CREATE / EDIT
 submitBtn.addEventListener("click", async () => {
+  if (loader && !loader.classList.contains("loader-hidden")) return;
+
   const name = input.value.trim();
   if (!name) return;
 
-  if (editId) {
+  if (loader) loader.classList.remove("loader-hidden");
+
+  try {
+      if (editId) {
     // EDIT
     await fetch(`${ADMIN_API}/${editId}`, {
       method: "PUT",
@@ -94,6 +113,10 @@ submitBtn.addEventListener("click", async () => {
   input.value = "";
   modal.style.display = "none";
   getCategories();
+  } catch (error) {
+    console.log("Submit error:", error);
+    if (loader) loader.classList.add("loader-hidden");
+  }
 });
 
 
@@ -102,7 +125,10 @@ async function deleteCategory(id) {
   const confirmDelete = confirm("Bu kateqoriyanı silmək istədiyinizə əminsiniz?");
   if (!confirmDelete) return;
 
-  await fetch(`${ADMIN_API}/${id}`, {
+  if (loader) loader.classList.remove("loader-hidden");
+
+  try {
+      await fetch(`${ADMIN_API}/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`
@@ -111,8 +137,11 @@ async function deleteCategory(id) {
 
   alert("Kateqoriya silindi");
   getCategories();
+  } catch (error) {
+    console.log("Delete error:", error);
+    if (loader) loader.classList.add("loader-hidden");
+  }
 }
-
 
 // EDIT
 function editCategory(id, name) {
@@ -120,3 +149,6 @@ function editCategory(id, name) {
   input.value = name;
   modal.style.display = "flex";
 }
+
+window.editCategory = editCategory;
+window.deleteCategory = deleteCategory;
