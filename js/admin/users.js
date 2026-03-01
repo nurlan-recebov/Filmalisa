@@ -33,6 +33,7 @@ async function getUsers() {
     createPagination();
   } catch (error) {
     console.log("Xəta baş verdi:", error);
+    showToast('error', error.message || 'Serverlə əlaqə kəsildi');
   } finally {
     if (loader) {
       setTimeout(() => {
@@ -65,9 +66,17 @@ function displayUsers() {
 function createPagination() {
   pageNumbers.innerHTML = "";
   const pageCount = Math.ceil(users.length / rowsPerPage);
+  
+  const maxVisibleButtons = 4; 
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+  let endPage = Math.min(pageCount, startPage + maxVisibleButtons - 1);
 
-  for (let i = 1; i <= pageCount; i++) {
-    const btn = document.createElement("button"); // div yox button
+  if (endPage - startPage + 1 < maxVisibleButtons) {
+    startPage = Math.max(1, endPage - maxVisibleButtons + 1);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    const btn = document.createElement("button");
     btn.innerText = i;
 
     if (i === currentPage) {
@@ -83,24 +92,23 @@ function createPagination() {
     pageNumbers.appendChild(btn);
   }
 
-  // Prev / Next disable
   prevBtn.disabled = currentPage === 1;
   nextBtn.disabled = currentPage === pageCount;
 }
-
-prevBtn.addEventListener("click", () => {
-  if (currentPage > 1) {
-    currentPage--;
-    displayUsers();
-    createPagination();
-  }
-});
 
 nextBtn.addEventListener("click", () => {
   const pageCount = Math.ceil(users.length / rowsPerPage);
 
   if (currentPage < pageCount) {
     currentPage++;
+    displayUsers();
+    createPagination();
+  }
+});
+
+prevBtn.addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage--;
     displayUsers();
     createPagination();
   }

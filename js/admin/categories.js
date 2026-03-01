@@ -49,13 +49,12 @@ async function getCategories() {
 
     data.data.forEach(category => {
       const tr = document.createElement("tr");
-
       tr.innerHTML = `
       <td>${category.id}</td>
       <td>${category.name}</td>
       <td>
-        <button onclick="editCategory(${category.id}, '${category.name}')">Edit</button>
-        <button onclick="deleteCategory(${category.id})">Delete</button>
+        <button onclick="editCategory(${category.id}, '${category.name}')"><i class="fa-solid fa-pencil"></i></button>
+        <button onclick="deleteCategory(${category.id})"><i class="fa-solid fa-trash"></i></button>
       </td>
     `;
 
