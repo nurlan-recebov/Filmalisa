@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-    
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Filmalisa: Admin Dashboard</title>
     <link rel="shortcut icon" href="./../../assets/icons/logo.svg" type="image/x-icon" />
     <link rel="stylesheet" href="./../../global/global.css" />
     <link rel="stylesheet" href="./../../styles/admin/contactus.css" />
-    
+
 </head>
 
 <body>
@@ -41,11 +41,15 @@
                 </div>
             </div>
             <div class="admin-sidebar-bottom">
-                <a  id="logoutBtn" href="login.html"> <img src="./../../assets/icons/Admin Dashboard/logout-icon.svg"
+                <a id="logoutBtn" href="login.html"> <img src="./../../assets/icons/Admin Dashboard/logout-icon.svg"
                         alt="log out icon">Logout</a>
             </div>
         </div>
-        <div class="admin-dashboard-content">
+        <div class="admin-dashboard-content admin-content-wrapper">
+            <div id="loader" class="loader-wrapper">
+                <div class="spinner"></div>
+                <p>Yüklənir...</p>
+            </div>
             <div class="admin-dashboard-header">
                 <div class="admin-dashboard-header-title">
                     <h2>Hi Admin</h2>
@@ -71,13 +75,13 @@
 
                     </tbody>
                 </table>
-                  <div class="pagination">
-                <button class="prev-page">Prev</button>
-                <div class="page-numbers"></div>
-                <button class="next-page">Next</button>
+                <div class="pagination">
+                    <button class="prev-page">Prev</button>
+                    <div class="page-numbers"></div>
+                    <button class="next-page">Next</button>
+                </div>
             </div>
-            </div>
-          
+
 
             <div class="overlay">
 
@@ -91,9 +95,9 @@
                 </div>
             </div>
         </div>
-      <script src="../../js/admin/adminGuard.js"></script>
+        <script src="../../js/admin/adminGuard.js"></script>
         <script src="../../js/admin/contactus.js"></script>
-      
+
 </body>
 
 </html>

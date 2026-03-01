@@ -7,16 +7,29 @@ const tableBody = document.querySelector("tbody");
 const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
 const pageNumbers = document.querySelector(".page-numbers");
+const loader = document.getElementById("loader");
+
 
 let contacts = [];
 let currentPage = 1;
 const rowsPerPage = 5; // bir səhifədə neçə contact görünsün
 
 
-
+const toggleLoader = (show) => {
+  if (!loader) return;
+  if (show) {
+    loader.classList.remove("loader-hidden");
+  } else {
+    setTimeout(() => {
+      loader.classList.add("loader-hidden");
+    }, 500);
+  }
+};
 
 async function getContacts() {
-  const res = await fetch(GET_API, {
+  toggleLoader(true);
+  try {
+      const res = await fetch(GET_API, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -27,6 +40,12 @@ async function getContacts() {
 
   displayContacts();
   renderPagination();
+  } catch (error) {
+    console.error("GET Error:", error);
+  } finally {
+    toggleLoader(false);
+  }
+
 }
 
 function displayContacts() {
@@ -96,7 +115,10 @@ async function deleteContact(id) {
   const confirmDelete = confirm("Bu contacti silmək istədiyinizə əminsiniz?");
   if (!confirmDelete) return;
 
-  await fetch(`${ADMIN_API}/${id}`, {
+  toggleLoader(true);
+
+  try {
+      await fetch(`${ADMIN_API}/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`
@@ -105,6 +127,13 @@ async function deleteContact(id) {
 
   alert("Contact silindi");
   getContacts();
+  } catch (error) {
+    console.error("DELETE Error:", error);
+  } finally {
+    toggleLoader(false);
+  }
+
+
 }
 
 getContacts();
