@@ -1,20 +1,20 @@
 const GET_API = "https://api.sarkhanrahimli.dev/api/filmalisa/movies";
 const ADMIN_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/movie";
-const CATEGORY_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/categories";
+const CATEGORY_API =
+  "https://api.sarkhanrahimli.dev/api/filmalisa/admin/categories";
 const ACTOR_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/actors";
 
 const tableBody = document.querySelector(".main-table tbody");
 const form = document.querySelector(".modal-form");
 const modal = document.getElementById("createModal");
 const addBtn = document.querySelector(".add-btn");
+const loader = document.getElementById("loader");
 
 const categorySelect = document.querySelector("select[name='category']");
 const actorSelect = document.querySelector("select[name='actors']");
 
 let editId = null;
 const token = localStorage.getItem("token");
-
-
 
 // Modal aç
 addBtn.onclick = () => {
@@ -28,64 +28,60 @@ modal.onclick = (e) => {
   }
 };
 
-
 // CATEGORIES GET
 async function getCategories() {
   try {
     const res = await fetch(CATEGORY_API, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await res.json();
     categorySelect.innerHTML = "";
 
-    data.data.forEach(cat => {
+    data.data.forEach((cat) => {
       const option = document.createElement("option");
       option.value = cat.id;
       option.textContent = cat.name;
       categorySelect.appendChild(option);
     });
-
   } catch (error) {
     console.log("Category xətası:", error);
   }
 }
 
-
 // ACTORS GET
 async function getActors() {
   try {
     const res = await fetch(ACTOR_API, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await res.json();
     actorSelect.innerHTML = "";
 
-    data.data.forEach(actor => {
+    data.data.forEach((actor) => {
       const option = document.createElement("option");
       option.value = actor.id;
       option.textContent = actor.name + " " + actor.surname;
       actorSelect.appendChild(option);
     });
-
   } catch (error) {
     console.log("Actor xətası:", error);
   }
 }
 
-
 // MOVIES GET
 async function getMovies() {
+  loader?.classList.remove("loader-hidden");
   try {
     const res = await fetch(GET_API, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await res.json();
     tableBody.innerHTML = "";
 
-    data.data.forEach(movie => {
+    data.data.forEach((movie) => {
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
@@ -102,16 +98,23 @@ async function getMovies() {
 
       tableBody.appendChild(tr);
     });
-
   } catch (error) {
     console.log("Movies xətası:", error);
+  } finally {
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add("loader-hidden");
+      }, 500);
+    }
   }
 }
 
-
 // FORM SUBMIT
 form.addEventListener("submit", async (e) => {
+  if (loader && !loader.classList.contains("loader-hidden")) return;
   e.preventDefault();
+
+  if (loader) loader.classList.remove("loader-hidden");
 
   const movie = {
     title: form.title.value,
@@ -123,7 +126,7 @@ form.addEventListener("submit", async (e) => {
     imdb: form.imdb.value,
     category: Number(form.category.value),
     actors: [Number(form.actors.value)], // actor əlavə olundu
-    overview: form.overview.value
+    overview: form.overview.value,
   };
 
   try {
@@ -132,18 +135,18 @@ form.addEventListener("submit", async (e) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(movie)
+        body: JSON.stringify(movie),
       });
     } else {
       await fetch(ADMIN_API, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(movie)
+        body: JSON.stringify(movie),
       });
     }
 
@@ -151,38 +154,36 @@ form.addEventListener("submit", async (e) => {
     form.reset();
     editId = null;
     getMovies();
-
   } catch (error) {
     console.log("Submit xətası:", error);
   }
 });
 
-
 // DELETE
 async function deleteMovie(id) {
-  try {
-    const confirmDelete = confirm("Filmi silmək istədiyinizə əminsiniz?");
-    if (!confirmDelete) return;
+  const confirmDelete = confirm("Filmi silmək istədiyinizə əminsiniz?");
+  if (!confirmDelete) return;
 
+  loader?.classList.remove("loader-hidden")
+  try {
     await fetch(`${ADMIN_API}/${id}`, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     alert("Film silindi");
     getMovies();
-
   } catch (error) {
     console.log("Delete xətası:", error);
   }
 }
 
-
 // EDIT
 async function editMovie(id) {
+  if (loader) loader.classList.remove("loader-hidden");
   try {
     const res = await fetch(`${GET_API}/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await res.json();
@@ -204,12 +205,13 @@ async function editMovie(id) {
 
     editId = id;
     modal.style.display = "flex";
-
   } catch (error) {
     console.log("Edit xətası:", error);
   }
+  finally {
+    if (loader) loader.classList.add("loader-hidden");
+  }
 }
-
 
 // PAGE LOAD
 getMovies();

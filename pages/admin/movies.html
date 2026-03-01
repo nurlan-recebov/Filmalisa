@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-   
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Filmalisa: Admin Movie</title>
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./../../global/global.css" />
     <link rel="stylesheet" href="./../../styles/admin/movies.css" />
     <link rel="stylesheet" href="./../../global/global.css" />
-    
+
 </head>
 
 <body>
@@ -60,14 +60,18 @@
             </div>
 
             <div class="admin-sidebar-bottom">
-                <a  id="logoutBtn" href="login.html">
+                <a id="logoutBtn" href="login.html">
                     <img src="./../../assets/icons/Admin Dashboard/logout-icon.svg">
                     Logout
                 </a>
             </div>
         </div>
 
-        <div class="admin-dashboard-content">
+        <div class="admin-dashboard-content content-wrapper-relative">
+            <div id="loader" class="loader-wrapper">
+                <div class="spinner"></div>
+                <p>Yüklənir...</p>
+            </div>
             <div class="admin-dashboard-header">
                 <div class="admin-dashboard-header-title">
                     <h2>Hi Admin</h2>
@@ -146,9 +150,9 @@
         </div>
     </div>
     </div>
- <script src="../../js/admin/adminGuard.js"></script>
+    <script src="../../js/admin/adminGuard.js"></script>
     <script src="../../js/admin/movies.js"></script>
-    
+
 </body>
 
 </html>
