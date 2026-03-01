@@ -61,7 +61,7 @@ async function getCategories() {
       tableBody.appendChild(tr);
     })
   } catch (error) {
-    console.log("Get categories error:", error);
+    showToast('error', 'Kateqoriyaları yükləmək mümkün olmadı');
   }
   finally {
     if (loader) {
@@ -80,40 +80,47 @@ submitBtn.addEventListener("click", async () => {
   if (loader && !loader.classList.contains("loader-hidden")) return;
 
   const name = input.value.trim();
-  if (!name) return;
+  if (!name) {
+    showToast('error', 'Ad boş ola bilməz');
+    return;
+  }
 
   if (loader) loader.classList.remove("loader-hidden");
 
   try {
-      if (editId) {
-    // EDIT
-    await fetch(`${ADMIN_API}/${editId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ name })
-    });
+    let res; // Cavabı yadda saxlamaq üçün dəyişən
+    if (editId) {
+      res = await fetch(`${ADMIN_API}/${editId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ name })
+      });
+    } else {
+      res = await fetch(ADMIN_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ name })
+      });
+    }
 
-    editId = null;
-  } else {
-    // CREATE
-    await fetch(ADMIN_API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ name })
-    });
-  }
-
-  input.value = "";
-  modal.style.display = "none";
-  getCategories();
+    if (res.ok) {
+      showToast('success', editId ? 'Kateqoriya yeniləndi' : 'Kateqoriya yaradıldı');
+      input.value = "";
+      modal.style.display = "none";
+      editId = null;
+      getCategories();
+    } else {
+      throw new Error("Server xətası baş verdi");
+    }
   } catch (error) {
-    console.log("Submit error:", error);
+    showToast('error', error.message);
+  } finally {
     if (loader) loader.classList.add("loader-hidden");
   }
 });
@@ -127,17 +134,25 @@ async function deleteCategory(id) {
   if (loader) loader.classList.remove("loader-hidden");
 
   try {
-      await fetch(`${ADMIN_API}/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+    // BURADA 'const res' MÜTLƏQDİR!
+    const res = await fetch(`${ADMIN_API}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
-  alert("Kateqoriya silindi");
-  getCategories();
+    if (res.ok) {
+      showToast('success', 'Kateqoriya silindi');
+      getCategories();
+    } else {
+      // Əgər server 200 OK qaytarmasa, xəta atırıq
+      throw new Error("Silmək mümkün olmadı");
+    }
   } catch (error) {
     console.log("Delete error:", error);
+    showToast('error', error.message || "Xəta baş verdi");
+  } finally {
     if (loader) loader.classList.add("loader-hidden");
   }
 }
@@ -148,6 +163,12 @@ function editCategory(id, name) {
   input.value = name;
   modal.style.display = "flex";
 }
+
+input.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    submitBtn.click();
+  }
+});
 
 window.editCategory = editCategory;
 window.deleteCategory = deleteCategory;
