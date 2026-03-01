@@ -12,7 +12,7 @@ const loader = document.getElementById("loader");
 
 const modalPosterImg = document.querySelector(".modal-poster");
 const coverUrlInput = document.getElementById("coverUrl");
-const DEFAULT_POSTER = './../../assets/images/film poster.avif';
+const DEFAULT_POSTER = "./../../assets/images/film poster.avif";
 
 const categorySelect = document.querySelector("select[name='category']");
 const actorSelect = document.querySelector("select[name='actors']");
@@ -22,10 +22,10 @@ const token = localStorage.getItem("token");
 
 // Modal aç
 addBtn.onclick = () => {
-  editId = null; 
+  editId = null;
   form.reset();
   modal.style.display = "flex";
-  modalPosterImg.src=DEFAULT_POSTER
+  modalPosterImg.src = DEFAULT_POSTER;
 };
 
 // Modal bağla
@@ -52,7 +52,7 @@ async function getCategories() {
       categorySelect.appendChild(option);
     });
   } catch (error) {
-    console.log("Category xətası:", error);
+    showToast("error", "Kateqoriyalar yüklənmədi");
   }
 }
 
@@ -73,7 +73,7 @@ async function getActors() {
       actorSelect.appendChild(option);
     });
   } catch (error) {
-    console.log("Actor xətası:", error);
+    showToast("error", "Aktyorlar yüklənmədi");
   }
 }
 
@@ -106,7 +106,7 @@ async function getMovies() {
       tableBody.appendChild(tr);
     });
   } catch (error) {
-    console.log("Movies xətası:", error);
+    showToast("error", "Filmlər yüklənərkən xəta oldu");
   } finally {
     if (loader) {
       setTimeout(() => {
@@ -132,13 +132,14 @@ form.addEventListener("submit", async (e) => {
     run_time_min: Number(form.run_time_min.value),
     imdb: form.imdb.value,
     category: Number(form.category.value),
-    actors: [Number(form.actors.value)], 
+    actors: [Number(form.actors.value)],
     overview: form.overview.value,
   };
 
   try {
+    let res;
     if (editId) {
-      await fetch(`${ADMIN_API}/${editId}`, {
+      res = await fetch(`${ADMIN_API}/${editId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -147,7 +148,7 @@ form.addEventListener("submit", async (e) => {
         body: JSON.stringify(movie),
       });
     } else {
-      await fetch(ADMIN_API, {
+      res = await fetch(ADMIN_API, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -156,13 +157,19 @@ form.addEventListener("submit", async (e) => {
         body: JSON.stringify(movie),
       });
     }
-
-    modal.style.display = "none";
-    form.reset();
-    editId = null;
-    getMovies();
+    if (res.ok) {
+      showToast("success", editId ? "Film yeniləndi" : "Film əlavə edildi");
+      modal.style.display = "none";
+      form.reset();
+      editId = null;
+      getMovies();
+    } else {
+      throw new Error("Əməliyyat alınmadı");
+    }
   } catch (error) {
-    console.log("Submit xətası:", error);
+    showToast("error", error.message);
+  } finally {
+    if (loader) loader.classList.add("loader-hidden");
   }
 });
 
@@ -171,17 +178,22 @@ async function deleteMovie(id) {
   const confirmDelete = confirm("Filmi silmək istədiyinizə əminsiniz?");
   if (!confirmDelete) return;
 
-  loader?.classList.remove("loader-hidden")
+  loader?.classList.remove("loader-hidden");
   try {
-    await fetch(`${ADMIN_API}/${id}`, {
+    const res = await fetch(`${ADMIN_API}/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
-
-    alert("Film silindi");
-    getMovies();
+    if (res.ok) {
+      showToast("success", "Film silindi");
+      getMovies();
+    } else {
+      throw new Error("Silmək mümkün olmadı");
+    }
   } catch (error) {
-    console.log("Delete xətası:", error);
+    showToast("error", error.message);
+  } finally {
+    if (loader) loader.classList.add("loader-hidden");
   }
 }
 
@@ -214,20 +226,22 @@ async function editMovie(id) {
     editId = id;
     modal.style.display = "flex";
   } catch (error) {
-    console.log("Edit xətası:", error);
-  }
-  finally {
+    showToast("error", "Məlumatları gətirərkən xəta oldu");
+  } finally {
     if (loader) loader.classList.add("loader-hidden");
   }
 }
 
 coverUrlInput.addEventListener("input", (e) => {
-    const url = e.target.value;
-    modalPosterImg.src = url.trim() !== "" ? url : DEFAULT_POSTER;
+  const url = e.target.value;
+  modalPosterImg.src = url.trim() !== "" ? url : DEFAULT_POSTER;
 });
 modalPosterImg.onerror = () => {
-    modalPosterImg.src = DEFAULT_POSTER;
+  modalPosterImg.src = DEFAULT_POSTER;
 };
+
+window.editMovie = editMovie;
+window.deleteMovie = deleteMovie;
 
 // PAGE LOAD
 getMovies();

@@ -42,7 +42,6 @@
   position: relative;
   min-height: 100vh;
   background-color: #171616;
-  padding-bottom: 80px; 
 }
 .admin-dashboard-content > .table-container {
   width: auto;
@@ -127,7 +126,7 @@
 .table-container {
   flex: 1 0 auto;
   max-width: 1000px;
-  padding: 20px;
+  padding: 56px 0 0 24px;
   border-radius: 20px;
   flex-grow: 1;
 }
@@ -187,7 +186,6 @@ tbody tr {
   justify-content: center;
   align-items: center;
   z-index: 100;
-  border-top: 1px solid #333;
   gap: 8px;
 }
 
