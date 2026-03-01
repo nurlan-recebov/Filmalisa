@@ -1,17 +1,28 @@
 const GET_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/comments";
-
 const tableBody = document.querySelector("tbody");
 const token = localStorage.getItem("token");
+const loader = document.getElementById("loader");
 
-
+const toggleLoader = (show) => {
+  if (!loader) return;
+  if (show) {
+    loader.classList.remove("loader-hidden");
+  } else {
+    setTimeout(() => {
+      loader.classList.add("loader-hidden");
+    }, 500);
+  }
+};
 
 // ================= GET COMMENTS =================
 async function getComments() {
+  toggleLoader(true);
+
   try {
     const res = await fetch(GET_API, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!res.ok) throw new Error("Fetch failed");
@@ -20,7 +31,7 @@ async function getComments() {
 
     tableBody.innerHTML = "";
 
-    data.forEach(comment => {
+    data.forEach((comment) => {
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
@@ -41,33 +52,32 @@ async function getComments() {
 
       tableBody.appendChild(tr);
     });
-
   } catch (error) {
     console.log("GET Error:", error);
+  } finally {
+    toggleLoader(false);
   }
 }
 
 getComments();
 
-
 // ================= DELETE COMMENT =================
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("delete-btn")) {
-
     const movieId = e.target.dataset.movieid;
     const commentId = e.target.dataset.commentid;
 
     if (!confirm("Silmək istədiyinizə əminsiniz?")) return;
-
+    toggleLoader(true);
     try {
       const res = await fetch(
         `https://api.sarkhanrahimli.dev/api/filmalisa/admin/movies/${movieId}/comment/${commentId}`,
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
 
       if (!res.ok) {
@@ -77,9 +87,10 @@ tableBody.addEventListener("click", async (e) => {
 
       // DOM-dan sil
       e.target.closest("tr").remove();
-
     } catch (error) {
       console.log("DELETE Error:", error);
+    } finally {
+      toggleLoader(false);
     }
   }
 });
