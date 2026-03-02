@@ -1,3 +1,24 @@
+// Modern toast for favorite actions with color and icon
+function showToast(message, type) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast-message' + (type === 'removed' ? ' removed' : '');
+    // Icon
+    const icon = document.createElement('span');
+    icon.className = 'toast-icon';
+    icon.innerHTML = type === 'removed'
+        ? '<svg viewBox="0 0 24 24" fill="none" width="22" height="22"><circle cx="12" cy="12" r="10" fill="#ff5858"/><path d="M8 8l8 8M16 8l-8 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" width="22" height="22"><circle cx="12" cy="12" r="10" fill="#43e97b"/><path d="M7 13l3 3 7-7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
+    toast.appendChild(icon);
+    const text = document.createElement('span');
+    text.textContent = message;
+    toast.appendChild(text);
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.remove();
+    }, 2600);
+}
 const API_URL = "https://api.sarkhanrahimli.dev/api/filmalisa/movies";
 const ADMIN_COMMENT_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/comments";
 const TOKEN = localStorage.getItem("userToken");
@@ -24,25 +45,24 @@ function getRelativeDate(date) {
 function renderComments(comments) {
     commentsList.innerHTML = "";
     const defaultPhotoUrl = '../../assets/images/profilePhote.svg';
-    const userPhotoUrl = localStorage.getItem('userPhotoUrl');
     if (!comments || comments.length === 0) {
         commentsList.innerHTML = "<p>No comments yet.</p>";
         return;
     }
     comments.forEach((comment) => {
-        // Əsas profil şəkli: comment.userPhotoUrl varsa onu, yoxdursa userPhotoUrl, o da yoxdursa default
-        const photoSrc = comment.userPhotoUrl || userPhotoUrl || defaultPhotoUrl;
+        const photoSrc = comment.userPhotoUrl || defaultPhotoUrl;
+        const userName = comment.user_name || comment.user?.full_name || "User";
         const div = document.createElement("div");
         div.classList.add("comment-item");
         div.innerHTML = `
             <div class="comment-left">
                 <img src="${photoSrc}" alt="Profile">
                 <div class="user-info">
-                    <div class="user-name">${comment.user_name || comment.user?.full_name || "User"}</div>
+                    <div class="user-name">${userName}</div>
                     <div class="comment-text">${comment.text || comment.comment}</div>
                 </div>
             </div>
-            <div class="comment-time">${getRelativeDate(comment.created_at || comment.created_at || new Date())}</div>
+            <div class="comment-time">${getRelativeDate(comment.created_at || new Date())}</div>
         `;
         commentsList.appendChild(div);
     });
@@ -183,6 +203,20 @@ async function fetchAndRenderMovie() {
 
             favBtn.onclick = async () => {
                 try {
+                    // Check current favorite status before toggling
+                    let wasFavorite = false;
+                    try {
+                        const res = await fetch(
+                            "https://api.sarkhanrahimli.dev/api/filmalisa/movies/favorites",
+                            { headers: { Authorization: `Bearer ${TOKEN}` } }
+                        );
+                        const data = await res.json();
+                        const favorites = data.data || [];
+                        wasFavorite = favorites.some(f => f.id == movie.id);
+                    } catch (err) {
+                        // ignore, fallback to default
+                    }
+
                     await fetch(
                         `https://api.sarkhanrahimli.dev/api/filmalisa/movie/${movie.id}/favorite`,
                         {
@@ -192,6 +226,15 @@ async function fetchAndRenderMovie() {
                             },
                         }
                     );
+
+                    // Show toast/message in English
+                    const msg = wasFavorite ? 'Removed from favorites' : 'Added to favorites';
+                    const type = wasFavorite ? 'removed' : 'added';
+                    if (typeof showToast === 'function') {
+                        showToast(msg, type);
+                    } else {
+                        alert(msg);
+                    }
 
                     await checkIfFavorite();
 
