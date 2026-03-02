@@ -11,9 +11,6 @@ const addBtn = document.querySelector(".add-btn");
 const categorySelect = document.querySelector("select[name='category']");
 const actorSelect = document.querySelector("select[name='actors']");
 
-const actorImgInput = document.querySelector("input[name='actor_img_url']");
-const actorPreview = document.getElementById("actorPreview");
-
 let editId = null;
 const token = localStorage.getItem("token");
 
@@ -66,39 +63,13 @@ async function getActors() {
       const option = document.createElement("option");
       option.value = actor.id;
       option.textContent = actor.name + " " + actor.surname;
-
-      // img_url saxlayırıq
-      option.dataset.img = actor.img_url;
-
       actorSelect.appendChild(option);
     });
-
-    updateActorImage();
 
   } catch (err) {
     console.log("Actor error:", err);
   }
 }
-
-
-// ================= ACTOR IMAGE UPDATE =================
-
-function updateActorImage() {
-  const selectedOption = actorSelect.selectedOptions[0];
-
-  if (!selectedOption) {
-    if (actorImgInput) actorImgInput.value = "";
-    if (actorPreview) actorPreview.src = "";
-    return;
-  }
-
-  const imgUrl = selectedOption.dataset.img;
-
-  if (actorImgInput) actorImgInput.value = imgUrl;
-  if (actorPreview) actorPreview.src = imgUrl;
-}
-
-actorSelect.addEventListener("change", updateActorImage);
 
 
 // ================= MOVIES =================
@@ -179,7 +150,6 @@ form.addEventListener("submit", async (e) => {
     modal.style.display = "none";
     form.reset();
     editId = null;
-    updateActorImage();
     getMovies();
 
   } catch (err) {
@@ -236,8 +206,6 @@ async function editMovie(id) {
     Array.from(actorSelect.options).forEach(option => {
       option.selected = actorIds.includes(Number(option.value));
     });
-
-    updateActorImage();
 
     editId = id;
     modal.style.display = "flex";
