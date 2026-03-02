@@ -156,7 +156,7 @@ submitBtn.onclick = async () => {
   const img_url = imageInput.value.trim();
 
   if (!name || !surname || !img_url) {
-    alert("Bütün xanaları doldur");
+    // alert("Bütün xanaları doldur");
     return;
   }
 
