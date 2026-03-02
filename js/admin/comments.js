@@ -5,13 +5,7 @@ const loader = document.getElementById("loader");
 
 const toggleLoader = (show) => {
   if (!loader) return;
-  if (show) {
-    loader.classList.remove("loader-hidden");
-  } else {
-    setTimeout(() => {
-      loader.classList.add("loader-hidden");
-    }, 500);
-  }
+  loader.classList.toggle("loader-hidden", !show);
 };
 
 // ================= GET COMMENTS =================
@@ -45,7 +39,7 @@ async function getComments() {
             class="delete-btn"
             data-movieid="${comment.movie?.id}"
             data-commentid="${comment.id}">
-            Delete
+            <i class="fa-solid fa-trash"></i>
           </button>
         </td>
       `;
@@ -53,7 +47,7 @@ async function getComments() {
       tableBody.appendChild(tr);
     });
   } catch (error) {
-    console.log("GET Error:", error);
+    if (typeof showToast === "function") showToast("error", "Məlumat yüklənmədi");
   } finally {
     toggleLoader(false);
   }
@@ -63,11 +57,14 @@ getComments();
 
 // ================= DELETE COMMENT =================
 tableBody.addEventListener("click", async (e) => {
-  if (e.target.classList.contains("delete-btn")) {
-    const movieId = e.target.dataset.movieid;
-    const commentId = e.target.dataset.commentid;
+  const btn = e.target.closest(".delete-btn");
+  
+  if (btn) {
+    const movieId = btn.dataset.movieid; 
+    const commentId = btn.dataset.commentid; 
 
     if (!confirm("Silmək istədiyinizə əminsiniz?")) return;
+    
     toggleLoader(true);
     try {
       const res = await fetch(
@@ -77,20 +74,17 @@ tableBody.addEventListener("click", async (e) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
 
-      if (!res.ok) {
-        console.log("Status:", res.status);
-        throw new Error("Delete failed");
-      }
+      if (!res.ok) throw new Error("Delete failed");
 
-      // DOM-dan sil
-      e.target.closest("tr").remove();
+      btn.closest("tr").remove();
+      if (typeof showToast === "function") showToast("success", "Rəy silindi");
     } catch (error) {
-      console.log("DELETE Error:", error);
+      if (typeof showToast === "function") showToast("error", "Xəta baş verdi!");
     } finally {
       toggleLoader(false);
     }
-  }
+  } 
 });
