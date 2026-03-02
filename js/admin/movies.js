@@ -3,6 +3,7 @@ const ADMIN_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/movie";
 const CATEGORY_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/categories";
 const ACTOR_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/actors";
 
+const modal_poster = document.querySelector('.modal-poster img');
 const tableBody = document.querySelector(".main-table tbody");
 const form = document.querySelector(".modal-form");
 const modal = document.getElementById("createModal");
@@ -10,6 +11,7 @@ const addBtn = document.querySelector(".add-btn");
 
 const categorySelect = document.querySelector("select[name='category']");
 const actorSelect = document.querySelector("select[name='actors']");
+const coverInput = form.cover_url;
 
 let editId = null;
 const token = localStorage.getItem("token");
@@ -17,10 +19,35 @@ const token = localStorage.getItem("token");
 
 // ================= MODAL =================
 
-addBtn.onclick = () => modal.style.display = "flex";
+addBtn.onclick = () => {
+  modal.style.display = "flex";
+};
 
 modal.onclick = (e) => {
-  if (e.target === modal) modal.style.display = "none";
+  if (e.target === modal) {
+    modal.style.display = "none";
+    form.reset();
+    modal_poster.src = "";
+    editId = null;
+  }
+};
+
+
+// ================= POSTER PREVIEW =================
+
+coverInput.addEventListener("input", () => {
+  const url = coverInput.value.trim();
+
+  if (url) {
+    modal_poster.src = url;
+  } else {
+    modal_poster.src = "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
+  }
+});
+
+// Şəkil linki səhvdirsə sil
+modal_poster.onerror = () => {
+  modal_poster.src = "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
 };
 
 
@@ -149,6 +176,7 @@ form.addEventListener("submit", async (e) => {
 
     modal.style.display = "none";
     form.reset();
+    modal_poster.src = "";
     editId = null;
     getMovies();
 
@@ -206,6 +234,8 @@ async function editMovie(id) {
     Array.from(actorSelect.options).forEach(option => {
       option.selected = actorIds.includes(Number(option.value));
     });
+
+    modal_poster.src = movie.cover_url; //  EDIT zamanı poster göstər
 
     editId = id;
     modal.style.display = "flex";
