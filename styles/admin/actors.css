@@ -138,29 +138,31 @@ tbody tr td:first-child {
 }
 
 /* OVERLAY */
-.overlay {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-}
+
 
 /* MODAL */
 .modal {
-    background: #111;
-    border-radius: 15px;
-    width: 400px;
+  display: none; /* default hidden */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
 }
 
-/* MODAL CONTENT */
+/* Modal box */
 .modal-content {
-    padding: 35px;
-    position: relative;
+  background: #111;
+  padding: 40px;
+  border-radius: 15px;
+  width: 400px;
+  text-align: center;
+  position: relative;
 }
-
 /* CLOSE */
 .close {
     position: absolute;

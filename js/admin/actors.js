@@ -2,7 +2,7 @@ const GET_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/actors";
 const API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/actor";
 
 const tableBody = document.querySelector("tbody");
-const overlay = document.querySelector(".overlay");
+const modal = document.querySelector(".modal");
 const openBtn = document.getElementById("openModal");
 const closeBtn = document.querySelector(".close");
 const submitBtn = document.querySelector(".submit-btn");
@@ -131,7 +131,7 @@ nextBtn.addEventListener("click", () => {
 
 // ================= OPEN MODAL =================
 openBtn.onclick = () => {
-  overlay.style.display = "flex";
+  modal.style.display = "flex";
 
   nameInput.value = "";
   surnameInput.value = "";
@@ -144,7 +144,7 @@ openBtn.onclick = () => {
 
 // ================= CLOSE MODAL =================
 closeBtn.onclick = () => {
-  overlay.style.display = "none";
+  modal.style.display = "none";
 };
 
 
@@ -180,7 +180,7 @@ submitBtn.onclick = async () => {
     });
   }
 
-  overlay.style.display = "none";
+  modal.style.display = "none";
   getActors();
 };
 
