@@ -45,7 +45,7 @@ async function getComments() {
             class="delete-btn"
             data-movieid="${comment.movie?.id}"
             data-commentid="${comment.id}">
-            Delete
+            <i class="fa-solid fa-trash"></i>
           </button>
         </td>
       `;
@@ -53,7 +53,7 @@ async function getComments() {
       tableBody.appendChild(tr);
     });
   } catch (error) {
-    console.log("GET Error:", error);
+    showToast("Xəta baş verdi!", "error");
   } finally {
     toggleLoader(false);
   }
@@ -87,8 +87,9 @@ tableBody.addEventListener("click", async (e) => {
 
       // DOM-dan sil
       e.target.closest("tr").remove();
+      showToast("Rəy uğurla silindi", "success");
     } catch (error) {
-      console.log("DELETE Error:", error);
+      showToast("Silinmə zamanı xəta!", "error");
     } finally {
       toggleLoader(false);
     }
