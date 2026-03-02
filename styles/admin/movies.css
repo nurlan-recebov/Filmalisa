@@ -295,4 +295,20 @@ color:white;
 cursor:pointer;
 border-radius:6px;
 }
+.choices__inner {
+  background-color: #171616;
+  border-radius: 12px;
+  border: 1px solid #333;
+  color: #171616;
+  width: 90%
 
+ 
+}
+
+.choices__list--dropdown {
+  background-color: #1e1e1e;
+
+}
+.choices__input{
+    background-color: #171616;
+}

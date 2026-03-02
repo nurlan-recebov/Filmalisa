@@ -14,6 +14,7 @@ const actorSelect = document.querySelector("select[name='actors']");
 const coverInput = form.cover_url;
 
 let editId = null;
+let actorChoices = null;
 const token = localStorage.getItem("token");
 
 
@@ -25,27 +26,29 @@ addBtn.onclick = () => {
 
 modal.onclick = (e) => {
   if (e.target === modal) {
-    modal.style.display = "none";
-    form.reset();
-    modal_poster.src = "";
-    editId = null;
+    closeModal();
   }
 };
+
+function closeModal() {
+  modal.style.display = "none";
+  form.reset();
+  modal_poster.src = "";
+  editId = null;
+
+  if (actorChoices) {
+    actorChoices.removeActiveItems();
+  }
+}
 
 
 // ================= POSTER PREVIEW =================
 
 coverInput.addEventListener("input", () => {
   const url = coverInput.value.trim();
-
-  if (url) {
-    modal_poster.src = url;
-  } else {
-    modal_poster.src = "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
-  }
+  modal_poster.src = url || "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
 });
 
-// Şəkil linki səhvdirsə sil
 modal_poster.onerror = () => {
   modal_poster.src = "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
 };
@@ -84,6 +87,7 @@ async function getActors() {
     });
 
     const result = await res.json();
+
     actorSelect.innerHTML = "";
 
     result.data.forEach(actor => {
@@ -91,6 +95,15 @@ async function getActors() {
       option.value = actor.id;
       option.textContent = actor.name + " " + actor.surname;
       actorSelect.appendChild(option);
+    });
+
+    // Choices aktivləşdir
+    actorChoices = new Choices(actorSelect, {
+      removeItemButton: true,
+      searchEnabled: true,
+      placeholder: true,
+      placeholderValue: "Actors seçin",
+      itemSelectText: "",
     });
 
   } catch (err) {
@@ -111,7 +124,6 @@ async function getMovies() {
     tableBody.innerHTML = "";
 
     result.data.forEach(movie => {
-
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
@@ -174,10 +186,7 @@ form.addEventListener("submit", async (e) => {
       return;
     }
 
-    modal.style.display = "none";
-    form.reset();
-    modal_poster.src = "";
-    editId = null;
+    closeModal();
     getMovies();
 
   } catch (err) {
@@ -231,11 +240,13 @@ async function editMovie(id) {
       ? movie.actors.map(a => a.id || a)
       : [];
 
-    Array.from(actorSelect.options).forEach(option => {
-      option.selected = actorIds.includes(Number(option.value));
+    actorChoices.removeActiveItems();
+
+    actorIds.forEach(id => {
+      actorChoices.setChoiceByValue(String(id));
     });
 
-    modal_poster.src = movie.cover_url; //  EDIT zamanı poster göstər
+    modal_poster.src = movie.cover_url;
 
     editId = id;
     modal.style.display = "flex";
