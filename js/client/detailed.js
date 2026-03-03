@@ -269,17 +269,19 @@ async function fetchAndRenderMovie() {
                 videoFrame.src = trailerUrl;
             });
         }
-        if (playBtn && videoFrame) {
+        if (playBtn && videoFrame && videoTitle) {
             playBtn.onclick = () => {
                 videoFrame.src = trailerUrl + "?autoplay=1";
                 playBtn.style.display = 'none';
+                videoTitle.style.display = 'none';
             };
         }
-        if (closeBtn && videoModal && videoFrame) {
+        if (closeBtn && videoModal && videoFrame && playBtn && videoTitle) {
             closeBtn.onclick = () => {
                 videoFrame.src = '';
                 videoModal.style.display = "none";
                 playBtn.style.display = '';
+                videoTitle.style.display = '';
             };
         }
         if (videoModal && videoFrame) {
