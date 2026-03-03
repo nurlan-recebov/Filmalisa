@@ -1,221 +1,127 @@
 const GET_API = "https://api.sarkhanrahimli.dev/api/filmalisa/movies";
 const ADMIN_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/movie";
-const CATEGORY_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/categories";
+const CATEGORY_API =
+  "https://api.sarkhanrahimli.dev/api/filmalisa/admin/categories";
 const ACTOR_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/actors";
 
-const modal_poster = document.querySelector('.modal-poster img');
 const tableBody = document.querySelector(".main-table tbody");
 const form = document.querySelector(".modal-form");
 const modal = document.getElementById("createModal");
 const addBtn = document.querySelector(".add-btn");
+const loader = document.getElementById("loader");
+
+const modalPosterImg = document.querySelector(".modal-poster");
+const coverUrlInput = document.getElementById("coverUrl");
+const DEFAULT_POSTER = "./../../assets/images/film poster.avif";
 
 const categorySelect = document.querySelector("select[name='category']");
 const actorSelect = document.querySelector("select[name='actors']");
-const coverInput = form.cover_url;
-
-const prevBtn = document.querySelector(".prev-page");
-const nextBtn = document.querySelector(".next-page");
-const pageNumbers = document.querySelector(".page-numbers");
 
 let editId = null;
-let actorChoices = null;
 const token = localStorage.getItem("token");
 
-// ================= PAGINATION =================
-
-let currentPage = 1;
-let moviesPerPage = 5;
-let allMovies = [];
-
-
-// ================= MODAL =================
-
+// Modal aç
 addBtn.onclick = () => {
-  modal.style.display = "flex";
-};
-
-modal.onclick = (e) => {
-  if (e.target === modal) closeModal();
-};
-
-function closeModal() {
-  modal.style.display = "none";
-  form.reset();
-  modal_poster.src = "";
   editId = null;
-
-  if (actorChoices) actorChoices.removeActiveItems();
-}
-
-
-// ================= POSTER PREVIEW =================
-
-coverInput.addEventListener("input", () => {
-  const url = coverInput.value.trim();
-  modal_poster.src =
-    url ||
-    "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
-});
-
-modal_poster.onerror = () => {
-  modal_poster.src =
-    "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
+  form.reset();
+  modal.style.display = "flex";
+  modalPosterImg.src = DEFAULT_POSTER;
 };
 
+// Modal bağla
+modal.onclick = (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+};
 
-// ================= CATEGORIES =================
-
+// CATEGORIES GET
 async function getCategories() {
   try {
     const res = await fetch(CATEGORY_API, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    const result = await res.json();
+    const data = await res.json();
     categorySelect.innerHTML = "";
 
-    result.data.forEach(cat => {
+    data.data.forEach((cat) => {
       const option = document.createElement("option");
       option.value = cat.id;
       option.textContent = cat.name;
       categorySelect.appendChild(option);
     });
-
-  } catch (err) {
-    console.log("Category error:", err);
+  } catch (error) {
+    showToast("error", "Kateqoriyalar yüklənmədi");
   }
 }
 
-
-// ================= ACTORS =================
-
+// ACTORS GET
 async function getActors() {
   try {
     const res = await fetch(ACTOR_API, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    const result = await res.json();
+    const data = await res.json();
     actorSelect.innerHTML = "";
 
-    result.data.forEach(actor => {
+    data.data.forEach((actor) => {
       const option = document.createElement("option");
       option.value = actor.id;
       option.textContent = actor.name + " " + actor.surname;
       actorSelect.appendChild(option);
     });
-
-    actorChoices = new Choices(actorSelect, {
-      removeItemButton: true,
-      searchEnabled: true,
-      placeholder: true,
-      placeholderValue: "Actors seçin",
-      itemSelectText: "",
-    });
-
-  } catch (err) {
-    console.log("Actor error:", err);
+  } catch (error) {
+    showToast("error", "Aktyorlar yüklənmədi");
   }
 }
 
-
-// ================= MOVIES =================
-
+// MOVIES GET
 async function getMovies() {
+  loader?.classList.remove("loader-hidden");
   try {
     const res = await fetch(GET_API, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    const result = await res.json();
+    const data = await res.json();
+    tableBody.innerHTML = "";
 
-    allMovies = result.data;
-    renderMovies();
-    renderPagination();
+    data.data.forEach((movie) => {
+      const tr = document.createElement("tr");
 
-  } catch (err) {
-    console.log("Movie error:", err);
-  }
-}
+      tr.innerHTML = `
+        <td>${movie.id}</td>
+        <td><img src="${movie.cover_url}" width="60"/></td>
+        <td>${movie.title}</td>
+        <td>${movie.run_time_min}</td>
+        <td>${movie.imdb}</td>
+        <td>
+          <button onclick="editMovie(${movie.id})"><i class="fa-solid fa-pencil"></i></button>
+          <button onclick="deleteMovie(${movie.id})"><i class="fa-solid fa-trash"></i></button>
+        </td>
+      `;
 
-function renderMovies() {
-  tableBody.innerHTML = "";
-
-  const start = (currentPage - 1) * moviesPerPage;
-  const end = start + moviesPerPage;
-  const paginatedMovies = allMovies.slice(start, end);
-
-  paginatedMovies.forEach(movie => {
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${movie.id}</td>
-      <td><img src="${movie.cover_url}" width="60"/></td>
-      <td>${movie.title}</td>
-      <td>${movie.run_time_min}</td>
-      <td>${movie.imdb}</td>
-      <td>
-        <button onclick="editMovie(${movie.id})">Edit</button>
-        <button onclick="deleteMovie(${movie.id})">Delete</button>
-      </td>
-    `;
-
-    tableBody.appendChild(tr);
-  });
-}
-
-function renderPagination() {
-  pageNumbers.innerHTML = "";
-
-  const totalPages = Math.ceil(allMovies.length / moviesPerPage);
-
-  for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = i;
-
-    if (i === currentPage) {
-      btn.classList.add("active-page");
+      tableBody.appendChild(tr);
+    });
+  } catch (error) {
+    showToast("error", "Filmlər yüklənərkən xəta oldu");
+  } finally {
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add("loader-hidden");
+      }, 500);
     }
-
-    btn.onclick = () => {
-      currentPage = i;
-      renderMovies();
-      renderPagination();
-    };
-
-    pageNumbers.appendChild(btn);
   }
-
-  prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = currentPage === totalPages;
 }
 
-prevBtn.onclick = () => {
-  if (currentPage > 1) {
-    currentPage--;
-    renderMovies();
-    renderPagination();
-  }
-};
-
-nextBtn.onclick = () => {
-  const totalPages = Math.ceil(allMovies.length / moviesPerPage);
-
-  if (currentPage < totalPages) {
-    currentPage++;
-    renderMovies();
-    renderPagination();
-  }
-};
-
-
-// ================= FORM SUBMIT =================
-
+// FORM SUBMIT
 form.addEventListener("submit", async (e) => {
+  if (loader && !loader.classList.contains("loader-hidden")) return;
   e.preventDefault();
 
-  const selectedActors = Array.from(actorSelect.selectedOptions)
-    .map(option => Number(option.value));
+  if (loader) loader.classList.remove("loader-hidden");
 
   const movie = {
     title: form.title.value,
@@ -226,65 +132,81 @@ form.addEventListener("submit", async (e) => {
     run_time_min: Number(form.run_time_min.value),
     imdb: form.imdb.value,
     category: Number(form.category.value),
-    actors: selectedActors,
-    overview: form.overview.value
+    actors: [Number(form.actors.value)],
+    overview: form.overview.value,
   };
 
-  const url = editId ? `${ADMIN_API}/${editId}` : ADMIN_API;
-  const method = editId ? "PUT" : "POST";
-
   try {
-    const res = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(movie)
-    });
-
-    if (!res.ok) return;
-
-    closeModal();
-    currentPage = 1;
-    getMovies();
-
-  } catch (err) {
-    console.log("Submit error:", err);
+    let res;
+    if (editId) {
+      res = await fetch(`${ADMIN_API}/${editId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(movie),
+      });
+    } else {
+      res = await fetch(ADMIN_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(movie),
+      });
+    }
+    if (res.ok) {
+      showToast("success", editId ? "Film yeniləndi" : "Film əlavə edildi");
+      modal.style.display = "none";
+      form.reset();
+      editId = null;
+      getMovies();
+    } else {
+      throw new Error("Əməliyyat alınmadı");
+    }
+  } catch (error) {
+    showToast("error", error.message);
+  } finally {
+    if (loader) loader.classList.add("loader-hidden");
   }
 });
 
-
-// ================= DELETE =================
-
+// DELETE
 async function deleteMovie(id) {
-  if (!confirm("Filmi silmək istədiyinizə əminsiniz?")) return;
+  const confirmDelete = confirm("Filmi silmək istədiyinizə əminsiniz?");
+  if (!confirmDelete) return;
 
+  loader?.classList.remove("loader-hidden");
   try {
-    await fetch(`${ADMIN_API}/${id}`, {
+    const res = await fetch(`${ADMIN_API}/${id}`, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
-
-    currentPage = 1;
-    getMovies();
-
-  } catch (err) {
-    console.log("Delete error:", err);
+    if (res.ok) {
+      showToast("success", "Film silindi");
+      getMovies();
+    } else {
+      throw new Error("Silmək mümkün olmadı");
+    }
+  } catch (error) {
+    showToast("error", error.message);
+  } finally {
+    if (loader) loader.classList.add("loader-hidden");
   }
 }
 
-
-// ================= EDIT =================
-
+// EDIT
 async function editMovie(id) {
+  if (loader) loader.classList.remove("loader-hidden");
   try {
     const res = await fetch(`${GET_API}/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    const result = await res.json();
-    const movie = result.data;
+    const data = await res.json();
+    const movie = data.data;
 
     form.title.value = movie.title;
     form.cover_url.value = movie.cover_url;
@@ -293,32 +215,35 @@ async function editMovie(id) {
     form.adult.checked = movie.adult;
     form.run_time_min.value = movie.run_time_min;
     form.imdb.value = movie.imdb;
-    form.overview.value = movie.overview;
-
     form.category.value = movie.category?.id || movie.category;
+    form.overview.value = movie.overview;
+    modalPosterImg.src = movie.cover_url;
 
-    const actorIds = movie.actors
-      ? movie.actors.map(a => a.id || a)
-      : [];
-
-    actorChoices.removeActiveItems();
-    actorIds.forEach(id => {
-      actorChoices.setChoiceByValue(String(id));
-    });
-
-    modal_poster.src = movie.cover_url;
+    if (movie.actors && movie.actors.length > 0) {
+      form.actors.value = movie.actors[0].id;
+    }
 
     editId = id;
     modal.style.display = "flex";
-
-  } catch (err) {
-    console.log("Edit error:", err);
+  } catch (error) {
+    showToast("error", "Məlumatları gətirərkən xəta oldu");
+  } finally {
+    if (loader) loader.classList.add("loader-hidden");
   }
 }
 
+coverUrlInput.addEventListener("input", (e) => {
+  const url = e.target.value;
+  modalPosterImg.src = url.trim() !== "" ? url : DEFAULT_POSTER;
+});
+modalPosterImg.onerror = () => {
+  modalPosterImg.src = DEFAULT_POSTER;
+};
 
-// ================= PAGE LOAD =================
+window.editMovie = editMovie;
+window.deleteMovie = deleteMovie;
 
+// PAGE LOAD
 getMovies();
 getCategories();
 getActors();

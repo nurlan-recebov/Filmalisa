@@ -4,10 +4,9 @@ const tableBody = document.querySelector("tbody");
 const pageNumbers = document.querySelector(".page-numbers");
 const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
+const loader = document.getElementById("loader");
 
 const token = localStorage.getItem("token");
-
-
 
 let users = [];
 let currentPage = 1;
@@ -18,17 +17,30 @@ if (!token) {
 }
 
 async function getUsers() {
-  const res = await fetch(GET_API, {
-    headers: {
-      Authorization: `Bearer ${token}`
+  const loader = document.getElementById("loader");
+  if (loader) loader.classList.remove("loader-hidden");
+  try {
+    const res = await fetch(GET_API, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await res.json();
+    users = result.data || [];
+
+    displayUsers();
+    createPagination();
+  } catch (error) {
+    console.log("Xəta baş verdi:", error);
+    showToast('error', error.message || 'Serverlə əlaqə kəsildi');
+  } finally {
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add("loader-hidden");
+      }, 500);
     }
-  });
-
-  const result = await res.json();
-  users = result.data || [];
-
-  displayUsers();
-  createPagination();
+  }
 }
 
 function displayUsers() {
@@ -54,9 +66,17 @@ function displayUsers() {
 function createPagination() {
   pageNumbers.innerHTML = "";
   const pageCount = Math.ceil(users.length / rowsPerPage);
+  
+  const maxVisibleButtons = 4; 
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+  let endPage = Math.min(pageCount, startPage + maxVisibleButtons - 1);
 
-  for (let i = 1; i <= pageCount; i++) {
-    const btn = document.createElement("button"); // div yox button
+  if (endPage - startPage + 1 < maxVisibleButtons) {
+    startPage = Math.max(1, endPage - maxVisibleButtons + 1);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    const btn = document.createElement("button");
     btn.innerText = i;
 
     if (i === currentPage) {
@@ -72,24 +92,23 @@ function createPagination() {
     pageNumbers.appendChild(btn);
   }
 
-  // Prev / Next disable
   prevBtn.disabled = currentPage === 1;
   nextBtn.disabled = currentPage === pageCount;
 }
-
-prevBtn.addEventListener("click", () => {
-  if (currentPage > 1) {
-    currentPage--;
-    displayUsers();
-    createPagination();
-  }
-});
 
 nextBtn.addEventListener("click", () => {
   const pageCount = Math.ceil(users.length / rowsPerPage);
 
   if (currentPage < pageCount) {
     currentPage++;
+    displayUsers();
+    createPagination();
+  }
+});
+
+prevBtn.addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage--;
     displayUsers();
     createPagination();
   }

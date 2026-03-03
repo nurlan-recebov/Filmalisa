@@ -4,26 +4,16 @@ const ADMIN_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/category";
 const tableBody = document.querySelector("tbody");
 const input = document.querySelector(".input-field");
 const submitBtn = document.querySelector(".submit-btn");
+const loader = document.getElementById("loader");
 
 const modal = document.getElementById("modal");
 const openBtn = document.getElementById("openModal");
 const closeBtn = document.querySelector(".close");
 
-const prevBtn = document.querySelector(".prev-page");
-const nextBtn = document.querySelector(".next-page");
-const pageNumbers = document.querySelector(".page-numbers");
-
 let editId = null;
 const token = localStorage.getItem("token");
 
-// ================= PAGINATION =================
 
-let currentPage = 1;
-let itemsPerPage = 5;
-let allCategories = [];
-
-
-// ================= MODAL =================
 
 // Modal open
 openBtn.addEventListener("click", () => {
@@ -43,9 +33,10 @@ window.addEventListener("click", (e) => {
 });
 
 
-// ================= GET CATEGORIES =================
-
+// GET categories
 async function getCategories() {
+  if (loader) loader.classList.remove("loader-hidden");
+
   try {
     const res = await fetch(GET_API, {
       headers: {
@@ -54,106 +45,52 @@ async function getCategories() {
     });
 
     const data = await res.json();
+    tableBody.innerHTML = "";
 
-    allCategories = data.data;
-    renderCategories();
-    renderPagination();
+    data.data.forEach(category => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+      <td>${category.id}</td>
+      <td>${category.name}</td>
+      <td>
+        <button onclick="editCategory(${category.id}, '${category.name}')"><i class="fa-solid fa-pencil"></i></button>
+        <button onclick="deleteCategory(${category.id})"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    `;
 
-  } catch (err) {
-    console.log("Category error:", err);
+      tableBody.appendChild(tr);
+    })
+  } catch (error) {
+    showToast('error', 'Kateqoriyaları yükləmək mümkün olmadı');
+  }
+  finally {
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add("loader-hidden");
+      }, 800);
+    }
   }
 }
 
 getCategories();
 
 
-// ================= RENDER TABLE =================
-
-function renderCategories() {
-  tableBody.innerHTML = "";
-
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-
-  const paginatedItems = allCategories.slice(start, end);
-
-  paginatedItems.forEach(category => {
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${category.id}</td>
-      <td>${category.name}</td>
-      <td>
-        <button onclick="editCategory(${category.id}, '${category.name}')">Edit</button>
-        <button onclick="deleteCategory(${category.id})">Delete</button>
-      </td>
-    `;
-
-    tableBody.appendChild(tr);
-  });
-}
-
-
-// ================= RENDER PAGINATION =================
-
-function renderPagination() {
-  pageNumbers.innerHTML = "";
-
-  const totalPages = Math.ceil(allCategories.length / itemsPerPage);
-
-  for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = i;
-
-    if (i === currentPage) {
-      btn.classList.add("active-page");
-    }
-
-    btn.onclick = () => {
-      currentPage = i;
-      renderCategories();
-      renderPagination();
-    };
-
-    pageNumbers.appendChild(btn);
-  }
-
-  prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = currentPage === totalPages;
-}
-
-
-// ================= PREV / NEXT =================
-
-prevBtn.onclick = () => {
-  if (currentPage > 1) {
-    currentPage--;
-    renderCategories();
-    renderPagination();
-  }
-};
-
-nextBtn.onclick = () => {
-  const totalPages = Math.ceil(allCategories.length / itemsPerPage);
-
-  if (currentPage < totalPages) {
-    currentPage++;
-    renderCategories();
-    renderPagination();
-  }
-};
-
-
-// ================= CREATE / EDIT =================
-
+// CREATE / EDIT
 submitBtn.addEventListener("click", async () => {
+  if (loader && !loader.classList.contains("loader-hidden")) return;
+
   const name = input.value.trim();
-  if (!name) return;
+  if (!name) {
+    showToast('error', 'Ad boş ola bilməz');
+    return;
+  }
+
+  if (loader) loader.classList.remove("loader-hidden");
 
   try {
+    let res; // Cavabı yadda saxlamaq üçün dəyişən
     if (editId) {
-      // EDIT
-      await fetch(`${ADMIN_API}/${editId}`, {
+      res = await fetch(`${ADMIN_API}/${editId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -161,11 +98,8 @@ submitBtn.addEventListener("click", async () => {
         },
         body: JSON.stringify({ name })
       });
-
-      editId = null;
     } else {
-      // CREATE
-      await fetch(ADMIN_API, {
+      res = await fetch(ADMIN_API, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -175,45 +109,66 @@ submitBtn.addEventListener("click", async () => {
       });
     }
 
-    input.value = "";
-    modal.style.display = "none";
-
-    currentPage = 1; // reset səhifə
-    getCategories();
-
-  } catch (err) {
-    console.log("Submit error:", err);
+    if (res.ok) {
+      showToast('success', editId ? 'Kateqoriya yeniləndi' : 'Kateqoriya yaradıldı');
+      input.value = "";
+      modal.style.display = "none";
+      editId = null;
+      getCategories();
+    } else {
+      throw new Error("Server xətası baş verdi");
+    }
+  } catch (error) {
+    showToast('error', error.message);
+  } finally {
+    if (loader) loader.classList.add("loader-hidden");
   }
 });
 
 
-// ================= DELETE =================
-
+// DELETE
 async function deleteCategory(id) {
   const confirmDelete = confirm("Bu kateqoriyanı silmək istədiyinizə əminsiniz?");
   if (!confirmDelete) return;
 
+  if (loader) loader.classList.remove("loader-hidden");
+
   try {
-    await fetch(`${ADMIN_API}/${id}`, {
+    // BURADA 'const res' MÜTLƏQDİR!
+    const res = await fetch(`${ADMIN_API}/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
 
-    currentPage = 1; // reset səhifə
-    getCategories();
-
-  } catch (err) {
-    console.log("Delete error:", err);
+    if (res.ok) {
+      showToast('success', 'Kateqoriya silindi');
+      getCategories();
+    } else {
+      // Əgər server 200 OK qaytarmasa, xəta atırıq
+      throw new Error("Silmək mümkün olmadı");
+    }
+  } catch (error) {
+    console.log("Delete error:", error);
+    showToast('error', error.message || "Xəta baş verdi");
+  } finally {
+    if (loader) loader.classList.add("loader-hidden");
   }
 }
 
-
-// ================= EDIT =================
-
+// EDIT
 function editCategory(id, name) {
   editId = id;
   input.value = name;
   modal.style.display = "flex";
 }
+
+input.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    submitBtn.click();
+  }
+});
+
+window.editCategory = editCategory;
+window.deleteCategory = deleteCategory;

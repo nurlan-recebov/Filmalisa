@@ -5,10 +5,12 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Filmalisa: Admin Dashboard</title>
+  <title>Filmalisa: Actors</title>
 
   <link rel="shortcut icon" href="./../../assets/icons/logo.svg" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="./../../global/global.css" />
+  <link rel="stylesheet" href="./../../global/toast.css">
   <link rel="stylesheet" href="./../../styles/admin/actors.css" />
 
 </head>
@@ -72,8 +74,11 @@
 
 
     <!-- CONTENT -->
-    <div class="admin-dashboard-content">
-
+    <div class="admin-dashboard-content admin-content-wrapper">
+      <div id="loader" class="loader-wrapper">
+        <div class="spinner"></div>
+        <p>Yüklənir...</p>
+      </div>
       <div class="admin-dashboard-header">
         <div class="admin-dashboard-header-title">
           <h2>Hi Admin</h2>
@@ -95,7 +100,7 @@
             <tr>
               <th>ID</th>
               <th>Name</th>
-              <th></th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -113,28 +118,25 @@
       </div>
 
       <!-- MODAL -->
-      <div class="overlay">
-        <div id="modal" class="modal">
-          <div class="modal-content">
-            <span class="close">&times;</span>
-
-            <h2 class="modal-title">Add Actor</h2>
-
-            <input type="text" placeholder="Name" class="input-field" id="actorName">
-            <input type="text" placeholder="Surname" class="input-field" id="actorSurname">
-            <input type="text" placeholder="Image URL" class="input-field" id="actorImage">
-
-            <button class="submit-btn">Submit</button>
-          </div>
-        </div>
-      </div>
+<div class="overlay" id="actorOverlay">
+  <div class="modal">
+    <span class="close">&times;</span>
+    <div class="modal-content">
+      <h2 class="modal-title">Add Actor</h2>
+      <input type="text" placeholder="Name" class="input-field" id="actorName">
+      <input type="text" placeholder="Surname" class="input-field" id="actorSurname">
+      <input type="text" placeholder="Image URL" class="input-field" id="actorImage">
+      <button class="submit-btn">Submit</button>
+    </div>
+  </div>
+</div>
 
     </div>
-
+    <div class="toast-container" id="toastContainer"></div>
   </div>
+  <script src="./../../js/toast.js"></script>
   <script src="../../js/admin/adminGuard.js"></script>
   <script src="../../js/admin/actors.js"></script>
-  <script src="../../js/admin/toast.js"></script>
 
 
 </body>
