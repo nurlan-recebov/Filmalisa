@@ -101,18 +101,7 @@ tr button {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .admin-sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
-  }
 
-  .admin-dashboard-content {
-    margin-left: 0;
-    width: 100%;
-  }
-}
 /* Client Sidebar Design */
 .client-sidebar {
   width: 56px;

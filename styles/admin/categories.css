@@ -96,6 +96,7 @@ body{
   
 }
 
+
 /* Modal background */
 .modal {
   display: none; /* default hidden */
@@ -154,18 +155,20 @@ body{
 }
 /* Table  */
 .table-container {
-  max-width: 500px;
- 
-
-  padding: 20px;
-  border-radius: 20px;
-  margin:40px 30px ;
-  
+   
+    padding: 20px;
+    border-radius: 20px;
+    margin: 40px 30px;
+    background: #1a1a1a;
+       display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
  
 }
 

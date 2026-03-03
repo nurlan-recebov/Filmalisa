@@ -286,10 +286,22 @@ body.modal-open {
   cursor: pointer;
 }
 
+.table-container {
+   
+    padding: 20px;
+    border-radius: 20px;
+    margin: 40px 30px;
+    background: #1a1a1a;
+       display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #1e1e1e;
+    width: 100%;
+    border-collapse: collapse;
+ 
 }
 
 th,

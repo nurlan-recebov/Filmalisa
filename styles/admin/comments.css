@@ -167,19 +167,21 @@ body{
 
 /* Table  */
 .table-container {
-    max-width: 500px;
-
-
+   
     padding: 20px;
     border-radius: 20px;
     margin: 40px 30px;
-
+    background: #1a1a1a;
+       display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-
+ 
 }
 
 thead {
