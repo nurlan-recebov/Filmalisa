@@ -13,9 +13,19 @@ const categorySelect = document.querySelector("select[name='category']");
 const actorSelect = document.querySelector("select[name='actors']");
 const coverInput = form.cover_url;
 
+const prevBtn = document.querySelector(".prev-page");
+const nextBtn = document.querySelector(".next-page");
+const pageNumbers = document.querySelector(".page-numbers");
+
 let editId = null;
 let actorChoices = null;
 const token = localStorage.getItem("token");
+
+// ================= PAGINATION =================
+
+let currentPage = 1;
+let moviesPerPage = 5;
+let allMovies = [];
 
 
 // ================= MODAL =================
@@ -25,9 +35,7 @@ addBtn.onclick = () => {
 };
 
 modal.onclick = (e) => {
-  if (e.target === modal) {
-    closeModal();
-  }
+  if (e.target === modal) closeModal();
 };
 
 function closeModal() {
@@ -36,9 +44,7 @@ function closeModal() {
   modal_poster.src = "";
   editId = null;
 
-  if (actorChoices) {
-    actorChoices.removeActiveItems();
-  }
+  if (actorChoices) actorChoices.removeActiveItems();
 }
 
 
@@ -46,11 +52,14 @@ function closeModal() {
 
 coverInput.addEventListener("input", () => {
   const url = coverInput.value.trim();
-  modal_poster.src = url || "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
+  modal_poster.src =
+    url ||
+    "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
 });
 
 modal_poster.onerror = () => {
-  modal_poster.src = "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
+  modal_poster.src =
+    "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
 };
 
 
@@ -87,7 +96,6 @@ async function getActors() {
     });
 
     const result = await res.json();
-
     actorSelect.innerHTML = "";
 
     result.data.forEach(actor => {
@@ -97,7 +105,6 @@ async function getActors() {
       actorSelect.appendChild(option);
     });
 
-    // Choices aktivləşdir
     actorChoices = new Choices(actorSelect, {
       removeItemButton: true,
       searchEnabled: true,
@@ -121,30 +128,85 @@ async function getMovies() {
     });
 
     const result = await res.json();
-    tableBody.innerHTML = "";
 
-    result.data.forEach(movie => {
-      const tr = document.createElement("tr");
-
-      tr.innerHTML = `
-        <td>${movie.id}</td>
-        <td><img src="${movie.cover_url}" width="60"/></td>
-        <td>${movie.title}</td>
-        <td>${movie.run_time_min}</td>
-        <td>${movie.imdb}</td>
-        <td>
-          <button onclick="editMovie(${movie.id})">Edit</button>
-          <button onclick="deleteMovie(${movie.id})">Delete</button>
-        </td>
-      `;
-
-      tableBody.appendChild(tr);
-    });
+    allMovies = result.data;
+    renderMovies();
+    renderPagination();
 
   } catch (err) {
     console.log("Movie error:", err);
   }
 }
+
+function renderMovies() {
+  tableBody.innerHTML = "";
+
+  const start = (currentPage - 1) * moviesPerPage;
+  const end = start + moviesPerPage;
+  const paginatedMovies = allMovies.slice(start, end);
+
+  paginatedMovies.forEach(movie => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${movie.id}</td>
+      <td><img src="${movie.cover_url}" width="60"/></td>
+      <td>${movie.title}</td>
+      <td>${movie.run_time_min}</td>
+      <td>${movie.imdb}</td>
+      <td>
+        <button onclick="editMovie(${movie.id})">Edit</button>
+        <button onclick="deleteMovie(${movie.id})">Delete</button>
+      </td>
+    `;
+
+    tableBody.appendChild(tr);
+  });
+}
+
+function renderPagination() {
+  pageNumbers.innerHTML = "";
+
+  const totalPages = Math.ceil(allMovies.length / moviesPerPage);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+
+    if (i === currentPage) {
+      btn.classList.add("active-page");
+    }
+
+    btn.onclick = () => {
+      currentPage = i;
+      renderMovies();
+      renderPagination();
+    };
+
+    pageNumbers.appendChild(btn);
+  }
+
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === totalPages;
+}
+
+prevBtn.onclick = () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderMovies();
+    renderPagination();
+  }
+};
+
+nextBtn.onclick = () => {
+  const totalPages = Math.ceil(allMovies.length / moviesPerPage);
+
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderMovies();
+    renderPagination();
+  }
+};
 
 
 // ================= FORM SUBMIT =================
@@ -181,12 +243,10 @@ form.addEventListener("submit", async (e) => {
       body: JSON.stringify(movie)
     });
 
-    if (!res.ok) {
-      console.log("Xəta baş verdi!");
-      return;
-    }
+    if (!res.ok) return;
 
     closeModal();
+    currentPage = 1;
     getMovies();
 
   } catch (err) {
@@ -206,6 +266,7 @@ async function deleteMovie(id) {
       headers: { Authorization: `Bearer ${token}` }
     });
 
+    currentPage = 1;
     getMovies();
 
   } catch (err) {
@@ -241,7 +302,6 @@ async function editMovie(id) {
       : [];
 
     actorChoices.removeActiveItems();
-
     actorIds.forEach(id => {
       actorChoices.setChoiceByValue(String(id));
     });

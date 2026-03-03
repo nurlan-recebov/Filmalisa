@@ -9,10 +9,21 @@ const modal = document.getElementById("modal");
 const openBtn = document.getElementById("openModal");
 const closeBtn = document.querySelector(".close");
 
+const prevBtn = document.querySelector(".prev-page");
+const nextBtn = document.querySelector(".next-page");
+const pageNumbers = document.querySelector(".page-numbers");
+
 let editId = null;
 const token = localStorage.getItem("token");
 
+// ================= PAGINATION =================
 
+let currentPage = 1;
+let itemsPerPage = 5;
+let allCategories = [];
+
+
+// ================= MODAL =================
 
 // Modal open
 openBtn.addEventListener("click", () => {
@@ -32,18 +43,41 @@ window.addEventListener("click", (e) => {
 });
 
 
-// GET categories
-async function getCategories() {
-  const res = await fetch(GET_API, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+// ================= GET CATEGORIES =================
 
-  const data = await res.json();
+async function getCategories() {
+  try {
+    const res = await fetch(GET_API, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+
+    allCategories = data.data;
+    renderCategories();
+    renderPagination();
+
+  } catch (err) {
+    console.log("Category error:", err);
+  }
+}
+
+getCategories();
+
+
+// ================= RENDER TABLE =================
+
+function renderCategories() {
   tableBody.innerHTML = "";
 
-  data.data.forEach(category => {
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+
+  const paginatedItems = allCategories.slice(start, end);
+
+  paginatedItems.forEach(category => {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
@@ -59,62 +93,125 @@ async function getCategories() {
   });
 }
 
-getCategories();
+
+// ================= RENDER PAGINATION =================
+
+function renderPagination() {
+  pageNumbers.innerHTML = "";
+
+  const totalPages = Math.ceil(allCategories.length / itemsPerPage);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+
+    if (i === currentPage) {
+      btn.classList.add("active-page");
+    }
+
+    btn.onclick = () => {
+      currentPage = i;
+      renderCategories();
+      renderPagination();
+    };
+
+    pageNumbers.appendChild(btn);
+  }
+
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === totalPages;
+}
 
 
-// CREATE / EDIT
+// ================= PREV / NEXT =================
+
+prevBtn.onclick = () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderCategories();
+    renderPagination();
+  }
+};
+
+nextBtn.onclick = () => {
+  const totalPages = Math.ceil(allCategories.length / itemsPerPage);
+
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderCategories();
+    renderPagination();
+  }
+};
+
+
+// ================= CREATE / EDIT =================
+
 submitBtn.addEventListener("click", async () => {
   const name = input.value.trim();
   if (!name) return;
 
-  if (editId) {
-    // EDIT
-    await fetch(`${ADMIN_API}/${editId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ name })
-    });
+  try {
+    if (editId) {
+      // EDIT
+      await fetch(`${ADMIN_API}/${editId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ name })
+      });
 
-    editId = null;
-  } else {
-    // CREATE
-    await fetch(ADMIN_API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ name })
-    });
+      editId = null;
+    } else {
+      // CREATE
+      await fetch(ADMIN_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ name })
+      });
+    }
+
+    input.value = "";
+    modal.style.display = "none";
+
+    currentPage = 1; // reset səhifə
+    getCategories();
+
+  } catch (err) {
+    console.log("Submit error:", err);
   }
-
-  input.value = "";
-  modal.style.display = "none";
-  getCategories();
 });
 
 
-// DELETE
+// ================= DELETE =================
+
 async function deleteCategory(id) {
   const confirmDelete = confirm("Bu kateqoriyanı silmək istədiyinizə əminsiniz?");
   if (!confirmDelete) return;
 
-  await fetch(`${ADMIN_API}/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  try {
+    await fetch(`${ADMIN_API}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
-  alert("Kateqoriya silindi");
-  getCategories();
+    currentPage = 1; // reset səhifə
+    getCategories();
+
+  } catch (err) {
+    console.log("Delete error:", err);
+  }
 }
 
 
-// EDIT
+// ================= EDIT =================
+
 function editCategory(id, name) {
   editId = id;
   input.value = name;
