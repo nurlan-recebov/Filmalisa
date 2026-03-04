@@ -255,6 +255,7 @@
 /* SOL POSTER */
 .details__image img {
     width: 573px;
+    height: 786px;
     border-radius: 24px;
     object-fit: cover;
     padding-left: 20px;
@@ -285,6 +286,8 @@
 
 /* Şəkil üzərində play overlay */
 .details__image {
+    width: 573px;
+    height: 786px;
     position: relative;
     display: inline-block;
 }
