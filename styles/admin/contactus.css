@@ -9,6 +9,7 @@ body{
 .admin-dashboard-content {
     flex: 1;
     background-color: #171616;
+    height: 100vh;
 }
 
 

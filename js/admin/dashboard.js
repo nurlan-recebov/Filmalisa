@@ -1,18 +1,33 @@
 const API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/dashboard";
 const token = localStorage.getItem("token");
 
-
-
 const cards = document.querySelectorAll(".admin-stat-card-value");
+const loader = document.getElementById("loader");
 
+
+// ================= LOADER =================
+function showLoader() {
+  loader.style.display = "flex";
+}
+
+function hideLoader() {
+  loader.style.display = "none";
+}
+
+
+// ================= DASHBOARD =================
 async function getDashboard() {
   try {
+    showLoader();
+
     const res = await fetch(API, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
+
+    if (!res.ok) throw new Error("Fetch failed");
 
     const result = await res.json();
     const data = result.data;
@@ -27,6 +42,8 @@ async function getDashboard() {
 
   } catch (error) {
     console.log("Dashboard xətası:", error);
+  } finally {
+    hideLoader();
   }
 }
 

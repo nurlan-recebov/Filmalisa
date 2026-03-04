@@ -17,19 +17,28 @@ const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
 const pageNumbers = document.querySelector(".page-numbers");
 
+const loader = document.getElementById("loader");
+
 let editId = null;
 let actorChoices = null;
 const token = localStorage.getItem("token");
-
-// ================= PAGINATION =================
 
 let currentPage = 1;
 let moviesPerPage = 5;
 let allMovies = [];
 
 
-// ================= MODAL =================
+// ================= LOADER =================
+function showLoader() {
+  loader.style.display = "flex";
+}
 
+function hideLoader() {
+  loader.style.display = "none";
+}
+
+
+// ================= MODAL =================
 addBtn.onclick = () => {
   modal.style.display = "flex";
 };
@@ -49,7 +58,6 @@ function closeModal() {
 
 
 // ================= POSTER PREVIEW =================
-
 coverInput.addEventListener("input", () => {
   const url = coverInput.value.trim();
   modal_poster.src =
@@ -64,9 +72,10 @@ modal_poster.onerror = () => {
 
 
 // ================= CATEGORIES =================
-
 async function getCategories() {
   try {
+    showLoader();
+
     const res = await fetch(CATEGORY_API, {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -83,14 +92,17 @@ async function getCategories() {
 
   } catch (err) {
     console.log("Category error:", err);
+  } finally {
+    hideLoader();
   }
 }
 
 
 // ================= ACTORS =================
-
 async function getActors() {
   try {
+    showLoader();
+
     const res = await fetch(ACTOR_API, {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -115,26 +127,31 @@ async function getActors() {
 
   } catch (err) {
     console.log("Actor error:", err);
+  } finally {
+    hideLoader();
   }
 }
 
 
 // ================= MOVIES =================
-
 async function getMovies() {
   try {
+    showLoader();
+
     const res = await fetch(GET_API, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
     const result = await res.json();
-
     allMovies = result.data;
+
     renderMovies();
     renderPagination();
 
   } catch (err) {
     console.log("Movie error:", err);
+  } finally {
+    hideLoader();
   }
 }
 
@@ -200,7 +217,6 @@ prevBtn.onclick = () => {
 
 nextBtn.onclick = () => {
   const totalPages = Math.ceil(allMovies.length / moviesPerPage);
-
   if (currentPage < totalPages) {
     currentPage++;
     renderMovies();
@@ -210,7 +226,6 @@ nextBtn.onclick = () => {
 
 
 // ================= FORM SUBMIT =================
-
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -234,6 +249,8 @@ form.addEventListener("submit", async (e) => {
   const method = editId ? "PUT" : "POST";
 
   try {
+    showLoader();
+
     const res = await fetch(url, {
       method,
       headers: {
@@ -251,16 +268,19 @@ form.addEventListener("submit", async (e) => {
 
   } catch (err) {
     console.log("Submit error:", err);
+  } finally {
+    hideLoader();
   }
 });
 
 
 // ================= DELETE =================
-
 async function deleteMovie(id) {
   if (!confirm("Filmi silmək istədiyinizə əminsiniz?")) return;
 
   try {
+    showLoader();
+
     await fetch(`${ADMIN_API}/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` }
@@ -271,14 +291,17 @@ async function deleteMovie(id) {
 
   } catch (err) {
     console.log("Delete error:", err);
+  } finally {
+    hideLoader();
   }
 }
 
 
 // ================= EDIT =================
-
 async function editMovie(id) {
   try {
+    showLoader();
+
     const res = await fetch(`${GET_API}/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -307,18 +330,18 @@ async function editMovie(id) {
     });
 
     modal_poster.src = movie.cover_url;
-
     editId = id;
     modal.style.display = "flex";
 
   } catch (err) {
     console.log("Edit error:", err);
+  } finally {
+    hideLoader();
   }
 }
 
 
-// ================= PAGE LOAD =================
-
+// ================= INIT =================
 getMovies();
 getCategories();
 getActors();

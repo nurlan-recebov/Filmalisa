@@ -15,8 +15,8 @@ const pageNumbers = document.querySelector(".page-numbers");
 const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
 
+const loader = document.getElementById("loader");
 const token = localStorage.getItem("token");
-
 
 let actors = [];
 let editId = null;
@@ -25,24 +25,43 @@ let currentPage = 1;
 const rowsPerPage = 5;
 
 
+// ================= LOADER =================
+function showLoader() {
+  loader.style.display = "flex";
+}
+
+function hideLoader() {
+  loader.style.display = "none";
+}
+
 
 // ================= GET ACTORS =================
 async function getActors() {
-  const res = await fetch(GET_API, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  try {
+    showLoader();
 
-  const data = await res.json();
-  actors = data.data;
+    const res = await fetch(GET_API, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
-  displayActors();
-  setupPagination();
+    if (!res.ok) throw new Error("Fetch failed");
+
+    const data = await res.json();
+    actors = data.data;
+
+    displayActors();
+    setupPagination();
+
+  } catch (error) {
+    console.log("GET Actor Error:", error);
+  } finally {
+    hideLoader();
+  }
 }
 
 getActors();
-
 
 
 // ================= DISPLAY ACTORS =================
@@ -79,7 +98,6 @@ function displayActors() {
 }
 
 
-
 // ================= PAGINATION =================
 function setupPagination() {
   pageNumbers.innerHTML = "";
@@ -108,7 +126,6 @@ function setupPagination() {
   nextBtn.disabled = currentPage === pageCount;
 }
 
-
 prevBtn.addEventListener("click", () => {
   if (currentPage > 1) {
     currentPage--;
@@ -128,7 +145,6 @@ nextBtn.addEventListener("click", () => {
 });
 
 
-
 // ================= OPEN MODAL =================
 openBtn.onclick = () => {
   modal.style.display = "flex";
@@ -141,12 +157,10 @@ openBtn.onclick = () => {
 };
 
 
-
 // ================= CLOSE MODAL =================
 closeBtn.onclick = () => {
   modal.style.display = "none";
 };
-
 
 
 // ================= SUBMIT =================
@@ -155,40 +169,47 @@ submitBtn.onclick = async () => {
   const surname = surnameInput.value.trim();
   const img_url = imageInput.value.trim();
 
-  if (!name || !surname || !img_url) {
-    // alert("Bütün xanaları doldur");
-    return;
-  }
+  if (!name || !surname || !img_url) return;
 
-  if (editId) {
-    await fetch(`${API}/${editId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ name, surname, img_url })
-    });
-  } else {
-    await fetch(API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ name, surname, img_url })
-    });
-  }
+  try {
+    showLoader();
 
-  modal.style.display = "none";
-  getActors();
+    if (editId) {
+      await fetch(`${API}/${editId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ name, surname, img_url })
+      });
+    } else {
+      await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ name, surname, img_url })
+      });
+    }
+
+    modal.style.display = "none";
+    currentPage = 1;
+    getActors();
+
+  } catch (error) {
+    console.log("Submit Actor Error:", error);
+  } finally {
+    hideLoader();
+  }
 };
-
 
 
 // ================= EDIT =================
 function editActor(id) {
   const actor = actors.find(a => a.id === id);
+  if (!actor) return;
 
   editId = id;
 
@@ -196,9 +217,8 @@ function editActor(id) {
   surnameInput.value = actor.surname;
   imageInput.value = actor.img_url;
 
-  overlay.style.display = "flex";
+  modal.style.display = "flex";
 }
-
 
 
 // ================= DELETE =================
@@ -206,12 +226,22 @@ async function deleteActor(id) {
   const confirmDelete = confirm("Actor silinsin?");
   if (!confirmDelete) return;
 
-  await fetch(`${API}/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  try {
+    showLoader();
 
-  getActors();
+    await fetch(`${API}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    currentPage = 1;
+    getActors();
+
+  } catch (error) {
+    console.log("Delete Actor Error:", error);
+  } finally {
+    hideLoader();
+  }
 }

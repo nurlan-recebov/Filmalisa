@@ -5,32 +5,58 @@ const pageNumbers = document.querySelector(".page-numbers");
 const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
 
+const loader = document.getElementById("loader");
 const token = localStorage.getItem("token");
-
-
 
 let users = [];
 let currentPage = 1;
 const rowsPerPage = 10;
 
+
+// ================= LOADER =================
+function showLoader() {
+  loader.style.display = "flex";
+}
+
+function hideLoader() {
+  loader.style.display = "none";
+}
+
+
+// ================= AUTH CHECK =================
 if (!token) {
   window.location.href = "login.html";
 }
 
+
+// ================= GET USERS =================
 async function getUsers() {
-  const res = await fetch(GET_API, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  try {
+    showLoader();
 
-  const result = await res.json();
-  users = result.data || [];
+    const res = await fetch(GET_API, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
-  displayUsers();
-  createPagination();
+    if (!res.ok) throw new Error("Fetch failed");
+
+    const result = await res.json();
+    users = result.data || [];
+
+    displayUsers();
+    createPagination();
+
+  } catch (error) {
+    console.log("User error:", error);
+  } finally {
+    hideLoader();
+  }
 }
 
+
+// ================= DISPLAY =================
 function displayUsers() {
   tableBody.innerHTML = "";
 
@@ -51,12 +77,14 @@ function displayUsers() {
   });
 }
 
+
+// ================= PAGINATION =================
 function createPagination() {
   pageNumbers.innerHTML = "";
   const pageCount = Math.ceil(users.length / rowsPerPage);
 
   for (let i = 1; i <= pageCount; i++) {
-    const btn = document.createElement("button"); // div yox button
+    const btn = document.createElement("button");
     btn.innerText = i;
 
     if (i === currentPage) {
@@ -72,11 +100,12 @@ function createPagination() {
     pageNumbers.appendChild(btn);
   }
 
-  // Prev / Next disable
   prevBtn.disabled = currentPage === 1;
   nextBtn.disabled = currentPage === pageCount;
 }
 
+
+// ================= PREV / NEXT =================
 prevBtn.addEventListener("click", () => {
   if (currentPage > 1) {
     currentPage--;
@@ -95,4 +124,6 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
+
+// ================= INIT =================
 getUsers();

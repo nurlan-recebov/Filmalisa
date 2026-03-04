@@ -13,29 +13,35 @@ const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
 const pageNumbers = document.querySelector(".page-numbers");
 
+const loader = document.getElementById("loader");
+
 let editId = null;
 const token = localStorage.getItem("token");
-
-// ================= PAGINATION =================
 
 let currentPage = 1;
 let itemsPerPage = 5;
 let allCategories = [];
 
 
-// ================= MODAL =================
+// ================= LOADER =================
+function showLoader() {
+  loader.style.display = "flex";
+}
 
-// Modal open
+function hideLoader() {
+  loader.style.display = "none";
+}
+
+
+// ================= MODAL =================
 openBtn.addEventListener("click", () => {
   modal.style.display = "flex";
 });
 
-// Modal close
 closeBtn.addEventListener("click", () => {
   modal.style.display = "none";
 });
 
-// Close outside
 window.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
@@ -44,9 +50,10 @@ window.addEventListener("click", (e) => {
 
 
 // ================= GET CATEGORIES =================
-
 async function getCategories() {
   try {
+    showLoader();
+
     const res = await fetch(GET_API, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -54,13 +61,15 @@ async function getCategories() {
     });
 
     const data = await res.json();
-
     allCategories = data.data;
+
     renderCategories();
     renderPagination();
 
   } catch (err) {
     console.log("Category error:", err);
+  } finally {
+    hideLoader();
   }
 }
 
@@ -68,7 +77,6 @@ getCategories();
 
 
 // ================= RENDER TABLE =================
-
 function renderCategories() {
   tableBody.innerHTML = "";
 
@@ -94,8 +102,7 @@ function renderCategories() {
 }
 
 
-// ================= RENDER PAGINATION =================
-
+// ================= PAGINATION =================
 function renderPagination() {
   pageNumbers.innerHTML = "";
 
@@ -124,7 +131,6 @@ function renderPagination() {
 
 
 // ================= PREV / NEXT =================
-
 prevBtn.onclick = () => {
   if (currentPage > 1) {
     currentPage--;
@@ -145,14 +151,14 @@ nextBtn.onclick = () => {
 
 
 // ================= CREATE / EDIT =================
-
 submitBtn.addEventListener("click", async () => {
   const name = input.value.trim();
   if (!name) return;
 
   try {
+    showLoader();
+
     if (editId) {
-      // EDIT
       await fetch(`${ADMIN_API}/${editId}`, {
         method: "PUT",
         headers: {
@@ -163,8 +169,8 @@ submitBtn.addEventListener("click", async () => {
       });
 
       editId = null;
+
     } else {
-      // CREATE
       await fetch(ADMIN_API, {
         method: "POST",
         headers: {
@@ -178,22 +184,25 @@ submitBtn.addEventListener("click", async () => {
     input.value = "";
     modal.style.display = "none";
 
-    currentPage = 1; // reset səhifə
+    currentPage = 1;
     getCategories();
 
   } catch (err) {
     console.log("Submit error:", err);
+  } finally {
+    hideLoader();
   }
 });
 
 
 // ================= DELETE =================
-
 async function deleteCategory(id) {
   const confirmDelete = confirm("Bu kateqoriyanı silmək istədiyinizə əminsiniz?");
   if (!confirmDelete) return;
 
   try {
+    showLoader();
+
     await fetch(`${ADMIN_API}/${id}`, {
       method: "DELETE",
       headers: {
@@ -201,17 +210,18 @@ async function deleteCategory(id) {
       }
     });
 
-    currentPage = 1; // reset səhifə
+    currentPage = 1;
     getCategories();
 
   } catch (err) {
     console.log("Delete error:", err);
+  } finally {
+    hideLoader();
   }
 }
 
 
 // ================= EDIT =================
-
 function editCategory(id, name) {
   editId = id;
   input.value = name;

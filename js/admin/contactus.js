@@ -8,27 +8,55 @@ const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
 const pageNumbers = document.querySelector(".page-numbers");
 
+const loader = document.getElementById("loader");
+
 let contacts = [];
 let currentPage = 1;
-const rowsPerPage = 5; // bir səhifədə neçə contact görünsün
+const rowsPerPage = 5;
 
 
 
-
-async function getContacts() {
-  const res = await fetch(GET_API, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  const result = await res.json();
-  contacts = result.data;
-
-  displayContacts();
-  renderPagination();
+// ================= LOADER =================
+function showLoader() {
+  loader.style.display = "flex";
 }
 
+function hideLoader() {
+  loader.style.display = "none";
+}
+
+
+
+// ================= GET CONTACTS =================
+async function getContacts() {
+  try {
+    showLoader();
+
+    const res = await fetch(GET_API, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) throw new Error("Fetch failed");
+
+    const result = await res.json();
+    contacts = result.data;
+
+    displayContacts();
+    renderPagination();
+
+  } catch (error) {
+    console.error(error);
+    alert("Məlumatlar yüklənə bilmədi");
+  } finally {
+    hideLoader();
+  }
+}
+
+
+
+// ================= DISPLAY =================
 function displayContacts() {
   tableBody.innerHTML = "";
 
@@ -53,6 +81,9 @@ function displayContacts() {
   });
 }
 
+
+
+// ================= PAGINATION =================
 function renderPagination() {
   pageNumbers.innerHTML = "";
   const totalPages = Math.ceil(contacts.length / rowsPerPage);
@@ -92,19 +123,35 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
+
+
+// ================= DELETE =================
 async function deleteContact(id) {
   const confirmDelete = confirm("Bu contacti silmək istədiyinizə əminsiniz?");
   if (!confirmDelete) return;
 
-  await fetch(`${ADMIN_API}/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  try {
+    showLoader();
 
-  alert("Contact silindi");
-  getContacts();
+    await fetch(`${ADMIN_API}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    alert("Contact silindi");
+    getContacts();
+
+  } catch (error) {
+    console.error(error);
+    alert("Silinmə zamanı xəta baş verdi");
+  } finally {
+    hideLoader();
+  }
 }
 
+
+
+// ================= INIT =================
 getContacts();

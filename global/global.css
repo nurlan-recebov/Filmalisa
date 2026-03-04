@@ -283,3 +283,6 @@ input:-webkit-autofill:active {
         z-index: 9999;
     }
 }
+.admin-dashboard-content{
+  height: 100vh;
+}

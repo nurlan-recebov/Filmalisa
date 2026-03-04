@@ -7,17 +7,28 @@ const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
 const pageNumbers = document.querySelector(".page-numbers");
 
-// ================= PAGINATION =================
+const loader = document.getElementById("loader");
 
+// ================= LOADER =================
+function showLoader() {
+  loader.style.display = "flex";
+}
+
+function hideLoader() {
+  loader.style.display = "none";
+}
+
+// ================= PAGINATION =================
 let currentPage = 1;
 let itemsPerPage = 5;
 let allComments = [];
 
 
 // ================= GET COMMENTS =================
-
 async function getComments() {
   try {
+    showLoader();
+
     const res = await fetch(GET_API, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -27,7 +38,6 @@ async function getComments() {
     if (!res.ok) throw new Error("Fetch failed");
 
     const { data } = await res.json();
-
     allComments = data;
 
     renderComments();
@@ -35,6 +45,8 @@ async function getComments() {
 
   } catch (error) {
     console.log("GET Error:", error);
+  } finally {
+    hideLoader();
   }
 }
 
@@ -42,7 +54,6 @@ getComments();
 
 
 // ================= RENDER COMMENTS =================
-
 function renderComments() {
   tableBody.innerHTML = "";
 
@@ -76,7 +87,6 @@ function renderComments() {
 
 
 // ================= RENDER PAGINATION =================
-
 function renderPagination() {
   pageNumbers.innerHTML = "";
 
@@ -105,7 +115,6 @@ function renderPagination() {
 
 
 // ================= PREV / NEXT =================
-
 prevBtn.onclick = () => {
   if (currentPage > 1) {
     currentPage--;
@@ -126,7 +135,6 @@ nextBtn.onclick = () => {
 
 
 // ================= DELETE COMMENT =================
-
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("delete-btn")) {
 
@@ -136,6 +144,8 @@ tableBody.addEventListener("click", async (e) => {
     if (!confirm("Silmək istədiyinizə əminsiniz?")) return;
 
     try {
+      showLoader();
+
       const res = await fetch(
         `https://api.sarkhanrahimli.dev/api/filmalisa/admin/movies/${movieId}/comment/${commentId}`,
         {
@@ -148,12 +158,13 @@ tableBody.addEventListener("click", async (e) => {
 
       if (!res.ok) throw new Error("Delete failed");
 
-      // Silindikdən sonra siyahını yenilə
       currentPage = 1;
       getComments();
 
     } catch (error) {
       console.log("DELETE Error:", error);
+    } finally {
+      hideLoader();
     }
   }
 });
