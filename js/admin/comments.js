@@ -76,7 +76,7 @@ function renderComments() {
           class="delete-btn icon-btn"
           data-movieid="${comment.movie?.id}"
           data-commentid="${comment.id}">
-            <i class="fa-solid fa-pen"></i>
+         <i class="fa-solid fa-trash"></i>
         </button>
       </td>
     `;
