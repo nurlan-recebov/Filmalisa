@@ -59,3 +59,11 @@ registerForm.addEventListener("submit", async (e) => {
     }, 500);
   }
 });
+const registerInput = document.getElementById("email");
+
+// LocalStorage-dən emaili götürürük
+const savedEmail = localStorage.getItem("registerEmail");
+
+if (savedEmail) {
+  registerInput.value = savedEmail;
+}

@@ -63,3 +63,20 @@ contactForm.addEventListener("submit", async (e) => {
     submitBtn.style.opacity = "1";
   }
 });
+const emailInput = document.getElementById("getStartedEmail");
+const btn = document.getElementById("getStartedBtn");
+
+btn.addEventListener("click", () => {
+  const email = emailInput.value.trim();
+
+  if (!email) {
+    alert("Email daxil edin");
+    return;
+  }
+
+  // Emaili yadda saxlayırıq
+  localStorage.setItem("registerEmail", email);
+
+  // Register səhifəsinə yönləndiririk
+  window.location.href = "../../pages/client/register.html";
+});
