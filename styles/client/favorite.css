@@ -3,7 +3,6 @@
 .body-main {
   display: flex;
   background-color: #1d1d1d;
-  overflow-x: hidden;
   margin-bottom: 138px;
 }
 
@@ -79,6 +78,7 @@ ul {
 .movie-list {
   display: flex;
   padding: 48px 0 188px 0;
+  gap: 12px;
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
@@ -90,12 +90,13 @@ ul {
 }
 
 .movie-card {
-  width: 504px;
-  height: 736px;
+  width: 292px;
+  height: 440px;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
   transition: transform 0.2s;
+  border-radius: 10px;
 }
 
 .movie-card:hover {
@@ -121,6 +122,8 @@ ul {
       rgba(0, 0, 0, 0.9) 100%);
   z-index: 1;
 }
+
+
 
 .movie-poster {
   object-fit: cover;
