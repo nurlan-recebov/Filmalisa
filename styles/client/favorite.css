@@ -4,6 +4,7 @@
   display: flex;
   background-color: #1d1d1d;
   overflow-x: hidden;
+  margin-bottom: 138px;
 }
 
 .body-left {
@@ -40,13 +41,12 @@ ul {
 
 .sidebar li img:hover {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(70%) sepia(40%) saturate(600%)
-    hue-rotate(165deg);
+  filter: brightness(0) saturate(100%) invert(70%) sepia(40%) saturate(600%) hue-rotate(165deg);
 }
 
 .body-right {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   padding: 158px 0 0 0;
 }
 
@@ -79,9 +79,9 @@ ul {
 .movie-list {
   display: flex;
   padding: 48px 0 188px 0;
-  overflow-x: auto; 
+  overflow-x: auto;
   scroll-behavior: smooth;
-  scrollbar-width: none; 
+  scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
@@ -90,64 +90,86 @@ ul {
 }
 
 .movie-card {
-    width: 504px;
+  width: 504px;
   height: 736px;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.movie-card:hover {
+  cursor: pointer;
+}
+
+.movie-card:hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .movie-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 40%,
-    rgba(0, 0, 0, 0.4) 65%,
-    rgba(0, 0, 0, 0.9) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.4) 65%,
+      rgba(0, 0, 0, 0.9) 100%);
   z-index: 1;
 }
 
 .movie-poster {
-   object-fit: cover;
+  object-fit: cover;
   display: block;
   width: 100%;
   height: 100%;
 }
 
 .movie-info {
-   position: absolute;
+  position: absolute;
   bottom: 40px;
   left: 24px;
   z-index: 2;
   color: white;
+  transition: bottom 0.3s;
+}
+
+.movie-card:hover .movie-info {
+  bottom: 70px;
+}
+
+.movie-card:hover .movie-poster {
+  filter: blur(2px) brightness(0.7);
+  transition: filter 0.3s;
 }
 
 .movie-genre {
-   padding: 4px 8px;
+  padding: 4px 8px;
   color: var(--client-nav-active-bg);
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
   margin-bottom: 16px;
-  background: rgba(0, 0, 0, 0.3);
+  background: transparent;
   border-top-right-radius: 8px;
   border-bottom-left-radius: 8px;
 }
 
 .movie-rating {
-   width: 80px;
+  width: 80px;
   height: 16px;
 }
 
 .movie-title {
-   font-weight: 500;
+  font-weight: 500;
   font-size: 32px;
   line-height: 40px;
   margin-top: 16px;
-  font-family: "Roboto",sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 /* Responsive Design */
@@ -169,7 +191,8 @@ ul {
   }
 
   .movie-list {
-    flex-wrap: wrap;        /* ← mütləq lazımdır */
+    flex-wrap: wrap;
+    /* ← mütləq lazımdır */
     overflow-x: hidden;
     gap: 16px;
   }
@@ -183,6 +206,11 @@ ul {
   .movie-info {
     bottom: 24px;
     left: 16px;
+    transition: bottom 0.3s;
+  }
+
+  .movie-card:hover .movie-info {
+    bottom: 44px;
   }
 
   .movie-title {
@@ -220,7 +248,8 @@ ul {
   }
 
   .movie-list {
-    flex-wrap: wrap;        /* ← mütləq lazımdır */
+    flex-wrap: wrap;
+    /* ← mütləq lazımdır */
     overflow-x: hidden;
     gap: 10px;
   }
@@ -232,8 +261,14 @@ ul {
   }
 
   .movie-info {
-    bottom: 16px;           /* ← mərkəzləşməsin deyə absolute pozisiya düzəldildi */
+    bottom: 16px;
+    /* ← mərkəzləşməsin deyə absolute pozisiya düzəldildi */
     left: 12px;
+    transition: bottom 0.3s;
+  }
+
+  .movie-card:hover .movie-info {
+    bottom: 32px;
   }
 
   .movie-title {
@@ -263,6 +298,11 @@ ul {
   .movie-info {
     bottom: 12px;
     left: 10px;
+    transition: bottom 0.3s;
+  }
+
+  .movie-card:hover .movie-info {
+    bottom: 22px;
   }
 
   .movie-title {
