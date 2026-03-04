@@ -5,15 +5,11 @@ const loader = document.getElementById("loader");
 
 
 eyeIcon.addEventListener("click", () => {
-  if (passInpEl.getAttribute("type") == "text") {
-    passInpEl.setAttribute("type", "password");
-    eyeIcon.setAttribute("src", "./../../assets/icons/eye.svg");
-    eyeIcon.setAttribute("alt", "Gizlət");
-  } else {
-    passInpEl.setAttribute("type", "text");
-    eyeIcon.setAttribute("src", "./../../assets/icons/eye-off.svg");
-    eyeIcon.setAttribute("alt", "Göstər");
-  }
+    const isText = passInpEl.type === "text";
+    passInpEl.type = isText ? "password" : "text";
+    eyeIcon.src = isText 
+        ? "../../assets/icons/eye.svg" 
+        : "../../assets/icons/eye-off.svg";
 });
 
 loginForm.addEventListener("submit", async (e) => {
@@ -41,8 +37,8 @@ try {
 
   const data = await response.json();
 
-  if (response.ok) {
-    const token = data.data.tokens.access_token;
+ if (response.ok) {
+    const token = data?.data?.tokens?.access_token; 
     if (token) {
         localStorage.setItem("userToken", token);
         showToast("success", "Giriş uğurludur!");

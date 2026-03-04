@@ -1,4 +1,18 @@
 const items = document.querySelectorAll(".item");
+const formEl = document.querySelector(".email-box");
+
+formEl.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const emailInput = formEl.querySelector("input");
+    const emailValue = emailInput.value.trim();
+
+    if (emailValue) {
+        window.location.href = `./pages/client/register.html?email=${encodeURIComponent(emailValue)}`;
+        emailValue=""
+    }
+});
+
 
 items.forEach(item => {
   const question = item.querySelector(".question");
