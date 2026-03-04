@@ -10,7 +10,7 @@ const token = localStorage.getItem("token");
 
 let users = [];
 let currentPage = 1;
-const rowsPerPage = 10;
+const rowsPerPage = 9;
 
 
 // ================= LOADER =================

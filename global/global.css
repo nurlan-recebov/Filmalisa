@@ -25,6 +25,7 @@
 .admin-dashboard-content {
   margin-left: 250px;
   width: calc(100% - 250px);
+  height: 100vh;
 }
 
 /* Sidebar Logo */
@@ -198,7 +199,7 @@ tr button {
 .content-wrapper-relative {
     position: relative !important;
     flex: 1;
-    overflow: hidden;
+   
 }
 
 .loader-wrapper {
@@ -285,4 +286,24 @@ input:-webkit-autofill:active {
 }
 .admin-dashboard-content{
   height: 100vh;
+}
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 5px;
+  transition: 0.2s;
+}
+
+.edit-btn {
+ color: #9b51e0;
+}
+
+.delete-btn {
+ color: #9b51e0;
+}
+
+.icon-btn:hover {
+  transform: scale(1.2);
 }

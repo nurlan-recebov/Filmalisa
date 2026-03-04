@@ -85,8 +85,13 @@ function displayActors() {
         </div>
       </td>
       <td>
-        <button class="edit-btn">Edit</button>
-        <button class="delete-btn">Delete</button>
+     <button class="edit-btn icon-btn">
+    <i class="fa-solid fa-pen"></i>
+  </button>
+  
+  <button class="delete-btn icon-btn">
+    <i class="fa-solid fa-trash"></i>
+  </button>
       </td>
     `;
 

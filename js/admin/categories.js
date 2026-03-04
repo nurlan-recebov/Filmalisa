@@ -92,8 +92,8 @@ function renderCategories() {
       <td>${category.id}</td>
       <td>${category.name}</td>
       <td>
-        <button onclick="editCategory(${category.id}, '${category.name}')">Edit</button>
-        <button onclick="deleteCategory(${category.id})">Delete</button>
+        <button class="edit-btn icon-btn" onclick="editCategory(${category.id}, '${category.name}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="delete-btn icon-btn" onclick="deleteCategory(${category.id})"> <i class="fa-solid fa-trash"></i></button>
       </td>
     `;
 

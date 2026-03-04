@@ -73,7 +73,7 @@ function displayContacts() {
       <td>${contact.email}</td>
       <td>${contact.reason}</td>
       <td>
-        <button onclick="deleteContact(${contact.id})">Delete</button>
+        <button class="delete-btn icon-btn" onclick="deleteContact(${contact.id})">  <i class="fa-solid fa-trash"></i></button>
       </td>
     `;
 

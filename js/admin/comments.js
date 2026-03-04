@@ -73,10 +73,10 @@ function renderComments() {
       <td>${comment.user?.email || "-"}</td>
       <td>
         <button 
-          class="delete-btn"
+          class="delete-btn icon-btn"
           data-movieid="${comment.movie?.id}"
           data-commentid="${comment.id}">
-          Delete
+            <i class="fa-solid fa-pen"></i>
         </button>
       </td>
     `;

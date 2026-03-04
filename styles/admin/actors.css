@@ -110,7 +110,7 @@ tbody tr td:first-child {
 }
 
 /* BUTTONS */
-.edit-btn {
+/* .edit-btn {
     background:  #7b3fe4;
     border: none;
     padding: 6px 14px;
@@ -135,7 +135,7 @@ tbody tr td:first-child {
 
 .delete-btn:hover {
     background: #7b3fe4;
-}
+} */
 
 /* OVERLAY */
 

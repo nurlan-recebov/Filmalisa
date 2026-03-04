@@ -172,8 +172,8 @@ function renderMovies() {
       <td>${movie.run_time_min}</td>
       <td>${movie.imdb}</td>
       <td>
-        <button onclick="editMovie(${movie.id})">Edit</button>
-        <button onclick="deleteMovie(${movie.id})">Delete</button>
+        <button class="edit-btn icon-btn" onclick="editMovie(${movie.id})">  <i class="fa-solid fa-pen"></i></button>
+        <button class="delete-btn icon-btn" onclick="deleteMovie(${movie.id})">   <i class="fa-solid fa-trash"></i></button>
       </td>
     `;
 
