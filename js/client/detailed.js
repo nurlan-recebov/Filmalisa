@@ -42,16 +42,32 @@ function getRelativeDate(date) {
     return inputDate.toLocaleDateString();
 }
 
+let currentUser = null;
+
+async function fetchCurrentUser() {
+    try {
+        const res = await fetch("https://api.sarkhanrahimli.dev/api/filmalisa/profile", {
+            headers: { Authorization: `Bearer ${TOKEN}` }
+        });
+        const data = await res.json();
+        if (data && data.data) {
+            currentUser = data.data;
+        }
+    } catch (e) {
+        console.log("Error fetching profile", e);
+    }
+}
+
 function renderComments(comments) {
     commentsList.innerHTML = "";
-    const defaultPhotoUrl = '../../assets/images/profilePhote.svg';
+    const defaultPhotoUrl = '../../assets/images/user-photo.png';
     if (!comments || comments.length === 0) {
         commentsList.innerHTML = "<p>No comments yet.</p>";
         return;
     }
     comments.forEach((comment) => {
-        const photoSrc = comment.userPhotoUrl || defaultPhotoUrl;
-        const userName = comment.user_name || comment.user?.full_name || "User";
+        const photoSrc = comment.user?.img_url || comment.userPhotoUrl || defaultPhotoUrl;
+        const userName = comment.user?.full_name || comment.user_name || "User";
         const div = document.createElement("div");
         div.classList.add("comment-item");
         div.innerHTML = `
@@ -92,8 +108,14 @@ async function fetchComments() {
 async function postComment(text) {
     if (!text) return;
 
+    if (!currentUser) {
+        await fetchCurrentUser();
+    }
+
     const newComment = {
-        user_name: "You",
+        user_name: currentUser ? currentUser.full_name : "You",
+        userPhotoUrl: currentUser ? currentUser.img_url : null,
+        user: currentUser,
         text,
         created_at: new Date().toISOString(),
     };
@@ -129,6 +151,8 @@ if (commentBtn && commentInput) {
         if (e.key === "Enter") commentBtn.click();
     });
 }
+
+fetchCurrentUser();
 
 async function fetchAndRenderMovie() {
     try {
