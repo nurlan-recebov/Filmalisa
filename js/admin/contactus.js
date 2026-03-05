@@ -15,7 +15,6 @@ let currentPage = 1;
 const rowsPerPage = 5;
 
 
-
 // ================= LOADER =================
 function showLoader() {
   loader.style.display = "flex";
@@ -24,7 +23,6 @@ function showLoader() {
 function hideLoader() {
   loader.style.display = "none";
 }
-
 
 
 // ================= GET CONTACTS =================
@@ -55,7 +53,6 @@ async function getContacts() {
 }
 
 
-
 // ================= DISPLAY =================
 function displayContacts() {
   tableBody.innerHTML = "";
@@ -65,15 +62,33 @@ function displayContacts() {
   const paginatedContacts = contacts.slice(start, end);
 
   paginatedContacts.forEach((contact) => {
+
+    const fullReason = contact.reason || "";
+    const shortReason =
+      fullReason.length > 30 ? fullReason.slice(0, 30) + "..." : fullReason;
+
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
       <td>${contact.id}</td>
       <td>${contact.full_name}</td>
       <td>${contact.email}</td>
-      <td>${contact.reason}</td>
       <td>
-        <button class="delete-btn icon-btn" onclick="deleteContact(${contact.id})">  <i class="fa-solid fa-trash"></i></button>
+        <span class="reason-text">${shortReason}</span>
+        ${
+          fullReason.length > 30
+            ? `<button class="read-more-btn" 
+                data-full="${fullReason}" 
+                data-short="${shortReason}">
+                Read more
+               </button>`
+            : ""
+        }
+      </td>
+      <td>
+        <button class="delete-btn icon-btn" onclick="deleteContact(${contact.id})">
+          <i class="fa-solid fa-trash"></i>
+        </button>
       </td>
     `;
 
@@ -81,6 +96,26 @@ function displayContacts() {
   });
 }
 
+
+// ================= READ MORE =================
+document.addEventListener("click", function (e) {
+
+  if (e.target.classList.contains("read-more-btn")) {
+
+    const btn = e.target;
+    const text = btn.previousElementSibling;
+
+    if (btn.textContent.trim() === "Read more") {
+      text.textContent = btn.dataset.full;
+      btn.textContent = "Show less";
+    } else {
+      text.textContent = btn.dataset.short;
+      btn.textContent = "Read more";
+    }
+
+  }
+
+});
 
 
 // ================= PAGINATION =================
@@ -116,6 +151,7 @@ prevBtn.addEventListener("click", () => {
 
 nextBtn.addEventListener("click", () => {
   const totalPages = Math.ceil(contacts.length / rowsPerPage);
+
   if (currentPage < totalPages) {
     currentPage++;
     displayContacts();
@@ -124,9 +160,9 @@ nextBtn.addEventListener("click", () => {
 });
 
 
-
 // ================= DELETE =================
 async function deleteContact(id) {
+
   const confirmDelete = confirm("Bu contacti silmək istədiyinizə əminsiniz?");
   if (!confirmDelete) return;
 
@@ -150,7 +186,6 @@ async function deleteContact(id) {
     hideLoader();
   }
 }
-
 
 
 // ================= INIT =================
