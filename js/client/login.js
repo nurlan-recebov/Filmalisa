@@ -41,10 +41,11 @@ try {
 
   const data = await response.json();
 
-  if (response.ok) {
+if (response.ok) {
     const token = data.data.tokens.access_token;
     if (token) {
         localStorage.setItem("userToken", token);
+        localStorage.setItem("userData", JSON.stringify(data.data.user)); 
         showToast("success", "Giriş uğurludur!");
         
         setTimeout(() => {
