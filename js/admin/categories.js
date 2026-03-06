@@ -9,6 +9,10 @@ const modal = document.getElementById("modal");
 const openBtn = document.getElementById("openModal");
 const closeBtn = document.querySelector(".close");
 
+const deleteModal = document.getElementById("deleteModal");
+const confirmDeleteBtn = document.getElementById("confirmDelete");
+const cancelDeleteBtn = document.getElementById("cancelDelete");
+
 const prevBtn = document.querySelector(".prev-page");
 const nextBtn = document.querySelector(".next-page");
 const pageNumbers = document.querySelector(".page-numbers");
@@ -16,6 +20,8 @@ const pageNumbers = document.querySelector(".page-numbers");
 const loader = document.getElementById("loader");
 
 let editId = null;
+let deleteId = null;
+
 const token = localStorage.getItem("token");
 
 let currentPage = 1;
@@ -33,7 +39,7 @@ function hideLoader() {
 }
 
 
-// ================= MODAL =================
+// ================= CREATE MODAL =================
 openBtn.addEventListener("click", () => {
   modal.style.display = "flex";
 });
@@ -45,6 +51,10 @@ closeBtn.addEventListener("click", () => {
 window.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
+  }
+
+  if (e.target === deleteModal) {
+    deleteModal.style.display = "none";
   }
 });
 
@@ -92,8 +102,13 @@ function renderCategories() {
       <td>${category.id}</td>
       <td>${category.name}</td>
       <td>
-        <button class="edit-btn icon-btn" onclick="editCategory(${category.id}, '${category.name}')"><i class="fa-solid fa-pen"></i></button>
-        <button class="delete-btn icon-btn" onclick="deleteCategory(${category.id})"> <i class="fa-solid fa-trash"></i></button>
+        <button class="edit-btn icon-btn" onclick="editCategory(${category.id}, '${category.name}')">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+
+        <button class="delete-btn icon-btn" onclick="deleteCategory(${category.id})">
+          <i class="fa-solid fa-trash"></i>
+        </button>
       </td>
     `;
 
@@ -152,6 +167,7 @@ nextBtn.onclick = () => {
 
 // ================= CREATE / EDIT =================
 submitBtn.addEventListener("click", async () => {
+
   const name = input.value.trim();
   if (!name) return;
 
@@ -159,6 +175,7 @@ submitBtn.addEventListener("click", async () => {
     showLoader();
 
     if (editId) {
+
       await fetch(`${ADMIN_API}/${editId}`, {
         method: "PUT",
         headers: {
@@ -171,6 +188,7 @@ submitBtn.addEventListener("click", async () => {
       editId = null;
 
     } else {
+
       await fetch(ADMIN_API, {
         method: "POST",
         headers: {
@@ -179,6 +197,7 @@ submitBtn.addEventListener("click", async () => {
         },
         body: JSON.stringify({ name })
       });
+
     }
 
     input.value = "";
@@ -192,23 +211,34 @@ submitBtn.addEventListener("click", async () => {
   } finally {
     hideLoader();
   }
+
 });
 
 
-// ================= DELETE =================
-async function deleteCategory(id) {
-  const confirmDelete = confirm("Bu kateqoriyanı silmək istədiyinizə əminsiniz?");
-  if (!confirmDelete) return;
+// ================= DELETE OPEN MODAL =================
+function deleteCategory(id) {
+  deleteId = id;
+  deleteModal.style.display = "flex";
+}
+
+
+// ================= CONFIRM DELETE =================
+confirmDeleteBtn.addEventListener("click", async () => {
+
+  if (!deleteId) return;
 
   try {
     showLoader();
 
-    await fetch(`${ADMIN_API}/${id}`, {
+    await fetch(`${ADMIN_API}/${deleteId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
+
+    deleteModal.style.display = "none";
+    deleteId = null;
 
     currentPage = 1;
     getCategories();
@@ -218,7 +248,15 @@ async function deleteCategory(id) {
   } finally {
     hideLoader();
   }
-}
+
+});
+
+
+// ================= CANCEL DELETE =================
+cancelDeleteBtn.addEventListener("click", () => {
+  deleteModal.style.display = "none";
+  deleteId = null;
+});
 
 
 // ================= EDIT =================

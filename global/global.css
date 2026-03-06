@@ -326,3 +326,71 @@ td {
   cursor: pointer;
   margin-left: 6px;
 }
+/* delete confirm */
+/* Delete Modal Background */
+.delete-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Box */
+.delete-modal-content {
+  background: #1e1e1e;
+  padding: 30px 40px;
+  border-radius: 10px;
+  text-align: center;
+  width: 350px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* Title */
+.delete-modal-content h3 {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+/* Buttons container */
+.delete-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Delete button */
+.delete-btn {
+  background:  #9b51e0;
+  border: none;
+  padding: 8px 18px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  background: #9b51e0;
+}
+
+/* Cancel button */
+.cancel-btn {
+  background: #555;
+  border: none;
+  padding: 8px 18px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #777;
+}

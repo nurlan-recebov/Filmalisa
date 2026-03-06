@@ -3,7 +3,7 @@ const ADMIN_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/movie";
 const CATEGORY_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/categories";
 const ACTOR_API = "https://api.sarkhanrahimli.dev/api/filmalisa/admin/actors";
 
-const modal_poster = document.querySelector('.modal-poster img');
+const modal_poster = document.querySelector(".modal-poster img");
 const tableBody = document.querySelector(".main-table tbody");
 const form = document.querySelector(".modal-form");
 const modal = document.getElementById("createModal");
@@ -19,7 +19,12 @@ const pageNumbers = document.querySelector(".page-numbers");
 
 const loader = document.getElementById("loader");
 
+const deleteModal = document.getElementById("deleteModal");
+const confirmDeleteBtn = document.getElementById("confirmDelete");
+const cancelDeleteBtn = document.getElementById("cancelDelete");
+
 let editId = null;
+let deleteId = null;
 let actorChoices = null;
 const token = localStorage.getItem("token");
 
@@ -27,144 +32,95 @@ let currentPage = 1;
 let moviesPerPage = 5;
 let allMovies = [];
 
-
 // ================= LOADER =================
-function showLoader() {
-  loader.style.display = "flex";
-}
-
-function hideLoader() {
-  loader.style.display = "none";
-}
-
+function showLoader() { loader.style.display = "flex"; }
+function hideLoader() { loader.style.display = "none"; }
 
 // ================= MODAL =================
-addBtn.onclick = () => {
-  modal.style.display = "flex";
-};
+addBtn.onclick = () => modal.style.display = "flex";
 
-modal.onclick = (e) => {
-  if (e.target === modal) closeModal();
-};
+modal.onclick = (e) => { if (e.target === modal) closeModal(); };
 
 function closeModal() {
   modal.style.display = "none";
   form.reset();
   modal_poster.src = "";
   editId = null;
-
   if (actorChoices) actorChoices.removeActiveItems();
 }
-
 
 // ================= POSTER PREVIEW =================
 coverInput.addEventListener("input", () => {
   const url = coverInput.value.trim();
-  modal_poster.src =
-    url ||
-    "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
+  modal_poster.src = url || "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
 });
 
 modal_poster.onerror = () => {
-  modal_poster.src =
-    "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
+  modal_poster.src = "https://tv-static-cdn.tvplus.com.tr/webtv/new-design/posters/dashboard/film-izle-header-mobile.webp";
 };
-
 
 // ================= CATEGORIES =================
 async function getCategories() {
   try {
     showLoader();
-
-    const res = await fetch(CATEGORY_API, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
+    const res = await fetch(CATEGORY_API, { headers: { Authorization: `Bearer ${token}` } });
     const result = await res.json();
     categorySelect.innerHTML = "";
-
     result.data.forEach(cat => {
       const option = document.createElement("option");
       option.value = cat.id;
       option.textContent = cat.name;
       categorySelect.appendChild(option);
     });
-
-  } catch (err) {
-    console.log("Category error:", err);
-  } finally {
-    hideLoader();
-  }
+  } catch (err) { console.log(err); } 
+  finally { hideLoader(); }
 }
-
 
 // ================= ACTORS =================
 async function getActors() {
   try {
     showLoader();
-
-    const res = await fetch(ACTOR_API, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
+    const res = await fetch(ACTOR_API, { headers: { Authorization: `Bearer ${token}` } });
     const result = await res.json();
     actorSelect.innerHTML = "";
-
     result.data.forEach(actor => {
       const option = document.createElement("option");
       option.value = actor.id;
       option.textContent = actor.name + " " + actor.surname;
       actorSelect.appendChild(option);
     });
-
     actorChoices = new Choices(actorSelect, {
       removeItemButton: true,
       searchEnabled: true,
       placeholder: true,
       placeholderValue: "Actors seçin",
-      itemSelectText: "",
+      itemSelectText: ""
     });
-
-  } catch (err) {
-    console.log("Actor error:", err);
-  } finally {
-    hideLoader();
-  }
+  } catch (err) { console.log(err); } 
+  finally { hideLoader(); }
 }
-
 
 // ================= MOVIES =================
 async function getMovies() {
   try {
     showLoader();
-
-    const res = await fetch(GET_API, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
+    const res = await fetch(GET_API, { headers: { Authorization: `Bearer ${token}` } });
     const result = await res.json();
     allMovies = result.data;
-
     renderMovies();
     renderPagination();
-
-  } catch (err) {
-    console.log("Movie error:", err);
-  } finally {
-    hideLoader();
-  }
+  } catch (err) { console.log(err); } 
+  finally { hideLoader(); }
 }
 
 function renderMovies() {
   tableBody.innerHTML = "";
-
   const start = (currentPage - 1) * moviesPerPage;
   const end = start + moviesPerPage;
   const paginatedMovies = allMovies.slice(start, end);
 
   paginatedMovies.forEach(movie => {
     const tr = document.createElement("tr");
-
     tr.innerHTML = `
       <td>${movie.id}</td>
       <td><img src="${movie.cover_url}" width="60"/></td>
@@ -172,66 +128,52 @@ function renderMovies() {
       <td>${movie.run_time_min}</td>
       <td>${movie.imdb}</td>
       <td>
-        <button class="edit-btn icon-btn" onclick="editMovie(${movie.id})">  <i class="fa-solid fa-pen"></i></button>
-        <button class="delete-btn icon-btn" onclick="deleteMovie(${movie.id})">   <i class="fa-solid fa-trash"></i></button>
+        <button class="edit-btn icon-btn" onclick="editMovie(${movie.id})">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+        <button class="delete-btn icon-btn" onclick="deleteMovie(${movie.id})">
+          <i class="fa-solid fa-trash"></i>
+        </button>
       </td>
     `;
-
     tableBody.appendChild(tr);
   });
 }
 
+// ================= PAGINATION =================
 function renderPagination() {
   pageNumbers.innerHTML = "";
-
   const totalPages = Math.ceil(allMovies.length / moviesPerPage);
+  const maxButtons = 3;
 
-  for (let i = 1; i <= totalPages; i++) {
+  let startPage = currentPage;
+  if (currentPage === totalPages) startPage = Math.max(totalPages - 2, 1);
+  if (currentPage > 1 && currentPage < totalPages) startPage = currentPage - 1;
+  const endPage = Math.min(startPage + maxButtons - 1, totalPages);
+
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === totalPages;
+
+  for (let i = startPage; i <= endPage; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
-
-    if (i === currentPage) {
-      btn.classList.add("active-page");
-    }
-
+    if (i === currentPage) btn.classList.add("active-page");
     btn.onclick = () => {
       currentPage = i;
       renderMovies();
       renderPagination();
     };
-
     pageNumbers.appendChild(btn);
   }
-
-  prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = currentPage === totalPages;
 }
 
-prevBtn.onclick = () => {
-  if (currentPage > 1) {
-    currentPage--;
-    renderMovies();
-    renderPagination();
-  }
-};
-
-nextBtn.onclick = () => {
-  const totalPages = Math.ceil(allMovies.length / moviesPerPage);
-  if (currentPage < totalPages) {
-    currentPage++;
-    renderMovies();
-    renderPagination();
-  }
-};
-
+prevBtn.onclick = () => { if (currentPage > 1) { currentPage--; renderMovies(); renderPagination(); } };
+nextBtn.onclick = () => { const totalPages = Math.ceil(allMovies.length / moviesPerPage); if (currentPage < totalPages) { currentPage++; renderMovies(); renderPagination(); } };
 
 // ================= FORM SUBMIT =================
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-
-  const selectedActors = Array.from(actorSelect.selectedOptions)
-    .map(option => Number(option.value));
-
+  const selectedActors = Array.from(actorSelect.selectedOptions).map(opt => Number(opt.value));
   const movie = {
     title: form.title.value,
     cover_url: form.cover_url.value,
@@ -244,68 +186,49 @@ form.addEventListener("submit", async (e) => {
     actors: selectedActors,
     overview: form.overview.value
   };
-
   const url = editId ? `${ADMIN_API}/${editId}` : ADMIN_API;
   const method = editId ? "PUT" : "POST";
 
   try {
     showLoader();
-
     const res = await fetch(url, {
       method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify(movie)
     });
-
     if (!res.ok) return;
-
     closeModal();
     currentPage = 1;
     getMovies();
-
-  } catch (err) {
-    console.log("Submit error:", err);
-  } finally {
-    hideLoader();
-  }
+  } catch (err) { console.log(err); } 
+  finally { hideLoader(); }
 });
 
-
 // ================= DELETE =================
-async function deleteMovie(id) {
-  if (!confirm("Filmi silmək istədiyinizə əminsiniz?")) return;
-
+function deleteMovie(id) {
+  deleteId = id;
+  deleteModal.style.display = "flex";
+}
+cancelDeleteBtn.onclick = () => { deleteModal.style.display = "none"; deleteId = null; };
+deleteModal.onclick = (e) => { if (e.target === deleteModal) { deleteModal.style.display = "none"; deleteId = null; } };
+confirmDeleteBtn.onclick = async () => {
+  if (!deleteId) return;
   try {
     showLoader();
-
-    await fetch(`${ADMIN_API}/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
+    await fetch(`${ADMIN_API}/${deleteId}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+    deleteModal.style.display = "none";
+    deleteId = null;
     currentPage = 1;
     getMovies();
-
-  } catch (err) {
-    console.log("Delete error:", err);
-  } finally {
-    hideLoader();
-  }
-}
-
+  } catch (err) { console.log(err); } 
+  finally { hideLoader(); }
+};
 
 // ================= EDIT =================
 async function editMovie(id) {
   try {
     showLoader();
-
-    const res = await fetch(`${GET_API}/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
+    const res = await fetch(`${GET_API}/${id}`, { headers: { Authorization: `Bearer ${token}` } });
     const result = await res.json();
     const movie = result.data;
 
@@ -317,29 +240,18 @@ async function editMovie(id) {
     form.run_time_min.value = movie.run_time_min;
     form.imdb.value = movie.imdb;
     form.overview.value = movie.overview;
-
     form.category.value = movie.category?.id || movie.category;
 
-    const actorIds = movie.actors
-      ? movie.actors.map(a => a.id || a)
-      : [];
-
+    const actorIds = movie.actors ? movie.actors.map(a => a.id || a) : [];
     actorChoices.removeActiveItems();
-    actorIds.forEach(id => {
-      actorChoices.setChoiceByValue(String(id));
-    });
+    actorIds.forEach(id => actorChoices.setChoiceByValue(String(id)));
 
     modal_poster.src = movie.cover_url;
     editId = id;
     modal.style.display = "flex";
-
-  } catch (err) {
-    console.log("Edit error:", err);
-  } finally {
-    hideLoader();
-  }
+  } catch (err) { console.log(err); } 
+  finally { hideLoader(); }
 }
-
 
 // ================= INIT =================
 getMovies();

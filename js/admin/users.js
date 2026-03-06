@@ -12,100 +12,81 @@ let users = [];
 let currentPage = 1;
 const rowsPerPage = 9;
 
-
 // ================= LOADER =================
-function showLoader() {
-  loader.style.display = "flex";
-}
+function showLoader() { loader.style.display = "flex"; }
+function hideLoader() { loader.style.display = "none"; }
 
-function hideLoader() {
-  loader.style.display = "none";
-}
+// ================= GİRİŞ KONTROL =================
+if (!token) window.location.href = "login.html";
 
-
-// ================= AUTH CHECK =================
-if (!token) {
-  window.location.href = "login.html";
-}
-
-
-// ================= GET USERS =================
+// ================= KULLANICILARI GETİR =================
 async function getUsers() {
   try {
     showLoader();
-
     const res = await fetch(GET_API, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     });
-
-    if (!res.ok) throw new Error("Fetch failed");
+    if (!res.ok) throw new Error("Fetch başarısız oldu");
 
     const result = await res.json();
     users = result.data || [];
 
     displayUsers();
     createPagination();
-
   } catch (error) {
-    console.log("User error:", error);
+    console.log("Kullanıcı hatası:", error);
   } finally {
     hideLoader();
   }
 }
 
-
-// ================= DISPLAY =================
+// ================= TABLOYA YAZDIR =================
 function displayUsers() {
   tableBody.innerHTML = "";
-
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
   const paginatedUsers = users.slice(start, end);
 
   paginatedUsers.forEach((user) => {
     const tr = document.createElement("tr");
-
     tr.innerHTML = `
       <td>${user.id}</td>
       <td>${user.full_name}</td>
       <td>${user.email}</td>
     `;
-
     tableBody.appendChild(tr);
   });
 }
 
-
-// ================= PAGINATION =================
+// ================= SAYFALAMA =================
 function createPagination() {
   pageNumbers.innerHTML = "";
   const pageCount = Math.ceil(users.length / rowsPerPage);
+  const maxButtons = 3;
 
-  for (let i = 1; i <= pageCount; i++) {
+  let startPage = currentPage;
+  if (currentPage === pageCount) startPage = Math.max(pageCount - 2, 1);
+  if (currentPage > 1 && currentPage < pageCount) startPage = currentPage - 1;
+
+  const endPage = Math.min(startPage + maxButtons - 1, pageCount);
+
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === pageCount;
+
+  for (let i = startPage; i <= endPage; i++) {
     const btn = document.createElement("button");
     btn.innerText = i;
-
-    if (i === currentPage) {
-      btn.classList.add("active");
-    }
-
+    if (i === currentPage) btn.classList.add("active");
     btn.addEventListener("click", () => {
       currentPage = i;
       displayUsers();
       createPagination();
     });
-
     pageNumbers.appendChild(btn);
   }
-
-  prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = currentPage === pageCount;
 }
 
-
-// ================= PREV / NEXT =================
+// ================= ÖNCEKİ / SONRAKİ =================
 prevBtn.addEventListener("click", () => {
   if (currentPage > 1) {
     currentPage--;
@@ -116,7 +97,6 @@ prevBtn.addEventListener("click", () => {
 
 nextBtn.addEventListener("click", () => {
   const pageCount = Math.ceil(users.length / rowsPerPage);
-
   if (currentPage < pageCount) {
     currentPage++;
     displayUsers();
@@ -124,6 +104,5 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
-
-// ================= INIT =================
+// ================= SAYFAYI İNİT =================
 getUsers();

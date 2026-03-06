@@ -9,6 +9,11 @@ const pageNumbers = document.querySelector(".page-numbers");
 
 const loader = document.getElementById("loader");
 
+// delete modal
+const deleteModal = document.getElementById("deleteModal");
+const confirmDeleteBtn = document.getElementById("confirmDelete");
+const cancelDeleteBtn = document.getElementById("cancelDelete");
+
 // ================= LOADER =================
 function showLoader() {
   loader.style.display = "flex";
@@ -22,6 +27,9 @@ function hideLoader() {
 let currentPage = 1;
 let itemsPerPage = 5;
 let allComments = [];
+
+let deleteMovieId = null;
+let deleteCommentId = null;
 
 
 // ================= GET COMMENTS =================
@@ -55,6 +63,7 @@ getComments();
 
 // ================= RENDER COMMENTS =================
 function renderComments() {
+
   tableBody.innerHTML = "";
 
   const start = (currentPage - 1) * itemsPerPage;
@@ -63,6 +72,7 @@ function renderComments() {
   const paginatedItems = allComments.slice(start, end);
 
   paginatedItems.forEach(comment => {
+
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
@@ -71,29 +81,35 @@ function renderComments() {
       <td>${comment.movie?.title || "-"}</td>
       <td>${comment.user?.full_name || "-"}</td>
       <td>${comment.user?.email || "-"}</td>
+
       <td>
         <button 
           class="delete-btn icon-btn"
           data-movieid="${comment.movie?.id}"
           data-commentid="${comment.id}">
-         <i class="fa-solid fa-trash"></i>
+          <i class="fa-solid fa-trash"></i>
         </button>
       </td>
     `;
 
     tableBody.appendChild(tr);
+
   });
+
 }
 
 
 // ================= RENDER PAGINATION =================
 function renderPagination() {
+
   pageNumbers.innerHTML = "";
 
   const totalPages = Math.ceil(allComments.length / itemsPerPage);
 
   for (let i = 1; i <= totalPages; i++) {
+
     const btn = document.createElement("button");
+
     btn.textContent = i;
 
     if (i === currentPage) {
@@ -107,64 +123,123 @@ function renderPagination() {
     };
 
     pageNumbers.appendChild(btn);
+
   }
 
   prevBtn.disabled = currentPage === 1;
   nextBtn.disabled = currentPage === totalPages;
+
 }
 
 
 // ================= PREV / NEXT =================
 prevBtn.onclick = () => {
+
   if (currentPage > 1) {
+
     currentPage--;
+
     renderComments();
     renderPagination();
+
   }
+
 };
 
 nextBtn.onclick = () => {
+
   const totalPages = Math.ceil(allComments.length / itemsPerPage);
 
   if (currentPage < totalPages) {
+
     currentPage++;
+
     renderComments();
     renderPagination();
+
   }
+
 };
 
 
-// ================= DELETE COMMENT =================
-tableBody.addEventListener("click", async (e) => {
-  if (e.target.classList.contains("delete-btn")) {
+// ================= DELETE BUTTON CLICK =================
+tableBody.addEventListener("click", (e) => {
 
-    const movieId = e.target.dataset.movieid;
-    const commentId = e.target.dataset.commentid;
+  const btn = e.target.closest(".delete-btn");
 
-    if (!confirm("Silmək istədiyinizə əminsiniz?")) return;
+  if (!btn) return;
 
-    try {
-      showLoader();
+  deleteMovieId = btn.dataset.movieid;
+  deleteCommentId = btn.dataset.commentid;
 
-      const res = await fetch(
-        `https://api.sarkhanrahimli.dev/api/filmalisa/admin/movies/${movieId}/comment/${commentId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
+  deleteModal.style.display = "flex";
 
-      if (!res.ok) throw new Error("Delete failed");
-
-      currentPage = 1;
-      getComments();
-
-    } catch (error) {
-      console.log("DELETE Error:", error);
-    } finally {
-      hideLoader();
-    }
-  }
 });
+
+
+// ================= CANCEL DELETE =================
+cancelDeleteBtn.onclick = () => {
+
+  deleteModal.style.display = "none";
+
+  deleteMovieId = null;
+  deleteCommentId = null;
+
+};
+
+
+// ================= CLICK OUTSIDE =================
+deleteModal.onclick = (e) => {
+
+  if (e.target === deleteModal) {
+
+    deleteModal.style.display = "none";
+
+    deleteMovieId = null;
+    deleteCommentId = null;
+
+  }
+
+};
+
+
+// ================= CONFIRM DELETE =================
+confirmDeleteBtn.onclick = async () => {
+
+  if (!deleteMovieId || !deleteCommentId) return;
+
+  try {
+
+    showLoader();
+
+    const res = await fetch(
+      `https://api.sarkhanrahimli.dev/api/filmalisa/admin/movies/${deleteMovieId}/comment/${deleteCommentId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (!res.ok) throw new Error("Delete failed");
+
+    deleteModal.style.display = "none";
+
+    deleteMovieId = null;
+    deleteCommentId = null;
+
+    currentPage = 1;
+    getComments();
+
+  } catch (error) {
+
+    console.log("DELETE Error:", error);
+
+  } finally {
+
+    hideLoader();
+
+  }
+
+};
