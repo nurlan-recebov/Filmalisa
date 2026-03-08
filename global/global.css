@@ -7,9 +7,7 @@
 .admin-dashboard-wrapper {
   display: flex;
 }
-body {
-  margin-left: 56px;
-}
+
 
 /* Admin Sidebar Design */
 .admin-sidebar {
