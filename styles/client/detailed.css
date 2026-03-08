@@ -975,6 +975,10 @@ body {
 /* ── Tablet Portrait (≤768px) ─────────────────── */
 @media (max-width: 768px) {
 
+    body {
+        margin-left: 0;
+    }
+
     /* App layout: stack sidebar on top */
     .app-container {
         flex-direction: column;
@@ -1055,14 +1059,14 @@ body {
     .details__image,
     .details__image img {
         width: 100%;
-        max-width: 380px;
+        max-width: 320px;
         height: auto;
         padding-left: 0;
     }
 
     .details__image {
         width: 100%;
-        max-width: 380px;
+        max-width: 320px;
         height: auto;
     }
 
