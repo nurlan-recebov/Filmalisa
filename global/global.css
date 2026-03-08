@@ -7,6 +7,9 @@
 .admin-dashboard-wrapper {
   display: flex;
 }
+body {
+  margin-left: 56px;
+}
 
 /* Admin Sidebar Design */
 .admin-sidebar {
@@ -106,13 +109,18 @@ tr button {
 /* Client Sidebar Design */
 .client-sidebar {
   width: 56px;
-  flex-shrink: 0;
-  background-color: transparent;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  background-color: #1d1d1d; /* test üçün */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 40px 0;
-  
+
 }
 .client-sidebar-logo {
   width: 100%;
