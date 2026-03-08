@@ -2,6 +2,7 @@
 body {
   margin-left: 56px;
 }
+
 .app-container {
   display: flex;
   min-height: 100vh;
@@ -33,7 +34,8 @@ body {
   display: flex;
   padding-top: 164px;
 }
-.home-swiper-slide > img {
+
+.home-swiper-slide>img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -90,13 +92,14 @@ body {
   font-size: 16px;
   line-height: 1.6;
 }
+
 .slider-watch-btn {
   position: relative;
   padding: 12px 36px;
   border-radius: 40px;
   color: #fff;
   text-decoration: none;
-  border: 1px solid #0feffd; 
+  border: 1px solid #0feffd;
   transition: 0.3s;
 }
 
@@ -114,7 +117,7 @@ body {
   mask-composite: exclude;
   pointer-events: none;
   border: 0.2px solid;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slider-watch-btn:hover {
@@ -141,21 +144,25 @@ body {
 .home-action-section {
   padding: 28px 0 60px;
 }
+
 .home-section-heading {
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
 .home-section-heading h3 {
   font-weight: 500;
   font-size: 35px;
   line-height: 24px;
   color: #fff;
 }
+
 .home-section-heading img {
   width: 35px;
   height: 35px;
 }
+
 .action-section-content {
   display: flex;
   margin-top: 19px;
@@ -163,27 +170,45 @@ body {
   overflow-x: auto;
   scroll-behavior: smooth;
 }
+
 .action-section-content::-webkit-scrollbar {
   display: none;
 }
+
 .action-card {
   width: 292px;
   height: 440px;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  border-radius: 12px;
 }
+
+.action-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(155, 81, 224, 0.3);
+  z-index: 10;
+}
+
 .action-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 40%,
-    rgba(0, 0, 0, 0.4) 65%,
-    rgba(0, 0, 0, 0.9) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.4) 65%,
+      rgba(0, 0, 0, 0.9) 100%);
   z-index: 1;
+  transition: opacity 0.4s ease;
+}
+
+.action-card:hover::before {
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 20%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.95) 100%);
 }
 
 .action-card img {
@@ -191,7 +216,13 @@ body {
   display: block;
   width: 100%;
   height: 100%;
+  transition: transform 0.6s ease;
 }
+
+.action-card:hover img {
+  transform: scale(1.1);
+}
+
 .action-card-content {
   position: absolute;
   bottom: 24px;
@@ -199,6 +230,7 @@ body {
   z-index: 2;
   color: white;
 }
+
 .action-film-category {
   padding: 4px 8px;
   color: var(--client-nav-active-bg);
@@ -210,11 +242,13 @@ body {
   border-top-right-radius: 8px;
   border-bottom-left-radius: 8px;
 }
+
 .action-film-category,
 .comedy-film-category {
   display: inline-block;
   width: fit-content;
 }
+
 .action-film-title {
   font-weight: 500;
   font-size: 24px;
@@ -222,12 +256,14 @@ body {
   color: #fff;
 }
 
-.action-section-content, .comedy-section-content {
+.action-section-content,
+.comedy-section-content {
   display: flex;
   gap: 16px;
   overflow-x: auto;
   padding: 20px;
-  scrollbar-width: none;}
+  scrollbar-width: none;
+}
 
 /* Home Comedy Section */
 .home-comedy-section {
@@ -247,27 +283,45 @@ body {
   overflow-x: auto;
   scroll-behavior: smooth;
 }
+
 .comedy-section-content::-webkit-scrollbar {
   display: none;
 }
+
 .comedy-card {
   width: 504px;
   height: 736px;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  border-radius: 12px;
 }
+
+.comedy-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 60, 100, 0.3);
+  z-index: 10;
+}
+
 .comedy-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 40%,
-    rgba(0, 0, 0, 0.4) 65%,
-    rgba(0, 0, 0, 0.9) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.4) 65%,
+      rgba(0, 0, 0, 0.9) 100%);
   z-index: 1;
+  transition: opacity 0.4s ease;
+}
+
+.comedy-card:hover::before {
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 20%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.95) 100%);
 }
 
 .comedy-card img {
@@ -275,7 +329,13 @@ body {
   display: block;
   width: 100%;
   height: 100%;
+  transition: transform 0.6s ease;
 }
+
+.comedy-card:hover img {
+  transform: scale(1.08);
+}
+
 .comedy-card-content {
   position: absolute;
   bottom: 40px;
@@ -283,6 +343,7 @@ body {
   z-index: 2;
   color: white;
 }
+
 .comedy-film-category {
   padding: 4px 8px;
   color: var(--client-nav-active-bg);
@@ -294,10 +355,12 @@ body {
   border-top-right-radius: 8px;
   border-bottom-left-radius: 8px;
 }
+
 .comedy-card-content img {
   width: 80px;
   height: 16px;
 }
+
 .comedy-film-title {
   font-weight: 500;
   font-size: 32px;
@@ -376,6 +439,7 @@ body {
     font-size: 22px;
   }
 }
+
 .home-categories-section {
   padding: 40px 0 80px;
 }
@@ -411,6 +475,15 @@ body {
   overflow: hidden;
   text-decoration: none;
   color: white;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.movie-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(155, 81, 224, 0.3);
+  z-index: 10;
 }
 
 .movie-card img {
@@ -418,18 +491,22 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.6s ease;
+}
+
+.movie-card:hover img {
+  transform: scale(1.08);
+  /* Kartın içində şəkil də böyüyür */
 }
 
 .movie-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 40%,
-    rgba(0, 0, 0, 0.4) 65%,
-    rgba(0, 0, 0, 0.9) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.4) 65%,
+      rgba(0, 0, 0, 0.9) 100%);
   z-index: 1;
 }
 

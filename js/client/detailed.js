@@ -43,6 +43,7 @@ function getRelativeDate(date) {
 }
 
 let currentUser = null;
+const loader = document.getElementById("loader");
 
 async function fetchCurrentUser() {
     try {
@@ -52,6 +53,11 @@ async function fetchCurrentUser() {
         const data = await res.json();
         if (data && data.data) {
             currentUser = data.data;
+            const currentUserPhoto = document.getElementById("currentUserPhoto");
+            if (currentUserPhoto) {
+                const userPhoto = currentUser.img_url || '../../assets/images/user-photo.png';
+                currentUserPhoto.src = userPhoto;
+            }
         }
     } catch (e) {
         console.log("Error fetching profile", e);
@@ -62,7 +68,7 @@ function renderComments(comments) {
     commentsList.innerHTML = "";
     const defaultPhotoUrl = '../../assets/images/user-photo.png';
     if (!comments || comments.length === 0) {
-        commentsList.innerHTML = "<p>No comments yet.</p>";
+        commentsList.innerHTML = "<p class='no-comments-msg'>No comments yet.</p>";
         return;
     }
     comments.forEach((comment) => {
@@ -155,6 +161,7 @@ if (commentBtn && commentInput) {
 fetchCurrentUser();
 
 async function fetchAndRenderMovie() {
+    if (loader) loader.classList.remove("loader-hidden");
     try {
         const res = await fetch(`${API_URL}/${movieId}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
         const data = await res.json();
@@ -399,6 +406,8 @@ async function fetchAndRenderMovie() {
     } catch (err) {
         console.error(err);
         alert("Movie data could not be loaded.");
+    } finally {
+        if (loader) loader.classList.add("loader-hidden");
     }
 }
 

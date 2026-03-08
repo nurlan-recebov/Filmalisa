@@ -44,6 +44,10 @@
             </div>
         </div>
         <div class="detailed-content">
+            <div id="loader" class="loader-wrapper loader-hidden">
+                <div class="spinner"></div>
+                <p>Yüklənir...</p>
+            </div>
             <div class="background-container">
                 <img src="" alt="Background" class="background-image">
                 <div class="overlay-text">
@@ -138,7 +142,12 @@
 
                 <section class="comment">
                     <div class="comment-box">
-                        <input type="text" placeholder="Your comment..." class="comment-input">
+                        <div class="comment-input-wrapper"
+                            style="position: relative; flex: 1; display: flex; align-items: center;">
+                            <img src="../../assets/images/user-photo.png" alt="User" class="current-user-photo"
+                                id="currentUserPhoto">
+                            <input type="text" placeholder="Your comment..." class="comment-input">
+                        </div>
                         <button class="comment-btn">
                             <img src="../../assets/images/btnArrow.svg" alt="Send">
                         </button>
