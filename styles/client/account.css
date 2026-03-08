@@ -18,6 +18,7 @@ body {
     width: 232px;
     height: 232px;
     border-radius: 50%;
+    object-fit: cover;
 }
 .account-container form {
     margin-top: 64px;
