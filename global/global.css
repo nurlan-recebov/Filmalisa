@@ -7,7 +7,11 @@
 .admin-dashboard-wrapper {
   display: flex;
 }
-
+/* input hover */
+input:hover{
+  border-color:#7b3fe4 ;
+transition: border-color 0.5s;
+}
 
 /* Admin Sidebar Design */
 .admin-sidebar {

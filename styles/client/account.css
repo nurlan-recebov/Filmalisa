@@ -41,7 +41,7 @@ body {
     background-color: rgba(0, 0, 0, 0.1);
     border: 1px solid #323B54;
     border-radius: 12px;
-    padding: 12px 8px;      
+    padding: 16px 10px;      
     width: 100%;           
     box-sizing: border-box;
     justify-content: center;
@@ -98,6 +98,12 @@ body {
   padding: 16px 0;
   cursor: pointer;
 }
+
+.input-no-icon:hover{
+  border-color:#7b3fe4 ;
+transition: border-color 0.5s;
+}
+
 
 /* Responsive Design */
 
