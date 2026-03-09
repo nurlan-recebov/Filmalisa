@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
 body {
   margin-left: 56px;
 }
+
 .body-main {
   display: flex;
   background-color: #1d1d1d;
@@ -245,8 +247,49 @@ ul {
 
 /* Mobile (max 768px) */
 @media (max-width: 768px) {
+  body {
+    margin-left: 0;
+  }
+
   .body-main {
     flex-direction: column;
+  }
+
+  .client-sidebar {
+    width: 100% !important;
+    height: 60px !important;
+    min-height: unset !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 20px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 999 !important;
+    background-color: #1d1d1d !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .client-sidebar-logo {
+    width: auto !important;
+    margin: 0 !important;
+  }
+
+  .client-sidebar-logo img {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .client-sidebar-links {
+    flex-direction: row !important;
+    gap: 28px !important;
+    margin-top: 0 !important;
+    padding-inline: 0 !important;
+  }
+
+  .client-sidebar-links a img {
+    width: 24px !important;
+    height: 24px !important;
   }
 
   .body-right {

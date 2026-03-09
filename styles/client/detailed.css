@@ -1,7 +1,8 @@
 /* Toast styles for favorite messages */
 body {
-  margin-left: 56px;
+    margin-left: 56px;
 }
+
 .toast-container {
     position: fixed;
     top: 32px;
@@ -463,6 +464,12 @@ body {
     border-radius: 4px;
 }
 
+.actor-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .actor-name {
     color: #FFFFFF;
     font-family: 'Roboto', sans-serif;
@@ -504,8 +511,26 @@ body {
 
 }
 
-.comment-input {
+.comment-input-wrapper {
+    position: relative;
     flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.current-user-photo {
+    position: absolute;
+    left: 10px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    pointer-events: none;
+    /* so clicking the photo focuses the input */
+}
+
+.comment-input {
+    width: 100%;
     padding: 15px 16px 15px 55px;
     border: 1px solid #323B54;
     border-radius: 12px;
@@ -514,9 +539,6 @@ body {
     background-color: #0000001A;
     color: #475069;
     background-image: none;
-    background-size: 35px 35px;
-    background-repeat: no-repeat;
-    background-position: 10px center;
 
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
@@ -562,6 +584,14 @@ body {
     background-color: #0056b3;
 }
 
+.no-comments-msg {
+    color: #ffffff;
+    max-width: 810px;
+    padding-left: 50px;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 10px;
+}
 
 .comments-list {
     margin-top: 20px;
@@ -945,6 +975,10 @@ body {
 /* ── Tablet Portrait (≤768px) ─────────────────── */
 @media (max-width: 768px) {
 
+    body {
+        margin-left: 0;
+    }
+
     /* App layout: stack sidebar on top */
     .app-container {
         flex-direction: column;
@@ -1025,14 +1059,14 @@ body {
     .details__image,
     .details__image img {
         width: 100%;
-        max-width: 380px;
+        max-width: 320px;
         height: auto;
         padding-left: 0;
     }
 
     .details__image {
         width: 100%;
-        max-width: 380px;
+        max-width: 320px;
         height: auto;
     }
 
