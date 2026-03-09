@@ -42,15 +42,21 @@ function hideLoader() {
 // ================= CREATE MODAL =================
 openBtn.addEventListener("click", () => {
   modal.style.display = "flex";
+  input.value = "";
+  editId = null;
 });
 
 closeBtn.addEventListener("click", () => {
   modal.style.display = "none";
+  input.value = "";
+  editId = null;
 });
 
 window.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
+    input.value = "";
+    editId = null;
   }
 
   if (e.target === deleteModal) {
