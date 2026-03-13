@@ -44,7 +44,7 @@ registerForm.addEventListener("submit", async (e) => {
     if (response.ok) {
       showToast("success", "Qeydiyyat uğurludur!");
       setTimeout(() => {
-        window.location.href = "login.html";
+        window.location.href = "./login.html";
       }, 2000);
     } else {
       showToast("error", data.message || "Xəta baş verdi");
