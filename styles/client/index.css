@@ -4,7 +4,9 @@
     box-sizing: border-box;
    font-family: "Roboto", sans-serif;
 }
-
+a{
+  text-decoration: none;
+}
 
 body {
     background: url("https://images.unsplash.com/photo-1608889175123-2b1b88b7f3c4") no-repeat center center/cover;
