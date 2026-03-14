@@ -44,13 +44,14 @@ const getMovies = async () => {
 const initSwiper = () => {
   new Swiper(".swiper", {
     loop: true,
-    autoplay: { delay: 2000, disableOnInteraction: false },
+    autoplay: { delay: 3000, disableOnInteraction: false },
     pagination: {
       el: ".swiper-pagination",
+      dynamicBullets: true,
       clickable: true,
     },
     observer: true,
-    observeParents: true
+    observeParents: true,
   });
 };
 
