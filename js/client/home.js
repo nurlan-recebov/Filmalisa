@@ -1,7 +1,6 @@
 const token = localStorage.getItem("userToken");
 const loader = document.getElementById("loader");
 
-
 // Token yoxdursa loginə atır
 if (!token) {
   window.location.href = "login.html";
@@ -27,11 +26,9 @@ const getMovies = async () => {
 
     // Category üzrə filmləri göstər
     renderMoviesByCategory(movies, ".movies-container");
-
   } catch (error) {
     console.error("Xəta:", error);
-  }
-  finally {
+  } finally {
     setTimeout(() => {
       loader.classList.add("loader-hidden");
     }, 500);
@@ -44,13 +41,14 @@ const getMovies = async () => {
 const initSwiper = () => {
   new Swiper(".swiper", {
     loop: true,
-    autoplay: { delay: 2000, disableOnInteraction: false },
+    autoplay: { delay: 3000, disableOnInteraction: false },
     pagination: {
       el: ".swiper-pagination",
+      dynamicBullets: true,
       clickable: true,
     },
     observer: true,
-    observeParents: true
+    observeParents: true,
   });
 };
 
@@ -60,7 +58,9 @@ const initSwiper = () => {
 const renderSliderMovies = (movies, selector) => {
   const container = document.querySelector(selector);
 
-  container.innerHTML = movies.map(movie => `
+  container.innerHTML = movies
+    .map(
+      (movie) => `
     <div class="home-swiper-slide swiper-slide">
       <img src="${movie.cover_url}" alt="${movie.title}" />
       <div class="slide-info">
@@ -74,7 +74,9 @@ const renderSliderMovies = (movies, selector) => {
         </a>
       </div>
     </div>
-  `).join("");
+  `,
+    )
+    .join("");
 };
 
 // ======================
@@ -97,19 +99,25 @@ const renderMoviesByCategory = (movies, containerSelector) => {
 
   // HTML qururuq
   container.innerHTML = Object.keys(grouped)
-    .map(category => `
+    .map(
+      (category) => `
       <div class="category-section">
         <h2 class="category-title">${category}</h2>
         <div class="category-movies">
-          ${grouped[category].map(movie => `
+          ${grouped[category]
+            .map(
+              (movie) => `
             <a href="./detailed.html?id=${movie.id}" class="movie-card">
               <img src="${movie.cover_url}" alt="${movie.title}" />
               <p class="movie-title">${movie.title}</p>
             </a>
-          `).join("")}
+          `,
+            )
+            .join("")}
         </div>
       </div>
-    `)
+    `,
+    )
     .join("");
 };
 
