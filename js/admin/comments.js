@@ -91,7 +91,7 @@ function renderPagination() {
   for (let i = startPage; i <= endPage; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
-    if (i === currentPage) btn.classList.add("active-page"); // CSS ile aktif stil
+    if (i === currentPage) btn.classList.add("active"); // CSS ile aktif stil
     btn.onclick = () => {
       currentPage = i;
       renderComments();

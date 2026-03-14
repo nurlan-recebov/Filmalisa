@@ -157,7 +157,7 @@ function renderPagination() {
   for (let i = startPage; i <= endPage; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
-    if (i === currentPage) btn.classList.add("active-page");
+    if (i === currentPage) btn.classList.add("active");
     btn.onclick = () => {
       currentPage = i;
       renderMovies();

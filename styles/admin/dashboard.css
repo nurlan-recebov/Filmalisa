@@ -7,6 +7,9 @@
   flex: 1;
   background-color: #171616;
 }
+body{
+  background-color: #171616;
+}
 .admin-dashboard-header {
   display: flex;
   padding: 36px 116px 0 24px;

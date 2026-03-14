@@ -134,7 +134,7 @@ function renderPagination() {
     btn.textContent = i;
 
     if (i === currentPage) {
-      btn.classList.add("active-page");
+      btn.classList.add("active");
     }
 
     btn.onclick = () => {
